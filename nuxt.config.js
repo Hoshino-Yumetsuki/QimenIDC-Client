@@ -31,6 +31,7 @@ export default {
     '@/plugins/vue-github-buttons', // github按钮
     '@/plugins/event-bus', // 事件总线
     '@/plugins/svg-icon', // svg组件
+    '@/plugins/echarts', // echarts
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

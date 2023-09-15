@@ -112,8 +112,56 @@
                 </div>
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-body">
-                            <p class="color-dark fw-500 fs-20 mb-0">实例监控</p>
+                        <div class="card-header">
+                            <p class="color-dark fw-500 fs-20 mb-0">实例信息</p>
+                        </div>
+                        <div class="card-body" id="echarts">
+                            <div class="row">
+                                <div class="col">
+                                    <span class="font-weight-bold">CPU利用率（%）</span>
+                                    <div>
+                                        <span>当前：</span>
+                                        <span>4.666%</span>
+                                        <span> 总量</span>
+                                        <span>2核</span>
+                                    </div>
+                                    <!-- CPU监控 -->
+                                    <div id="cpuEcharts" style="width: 100%;height: 150px;"></div>
+                                </div>
+                                <div class="col">
+                                    <span class="font-weight-bold">内存利用率（%）</span>
+                                    <div>
+                                        <span>当前：</span>
+                                        <span>2245.83MB(74.66%)</span>
+                                        <span> 总量</span>
+                                        <span>4GB</span>
+                                    </div>
+                                    <!-- 内存监控 -->
+                                    <div id="memoryEcharts" style="width: 100%;height: 150px;"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span class="font-weight-bold">磁盘IO使用（kb/s）</span>
+                                    <div>
+                                        <span>当前：</span>
+                                        <span>0.015（入）</span>
+                                        <span>0.035（出）</span>
+                                    </div>
+                                    <!-- 磁盘监控 -->
+                                    <div id="diskEcharts" style="width: 100%;height: 150px;"></div>
+                                </div>
+                                <div class="col">
+                                    <span class="font-weight-bold">网络使用（kb/s）</span>
+                                    <div>
+                                        <span>当前：</span>
+                                        <span>9.451（读）</span>
+                                        <span>156.954（写）</span>
+                                    </div>
+                                    <!-- 网络监控 -->
+                                    <div id="networkEcharts" style="width: 100%;height: 150px;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,6 +190,211 @@
                 ]
             }
         },
+        methods: {
+            cpuEcharts (){
+                // 找到容器
+                let cpuEcharts = document.getElementById('cpuEcharts')
+                // 初始化echarts实例
+                let myChart = this.$echarts.init(cpuEcharts)
+                // 指定图表的配置项和数据
+                let option = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        // 底部时间
+                        type: 'category',
+                        data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    },
+                    yAxis: {
+                        // 左侧百分比
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: 'CPU利用率（%）',
+                            type: 'line',
+                            data: [66, 77, 20, 50, 60, 60, 50, 40, 30, 40, 60, 90, 100, 80, 100, 90, 80, 70, 60, 50, 60, 80, 20, 10, 50],
+                            
+                            // 删除点
+                            showSymbol: false,
+
+                        }
+                    ]
+                }
+                // 使用刚指定的配置项和数据显示图表
+                myChart.setOption(option)
+            },
+            // 内存监控
+            memoryEcharts (){
+                // 找到容器
+                let memoryEcharts = document.getElementById('memoryEcharts')
+                // 初始化echarts实例
+                let myChart = this.$echarts.init(memoryEcharts)
+                // 指定图表的配置项和数据
+                let option = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        // 底部时间
+                        type: 'category',
+                        data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    },
+                    yAxis: {
+                        // 左侧百分比
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '内存利用率（%）',
+                            type: 'line',
+                            data: [66, 77, 20, 50, 60, 60, 50, 40, 30, 40, 60, 90, 100, 80, 100, 90, 80, 70, 60, 50, 60, 80, 20, 10, 50],
+                            
+                            // 删除点
+                            showSymbol: false,
+
+                        }
+                    ]
+                }
+                // 使用刚指定的配置项和数据显示图表
+                myChart.setOption(option)
+            },
+            // 磁盘监控 （蓝色）读 （绿色）写
+            diskEcharts (){
+                // 找到容器
+                let diskEcharts = document.getElementById('diskEcharts')
+                // 初始化echarts实例
+                let myChart = this.$echarts.init(diskEcharts)
+                // 指定图表的配置项和数据
+                let option = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    // 网格
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    // 底部时间
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    },
+                    // 左侧百分比
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '读（kb/s）',
+                            type: 'line',
+                            stack: '总量',
+                            data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134],
+                            // 删除点
+                            showSymbol: false,
+                            // 颜色
+                            itemStyle: {
+                                color: '#00a8ff'
+                            }
+                        },
+                        {
+                            name: '写（kb/s）',
+                            type: 'line',
+                            stack: '总量',
+                            data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234],
+                            // 删除点
+                            showSymbol: false,
+                            // 颜色
+                            itemStyle: {
+                                color: '#00ff00'
+                            }
+                        }
+                    ]
+                }
+                // 使用刚指定的配置项和数据显示图表
+                myChart.setOption(option)
+            },
+            // 网络监控 （蓝色）出 （绿色）入
+            networkEcharts (){
+                // 找到容器
+                let networkEcharts = document.getElementById('networkEcharts')
+                // 初始化echarts实例
+                let myChart = this.$echarts.init(networkEcharts)
+                // 指定图表的配置项和数据
+                let option = {
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    // 网格
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    // 底部时间
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    },
+                    // 左侧百分比
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: '出（kb/s）',
+                            type: 'line',
+                            stack: '总量',
+                            data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134],
+                            // 删除点
+                            showSymbol: false,
+                            // 颜色
+                            itemStyle: {
+                                color: '#00a8ff'
+                            }
+                        },
+                        {
+                            name: '入（kb/s）',
+                            type: 'line',
+                            stack: '总量',
+                            data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234],
+                            // 删除点
+                            showSymbol: false,
+                            // 颜色
+                            itemStyle: {
+                                color: '#00ff00'
+                            }
+                        }
+                    ]
+                }
+                // 使用刚指定的配置项和数据显示图表
+                myChart.setOption(option)
+            }
+        },
+        mounted() {
+            this.cpuEcharts()
+            this.memoryEcharts()
+            this.diskEcharts()
+            this.networkEcharts()
+        }
     }
 </script>
 
@@ -191,6 +444,10 @@
     }
     .span-level-ip {
         margin-left: 65px;
+    }
+    /* 两个div直接高度距离 */
+    .card-body > div > div {
+        margin-top: 3px;
     }
 
     
