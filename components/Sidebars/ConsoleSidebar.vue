@@ -3,7 +3,7 @@
         <div class="sidebar sidebar-collapse" id="sidebar">
             <div class="sidebar__menu-group">
                 <ul class="sidebar_nav">
-                    
+
                     <!-- <li class="has-child" :class="{ 'open': isMenuOpen('/parent') }">
                         <a href="#" class="active">
                             <feather-icon name="home" className="nav-icon" />
@@ -16,7 +16,7 @@
                             </li>
                         </ul>
                     </li> -->
-                    
+
                     <li>
                         <nuxt-link to="/console" exact-active-class="active">
                             <feather-icon name="activity" className="nav-icon" />
@@ -134,6 +134,11 @@
                                     <span>系统配置</span>
                                 </nuxt-link>
                             </li>
+                            <li>
+                                <nuxt-link to="/setting/api" exact-active-class="active">
+                                    <span>API管理</span>
+                                </nuxt-link>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -142,13 +147,13 @@
     </aside>
 </template>
 <script>
-    export default {
-        methods: {
-            // 判断当前路由是否打开
-            isMenuOpen(path) {
-                return this.$route.path.startsWith(path);
-            }
+export default {
+    methods: {
+        // 判断当前路由是否打开
+        isMenuOpen(path) {
+            return this.$route.path.startsWith(path);
         }
-        
     }
+
+}
 </script>
