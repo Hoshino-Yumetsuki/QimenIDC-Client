@@ -14,7 +14,8 @@
                                         <span class="input-icon icon-left">
                                             <span data-feather="calendar"></span>
                                         </span>
-                                        <input type="text" class="form-control form-control-default date-ranger" name="date-ranger" placeholder="Oct 30, 2019 - Nov 30, 2019">
+                                        <input type="text" class="form-control form-control-default date-ranger"
+                                            name="date-ranger" placeholder="Oct 30, 2019 - Nov 30, 2019">
                                         <span class="input-icon icon-right">
                                             <span data-feather="chevron-down"></span>
                                         </span>
@@ -22,7 +23,8 @@
                                 </div>
                             </div>
                             <div class="dropdown action-btn">
-                                <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
+                                    id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="la la-download"></i> Export
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -41,7 +43,8 @@
                                 </div>
                             </div>
                             <div class="dropdown action-btn">
-                                <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
+                                    id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="la la-share"></i> Share
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
@@ -81,19 +84,19 @@
     </div>
 </template>
 <script>
-    export default {
-        layout: 'Console',
-        head() {
-            return {
-                title: '控制中心 - QimenIDC',
-                meta: [
-                    {
-                        hid: 'description',
-                        name: 'description',
-                        content: '控制中心 - QimenIDC'
-                    }
-                ]
-            }
+export default {
+    layout: 'Console',
+    head() {
+        return {
+            title: '控制中心 - QimenIDC',
+            meta: [
+                {
+                    hid: 'description',
+                    name: 'description',
+                    content: '控制中心 - QimenIDC'
+                }
+            ]
         }
     }
+}
 </script>

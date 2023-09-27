@@ -14,7 +14,7 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
-    script:[
+    script: [
       { src: 'https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js', type: 'text/javascript', body: true },
     ]
   },
@@ -57,9 +57,9 @@ export default {
 
   proxy: {
     '/api': {
-      target: 'http://127.0.0.1:8080/admin',
+      target: 'http://idc.chuqiyun.com/admin',
       pathRewrite: {
-        '^/api' : ''
+        '^/api': ''
       }
     }
   },
@@ -67,5 +67,5 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
-  
+
 }
