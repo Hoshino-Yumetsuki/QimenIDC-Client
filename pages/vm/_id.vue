@@ -113,7 +113,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <p class="color-dark fw-500 fs-20 mb-0">实例信息</p>
+                            <p class="color-dark fw-500 fs-20 mb-0">实例监控</p>
                         </div>
                         <div class="card-body" id="echarts">
                             <div class="row">
@@ -165,9 +165,66 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 up-down-margin">
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="color-dark fw-500 fs-20 mb-0">资源使用情况</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="info-container">
+                                        <span class="font-weight-bold">流量包</span>
+                                        <div class="usage-info">
+                                            <span>1.5GB</span>
+                                            <span>/</span>
+                                            <span>1000GB</span>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col">
+                                    <!-- 流量使用饼图 -->
+                                    <div id="flowEcharts" class="chart-container"></div>
+                                </div>
+                                <div class="separator"></div> <!-- 竖线分隔 -->
+                                <div class="col">
+                                    <div class="info-container">
+                                        <span class="font-weight-bold">系统盘</span>
+                                        <div class="usage-info">
+                                            <span>50GB</span>
+                                            <span>/</span>
+                                            <span>60GB</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <!-- 系统盘使用饼图 -->
+                                    <div id="diskFlowEcharts" class="chart-container"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 up-down-margin">
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="color-dark fw-500 fs-20 mb-0">资源使用情况</p>
+                        </div>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- 与页脚之间留白 -->
+                <div class="col-md-12" style="height: 40px;">
+                </div>
             </div>
+            
         </div>
     </div>
+    
 </template>
 <script>
     export default {
@@ -387,6 +444,112 @@
                 }
                 // 使用刚指定的配置项和数据显示图表
                 myChart.setOption(option)
+            },
+            // 流量使用饼图
+            flowEcharts (){
+                // 找到容器
+                let flowEcharts = document.getElementById('flowEcharts')
+                // 初始化echarts实例
+                let myChart = this.$echarts.init(flowEcharts)
+                // 自定义仪表盘
+                let option = {
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: ['90%', '100%'], // 仪表盘大小
+                            avoidLabelOverlap: false, // 避免标签重叠
+                            hoverAnimation: false, // 鼠标移入变大
+                            label: {
+                                show: true,
+                                position: 'center',
+                                formatter: `{a|10%}\n{b|已使用}`,
+                                rich: {
+                                    a: {
+                                        fontSize: 20,
+                                        lineHeight: 30,
+                                        color: '#00a8ff',
+                                    },
+                                    b: {
+                                        fontSize: 12,
+                                        lineHeight: 20,
+                                        color: '#666',
+                                    },
+                                },
+                            },
+                            data: [
+                                {
+                                    value: 100,
+                                    name: '已使用',
+                                    itemStyle: {
+                                        color: '#00a8ff'
+                                    }
+                                },
+                                {
+                                    value: 1000,
+                                    name: '未使用',
+                                    itemStyle: {
+                                        color: '#e9ecef'
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+                // 使用刚指定的配置项和数据显示图表
+                myChart.setOption(option)
+            },
+            // 系统盘使用饼图
+            diskFlowEcharts (){
+                // 找到容器
+                let diskFlowEcharts = document.getElementById('diskFlowEcharts')
+                // 初始化echarts实例
+                let myChart = this.$echarts.init(diskFlowEcharts)
+                // 自定义仪表盘
+                let option = {
+                    series: [
+                        {
+                            type: 'pie',
+                            radius: ['90%', '100%'], // 仪表盘大小
+                            avoidLabelOverlap: false, // 避免标签重叠
+                            hoverAnimation: false, // 鼠标移入变大
+                            label: {
+                                show: true,
+                                position: 'center',
+                                formatter: `{a|90%}\n{b|已使用}`,
+                                rich: {
+                                    a: {
+                                        fontSize: 20,
+                                        lineHeight: 30,
+                                        color: '#00a8ff',
+                                    },
+                                    b: {
+                                        fontSize: 12,
+                                        lineHeight: 20,
+                                        color: '#666',
+                                    },
+                                },
+                            },
+                            data: [
+                                {
+                                    value: 50,
+                                    name: '已使用',
+                                    itemStyle: {
+                                        color: '#00a8ff'
+                                    }
+                                },
+                                {
+                                    value: 60,
+                                    name: '未使用',
+                                    itemStyle: {
+                                        color: '#e9ecef'
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+                // 使用刚指定的配置项和数据显示图表
+                myChart.setOption(option)
             }
         },
         mounted() {
@@ -394,6 +557,8 @@
             this.memoryEcharts()
             this.diskEcharts()
             this.networkEcharts()
+            this.flowEcharts()
+            this.diskFlowEcharts()
         }
     }
 </script>
@@ -448,6 +613,38 @@
     /* 两个div直接高度距离 */
     .card-body > div > div {
         margin-top: 3px;
+    }
+    /* 卡片上下直接间距 */
+    .up-down-margin > div{
+        margin-top: 20px;
+    }
+    .info-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-right: 20px; /* 调整文字和图表之间的间距 */
+    }
+
+    .usage-info {
+        /* margin-top: 50px; */
+        /* 字体缩小 */
+        font-size: 12px;
+    }
+
+    .separator {
+        width: 1px;
+        background-color: #ccc; /* 竖线的颜色 */
+        height: 100px; /* 控制竖线的高度 */
+        margin: 0 20px; /* 调整竖线与文本之间的间距 */
+    }
+
+    .chart-container {
+        width: 100%;
+        height: 150px;
+        /* 图表向上移动 */
+        margin-top: -20px;
+        /* 图表向左移动 */
+        margin-left: -30px;
     }
 
     
