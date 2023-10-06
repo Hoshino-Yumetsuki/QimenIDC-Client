@@ -27,18 +27,7 @@
                                 <!-- 选择搜索框 -->
                                 <div class="d-flex justify-content-between align-items-center mb-30">
                                     <div class="d-flex align-items-center">
-                                        <div class="d-flex align-items-center mr-30">
-                                            <div class="atbd-select">
-                                                <select name="column" class="form-control form-control-sm" id="column"
-                                                    style="height: 45px;">
-                                                    <option value="all">全部</option>
-                                                    <option value="id">id</option>
-                                                    <option value="appid">appid</option>
-                                                    <option value="appkey">appkey</option>
-                                                    <option value="info">info</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="d-flex align-items-center">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="输入关键字">
@@ -51,19 +40,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <div class="d-flex align-items-center mr-30">
-                                            <span class="mr-10">状态</span>
-                                            <div class="atbd-select">
-                                                <select name="status" class="form-control form-control-sm" id="status"
-                                                    style="height: 45px;">
-                                                    <option value="all">全部</option>
-                                                    <option value="running">运行中</option>
-                                                    <option value="stop">关机</option>
-                                                    <option value="suspend">挂起</option>
-                                                    <option value="ban">封禁</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="d-flex align-items-center">
                                             <span class="mr-10">类型</span>
                                             <div class="atbd-select">
@@ -136,7 +113,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/vm/${item.id}`" class="text-black-50 fw-500">
+                                                        <nuxt-link :to="`/node/edit/${item.id}`" class="text-black-50 fw-500">
                                                             {{ item.id }}
                                                         </nuxt-link>
                                                     </div>
@@ -360,12 +337,12 @@ export default {
                         // 构建新的记录对象
                         const newRecord = {
                             id: record.id,
-                            name: record.name,
-                            area: record.area,
+                            name: record.name || '未知',
+                            area: record.area || '未知',
                             host: record.host,
                             port: record.port,
                             nodeName: record.nodeName,
-                            status: record.status, // 处理status可能为空的情况
+                            status: record.status,
                             controllerStatus: record.controllerStatus,
                         };
 
