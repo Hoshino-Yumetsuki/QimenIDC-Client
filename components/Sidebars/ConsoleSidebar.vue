@@ -110,7 +110,7 @@
                         </a>
                         <ul>
                             <li>
-                                <nuxt-link to="/node/list" exact-active-class="active">
+                                <nuxt-link to="/node/list" no-prefetch exact-active-class="active">
                                     <span>节点列表</span>
                                 </nuxt-link>
                             </li>
