@@ -3,22 +3,24 @@
         <div class="social-dash-wrap">
             <div class="row">
                 <div class="col-lg-12">
+
                     <div class="breadcrumb-main">
-                        <h4 class="text-capitalize breadcrumb-title">IPV4池列表</h4>
+                        <h4 class="text-capitalize breadcrumb-title">IPV6池列表</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
                                 <a href="" class="btn btn-sm btn-primary btn-add">
-                                    <i class="la la-plus"></i>新建IPV4池</a>
+                                    <i class="la la-plus"></i> 新建IPV6池</a>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header color-dark fw-500">
-                            IPV4池列表
+                            IPV6池列表
                         </div>
                         <div class="card-body">
                             <div class="userDatatable global-shadow border-0 bg-white w-100">
@@ -123,7 +125,7 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <!-- <tbody>
                                             <tr v-for="item in tableData" :key="item.id" class="userDatatable-body">
                                                 <td>
                                                     <div class="d-flex">
@@ -139,7 +141,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/ip/poollist/${item.id}`"
+                                                        <nuxt-link :to="`/node/edit/${item.id}`"
                                                             class="text-black-50 fw-500">
                                                             {{ item.id }}
                                                         </nuxt-link>
@@ -193,7 +195,7 @@
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <nuxt-link :to="`/ip/poollist/${item.id}`"
+                                                            <nuxt-link :to="`/node/edit/${item.id}`"
                                                                 class="text-black-50 fw-500">
                                                                 <a href="#" class="view">
                                                                     <feather-icon name="eye" />
@@ -208,7 +210,7 @@
                                                     </ul>
                                                 </td>
                                             </tr>
-                                        </tbody>
+                                        </tbody> -->
                                     </table>
                                 </div>
 
@@ -288,12 +290,12 @@ export default {
     layout: 'Console',
     head() {
         return {
-            title: 'IPV4池列表 - QimenIDC',
+            title: 'IPV6池列表 - QimenIDC',
             meta: [
                 {
                     hid: 'description',
                     name: 'description',
-                    content: 'IPV4池列表 - QimenIDC'
+                    content: 'IPV6池列表 - QimenIDC'
                 }
             ],
             link: [

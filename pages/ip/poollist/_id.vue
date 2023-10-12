@@ -92,13 +92,22 @@
                                                     </div>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">名称</span>
+                                                    <span class="userDatatable-title">节点ID</span>
+                                                </th>
+                                                <th>
+                                                    <span class="userDatatable-title">绑定虚拟机</span>
+                                                </th>
+                                                <th>
+                                                    <span class="userDatatable-title">地址池ID</span>
+                                                </th>
+                                                <th>
+                                                    <span class="userDatatable-title">ip地址</span>
+                                                </th>
+                                                <th>
+                                                    <span class="userDatatable-title">子网掩码</span>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">网关</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">掩码</span>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">DNS1</span>
@@ -107,16 +116,7 @@
                                                     <span class="userDatatable-title">DNS2</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">可用IP</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">已使用</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">不可用</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">所属节点</span>
+                                                    <span class="userDatatable-title">状态</span>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">操作</span>
@@ -139,25 +139,37 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/ip/poollist/${item.id}`"
-                                                            class="text-black-50 fw-500">
-                                                            {{ item.id }}
-                                                        </nuxt-link>
+                                                        {{ item.id }}
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.name }}
+                                                        {{ item.nodeId }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        {{ item.vmId }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        {{ item.poolId }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        {{ item.ip }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        {{ item.subnetMask }}
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div>
                                                         {{ item.gateway }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        /{{ item.mask }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -171,34 +183,23 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.available }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        {{ item.used }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        {{ item.disable }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        {{ item.nodeid }}
+                                                    <div class="status-cell">
+
+                                                        <!-- <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.status + '.svg'" /> -->
+                                                        <!-- 0=开机，1=暂停 吕你来填，我不知道-->
+                                                        <span v-if="item.status === 0" class="text-success">可用</span>
+                                                        <span v-if="item.status === 1" class="text-danger">绑定</span>
+                                                        <span v-if="item.status === 2" class="text-danger">正常</span>
+                                                        <span v-if="item.status === 3" class="text-danger">暂停</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <nuxt-link :to="`/ip/poollist/${item.id}`"
-                                                                class="text-black-50 fw-500">
-                                                                <a href="#" class="view">
-                                                                    <feather-icon name="eye" />
-                                                                </a>
-                                                            </nuxt-link>
+                                                            <a href="#" class="view">
+                                                                <feather-icon name="eye" />
+                                                            </a>
                                                         </li>
                                                         <li>
                                                             <a href="#" class="remove" @click='del(item.id)'>
@@ -354,7 +355,7 @@ export default {
     methods: {
         fetchData() {
             // 使用异步获取数据
-            const url = `/api/selectIpPoolList?page=${this.currentPage}&size=${this.pageSize}`;
+            const url = `/api/selectIpListByPoolId?page=${this.currentPage}&size=${this.pageSize}&poolid=7`;
             this.$axios.get(url).then(res => {
                 if (res.data.code === 20000) {
                     const data = res.data.data;
@@ -364,15 +365,15 @@ export default {
                         // 构建新的记录对象
                         const newRecord = {
                             id: record.id,
-                            name: record.name,
+                            nodeId: record.nodeId,
+                            vmId: record.vmId,
+                            poolId: record.poolId,
+                            ip: record.ip,
+                            subnetMask: record.subnetMask,
                             gateway: record.gateway,
-                            mask: record.mask,
                             dns1: record.dns1 || ' ',
                             dns2: record.dns2 || ' ',
-                            available: record.available,
-                            used: record.used,
-                            disable: record.disable,
-                            nodeid: record.nodeid,
+                            status: record.status,
                         };
 
                         // 添加到新的数组中
