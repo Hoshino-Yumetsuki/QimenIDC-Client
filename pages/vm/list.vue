@@ -507,25 +507,39 @@
                         records.forEach(record => {
                                 const vmhost = record.vmhost;
                                 const os = record.os;
-                                const current = record.current.data || {}; // 处理current可能为空的情况
-
-                                // 计算磁盘IO的读写总量
-                                const blockstat = current.blockstat || {}; // 处理blockstat可能为空的情况
+                                const current = record.current;
+                                if (current != null) {
+                                    current = record.current.data || {}; // 处理current可能为空的情况
+                                }
                                 let diskIOReadTotal = 0;
                                 let diskIOWriteTotal = 0;
-                                for (const device in blockstat) {
-                                    diskIOReadTotal += blockstat[device].rd_bytes || 0;
-                                    diskIOWriteTotal += blockstat[device].wr_bytes || 0;
-                                }
 
-                                // 计算实时带宽的入口和出口总量
-                                const nics = current.nics || {}; // 处理nics可能为空的情况
                                 let netInTotal = 0;
                                 let netOutTotal = 0;
-                                for (const nic in nics) {
-                                    netInTotal += nics[nic].netin || 0;
-                                    netOutTotal += nics[nic].netout || 0;
+
+                                let cpuUsage = 0;
+                                let memoryUsage = 0;
+                                if (current != null) {
+                                    // 计算磁盘IO的读写总量
+                                    const blockstat = current.blockstat || {}; // 处理blockstat可能为空的情况
+                                    
+                                    for (const device in blockstat) {
+                                        diskIOReadTotal += blockstat[device].rd_bytes || 0;
+                                        diskIOWriteTotal += blockstat[device].wr_bytes || 0;
+                                    }
+                                    // 计算实时带宽的入口和出口总量
+                                    const nics = current.nics || {}; // 处理nics可能为空的情况
+                                    
+                                    for (const nic in nics) {
+                                        netInTotal += nics[nic].netin || 0;
+                                        netOutTotal += nics[nic].netout || 0;
+                                    }
+
+                                    cpuUsage = `${vmhost.cores}C/${vmhost.memory}M`;
+                                    memoryUsage = current.mem ? (current.mem / 1024 / 1024 / 10).toFixed(2) : 0;
                                 }
+                                
+                                
                                 let ip = `none`;
                                 // 获取IP为1的地址
                                 const ipConfig = vmhost.ipConfig['1'];
@@ -550,8 +564,8 @@
                                     // 组合成文字
                                     cpuMemory: `${vmhost.cores}C/${vmhost.memory}M`,
                                     // cpuUsage: current.cpu ? current.cpu * 100 : 0, 
-                                    cpuUsage: current.cpu ? (current.cpu * 100).toFixed(2) : 0,
-                                    memoryUsage: current.mem ? (current.mem / 1024 / 1024 / 10).toFixed(2) : 0,
+                                    cpuUsage: cpuUsage,
+                                    memoryUsage: memoryUsage,
                                     netIn : netInTotal,
                                     netOut: netOutTotal,
                                     diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB`,
