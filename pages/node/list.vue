@@ -20,14 +20,14 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header color-dark fw-500">
-                            API列表
+                            节点列表
                         </div>
                         <div class="card-body">
                             <div class="userDatatable global-shadow border-0 bg-white w-100">
                                 <!-- 选择搜索框 -->
                                 <div class="d-flex justify-content-between align-items-center mb-30">
                                     <div class="d-flex align-items-center">
-                                        
+
                                         <div class="d-flex align-items-center">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="输入关键字">
@@ -40,7 +40,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        
+
                                         <div class="d-flex align-items-center">
                                             <span class="mr-10">类型</span>
                                             <div class="atbd-select">
@@ -91,7 +91,7 @@
                                                 <th>
                                                     <span class="userDatatable-title">被控状态</span>
                                                 </th>
-                                                
+
                                                 <th>
                                                     <span class="userDatatable-title">操作</span>
                                                 </th>
@@ -113,7 +113,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/node/edit/${item.id}`" class="text-black-50 fw-500">
+                                                        <nuxt-link :to="`/node/edit/${item.id}`"
+                                                            class="text-black-50 fw-500">
                                                             {{ item.id }}
                                                         </nuxt-link>
                                                     </div>
@@ -261,7 +262,7 @@ export default {
     layout: 'Console',
     head() {
         return {
-            title: 'API管理 - QimenIDC',
+            title: '节点列表 - QimenIDC',
             meta: [
                 {
                     hid: 'description',
