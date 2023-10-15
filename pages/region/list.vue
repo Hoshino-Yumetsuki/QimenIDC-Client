@@ -23,7 +23,7 @@
                         <div class="faqs-wrapper">
                             <div class="faqs-wrapper-tab p-15 pt-25 pb-30">
                                 <div class="nav flex-column text-left mb-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                    <!-- <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
                                         <span class="dot bg-primary"></span>中国</a>
                                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                         <span class="dot bg-warning"></span>美国</a>
@@ -34,7 +34,10 @@
                                     <a class="nav-link" id="v-pills-notification-tab" data-toggle="pill" href="#v-pills-notification" role="tab" aria-controls="v-pills-notification" aria-selected="false">
                                         <span class="dot bg-info"></span>俄罗斯</a>
                                     <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
-                                        <span class="dot bg-danger"></span>火星</a>
+                                        <span class="dot bg-danger"></span>火星</a> -->
+
+                                    <a v-for="item in tableData" :key="item.id" class="nav-link" :id="`v-polls-${item.id}-tab`" data-toggle="pill" :href="`#v-polls-${item.id}-tab`" role="tab" :aria-controls="`v-polls-${item.id}-tab`" aria-selected="false">
+                                        <span class="dot bg-danger"></span>{{item.name}}</a>
                                 </div>
                             </div>
                         </div>
@@ -164,5 +167,114 @@ export default {
             ]
         }
     },
+    data() {
+        return {
+            tableData: [], // 表格数据
+            total: 2, // 总条数
+            currentPage: 1, // 当前页
+            pageSize: 20, // 每页条数
+            totalPages: 10, // 总页数
+            timer: null // 定时器
+        }
+    },
+    // 计算属性
+    computed: {
+        paginationText() {
+            return `共 ${this.total} 条数据`;
+        },
+        visiblePages() {
+            const currentPage = this.currentPage;
+            const totalPages = this.totalPages;
+
+
+            const delta = 2;
+            let range = [];
+            for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
+                range.push(i);
+            }
+            if (currentPage - delta > 2) {
+                range.unshift('...');
+            }
+            if (currentPage + delta < totalPages - 1) {
+                range.push('...');
+            }
+
+            range.unshift(1);
+            range.push(totalPages);
+
+            // 判断最后一位是否为0，如果是则删除
+            if (range[range.length - 1] === 0) {
+                range.pop();
+            }
+            // 判断第一位是否为1，如果是则删除
+            if (range[0] === 1) {
+                range.shift();
+            }
+            return range;
+        },
+
+    },
+    methods: {
+        fetchData() {
+            // 使用异步获取数据
+            const url = `/api/getAreaList?page=${this.currentPage}&limit=${this.pageSize}`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    const records = data.records;
+                    const newTableData = [];
+                    records.forEach(record => {
+                        // 构建新的记录对象
+                        const newRecord = {
+                            id: record.id,
+                            name: record.name,
+                            parent: record.parent,
+                        };
+
+                        // 添加到新的数组中
+                        newTableData.push(newRecord);
+                    });
+                    this.tableData = newTableData;
+                    this.total = data.total;
+                    this.currentPage = data.current;
+                    this.totalPages = data.pages;
+                }
+            });
+
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+                this.fetchData();
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+                this.fetchData();
+            }
+        },
+        changePage(pageNumber) {
+            if (pageNumber !== this.currentPage) {
+                this.currentPage = pageNumber;
+                this.fetchData();
+            }
+        },
+        changePageSize() {
+            this.currentPage = 1;
+            this.fetchData();
+        }
+    },
+    mounted() {
+        this.fetchData();
+        // 定时刷新数据
+        this.timer = setInterval(() => {
+            this.fetchData();
+        }, 5000);
+    },
+    // 组件销毁时清除定时器
+    beforeDestroy() {
+        clearInterval(this.timer);
+    }
 }
 </script>
