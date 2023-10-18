@@ -8,7 +8,7 @@
                         <h4 class="text-capitalize breadcrumb-title">API管理</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="#" class="btn btn-sm btn-primary btn-add" @click="addApi()">
                                     <i class="la la-plus"></i> 新建API</a>
                             </div>
                         </div>
@@ -172,7 +172,6 @@
                                                                 <feather-icon name="pause" />
                                                             </a>
                                                             <a href="#" class="edit" v-if="item.status === 1"
-                                                                data-toggle="modal" data-target="#modal-info-success"
                                                                 @click="ClickPlay(item.id)">
                                                                 <feather-icon name="play" />
                                                             </a>
@@ -260,31 +259,7 @@
                 </div>
             </div>
         </div>
-        <!-- ends: .modal-info -->
-
-        <div class="modal-info-success modal fade show" id="modal-info-success" tabindex="-1" role="dialog"
-            aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-info" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="modal-info-body d-flex">
-                            <div class="modal-info-icon success">
-                                <span data-feather="check-circle"></span>
-                            </div>
-                            <div class="modal-info-text">
-                                <p>恢复API成功</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">好的</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ends: .modal-info-success -->
         <!-- ends: .modal-info-warning -->
-
         <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
             aria-hidden="true">
             <div class="modal-dialog modal-sm modal-info" role="document">
@@ -454,13 +429,12 @@ export default {
                 return 'progress-bar bg-danger';
             }
         },
-        UpdateData(apimethods, id) {
+        UpdateData(id) {
             // 使用异步更新数据
             const url = `/api/disableApi/${id}`;
             this.$axios.post(url).then(res => {
                 if (res.data.code === 20000) {
-                    // 显示成功提示框
-                    $('#successModal').modal('show');
+                    //成功
                 }
             });
         },
@@ -469,6 +443,24 @@ export default {
         },
         ClickPlay(id) { //执行恢复操作
 
+        },
+        addApi() {
+            const url = '/api/insertApiKey';
+            const data = {
+                info: '一句话'
+            };
+
+            this.$axios.post(url, data)
+                .then(res => {
+                    if (res.data.code === 20000) {
+                        // 在这里可以显示成功提示框
+                        // this.$nuxt._refresh();
+                    }
+                })
+                .catch(error => {
+                    // 在这里处理请求失败的情况
+                    console.error('API请求失败', error);
+                });
         },
         ClickRemove(removeId) { //执行删除操作
             const url = `/api/deleteApi?id=${removeId}`;
