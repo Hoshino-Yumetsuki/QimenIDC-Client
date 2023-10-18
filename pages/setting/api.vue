@@ -167,15 +167,20 @@
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <a href="#" class="view" v-if="item.status === 0">
+                                                            <a class="view" v-if="item.status === 0"
+                                                                @click="ClickPause(item.id)">
                                                                 <feather-icon name="pause" />
                                                             </a>
-                                                            <a href="#" class="edit" v-if="item.status === 1">
+                                                            <a href="#" class="edit" v-if="item.status === 1"
+                                                                data-toggle="modal" data-target="#modal-info-success"
+                                                                @click="ClickPlay(item.id)">
                                                                 <feather-icon name="play" />
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="remove">
+                                                            <a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-confirmed"
+                                                                @click="setRemoveId(item.id)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -255,6 +260,56 @@
                 </div>
             </div>
         </div>
+        <!-- ends: .modal-info -->
+
+        <div class="modal-info-success modal fade show" id="modal-info-success" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon success">
+                                <span data-feather="check-circle"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <p>恢复API成功</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">好的</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-success -->
+        <!-- ends: .modal-info-warning -->
+
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认删除?</h6>
+                                <p>确认删除这个API吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickRemove(removeId)">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-confirmed -->
     </div>
 </template>
 <script>
@@ -285,7 +340,8 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            removeId: null //删除的Id 确认使用
         }
     },
     // 计算属性
@@ -397,7 +453,38 @@ export default {
             } else {
                 return 'progress-bar bg-danger';
             }
-        }
+        },
+        UpdateData(apimethods, id) {
+            // 使用异步更新数据
+            const url = `/api/disableApi/${id}`;
+            this.$axios.post(url).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    $('#successModal').modal('show');
+                }
+            });
+        },
+        ClickPause(id) { //执行暂停操作
+            this.UpdateData(id);
+        },
+        ClickPlay(id) { //执行恢复操作
+
+        },
+        ClickRemove(removeId) { //执行删除操作
+            const url = `/api/deleteApi?id=${removeId}`;
+            this.$axios.post(url).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    this.$nuxt._refresh();
+                }
+            });
+        },
+        ClickCancel() {//取消
+            this.removeId = null;
+        },
+        setRemoveId(id) { //设置删除的ID
+            this.removeId = id;
+        },
     },
     mounted() {
         this.fetchData();
