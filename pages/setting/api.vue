@@ -429,9 +429,9 @@ export default {
                 return 'progress-bar bg-danger';
             }
         },
-        UpdateData(id) {
+        UpdateData(apiPath, id) {
             // 使用异步更新数据
-            const url = `/api/disableApi/${id}`;
+            const url = `/api/${apiPath}/${id}`;
             this.$axios.post(url).then(res => {
                 if (res.data.code === 20000) {
                     //成功
@@ -439,10 +439,10 @@ export default {
             });
         },
         ClickPause(id) { //执行暂停操作
-            this.UpdateData(id);
+            this.UpdateData('disableApi', id);
         },
         ClickPlay(id) { //执行恢复操作
-
+            this.UpdateData('enableApi', id);
         },
         addApi() {
             const url = '/api/insertApiKey';
