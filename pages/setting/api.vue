@@ -8,7 +8,8 @@
                         <h4 class="text-capitalize breadcrumb-title">API管理</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="#" class="btn btn-sm btn-primary btn-add" @click="addApi()">
+                                <a href="#" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                    data-target="#modal-input-notes">
                                     <i class="la la-plus"></i> 新建API</a>
                             </div>
                         </div>
@@ -32,10 +33,6 @@
                                                 <select name="column" class="form-control form-control-sm" id="column"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="id">id</option>
-                                                    <option value="appid">appid</option>
-                                                    <option value="appkey">appkey</option>
-                                                    <option value="info">info</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -57,10 +54,6 @@
                                                 <select name="status" class="form-control form-control-sm" id="status"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="running">运行中</option>
-                                                    <option value="stop">关机</option>
-                                                    <option value="suspend">挂起</option>
-                                                    <option value="ban">封禁</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -70,9 +63,6 @@
                                                 <select name="type" class="form-control form-control-sm" id="type"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="pve">Proxmox</option>
-                                                    <option value="vmware">VMware</option>
-                                                    <option value="openstack">OpenStack</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -285,9 +275,36 @@
             </div>
         </div>
         <!-- ends: .modal-info-confirmed -->
+        <!-- 新建API 填写备注 Start -->
+        <div class="modal-info-confirmed modal fade show" id="modal-input-notes" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>新建API</h6><br>
+                                <input type="text" class="form-control form-control-default" id="ApiNotes"
+                                    placeholder="请输入API备注">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal" @click="addApi()">创建</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 新建API 填写备注 Ends -->
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -434,7 +451,10 @@ export default {
             const url = `/api/${apiPath}/${id}`;
             this.$axios.post(url).then(res => {
                 if (res.data.code === 20000) {
-                    //成功
+                    notification.success({
+                        message: '操作成功',
+                        duration: 2
+                    });
                 }
             });
         },
@@ -445,9 +465,12 @@ export default {
             this.UpdateData('enableApi', id);
         },
         addApi() {
+            // 获取输入框的值
+            const apiNotes = document.getElementById('ApiNotes').value;
+
             const url = '/api/insertApiKey';
             const data = {
-                info: '一句话'
+                info: apiNotes
             };
 
             this.$axios.post(url, data)
