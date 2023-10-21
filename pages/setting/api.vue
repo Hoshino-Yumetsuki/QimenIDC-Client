@@ -365,10 +365,6 @@ export default {
             if (range[range.length - 1] === 0) {
                 range.pop();
             }
-            // 判断第一位是否为1，如果是则删除
-            if (range[0] === 1) {
-                range.shift();
-            }
             return range;
         },
 
@@ -446,51 +442,54 @@ export default {
                 return 'progress-bar bg-danger';
             }
         },
-        UpdateData(apiPath, id) {
-            // 使用异步更新数据
+        UpdateData(apiPath, id, msg) {
+            // 更新数据
             const url = `/api/${apiPath}/${id}`;
             this.$axios.post(url).then(res => {
                 if (res.data.code === 20000) {
                     notification.success({
-                        message: '操作成功',
-                        duration: 2
+                        message: msg,
+                        duration: 2,
+                        placement: 'bottomRight'
                     });
                 }
             });
         },
         ClickPause(id) { //执行暂停操作
-            this.UpdateData('disableApi', id);
+            this.UpdateData('disableApi', id, '暂停成功');
         },
         ClickPlay(id) { //执行恢复操作
-            this.UpdateData('enableApi', id);
+            this.UpdateData('enableApi', id, '开启成功');
         },
         addApi() {
             // 获取输入框的值
             const apiNotes = document.getElementById('ApiNotes').value;
-
+            document.getElementById('ApiNotes').value = '';//获取之后清空备注
             const url = '/api/insertApiKey';
             const data = {
                 info: apiNotes
             };
 
-            this.$axios.post(url, data)
-                .then(res => {
-                    if (res.data.code === 20000) {
-                        // 在这里可以显示成功提示框
-                        // this.$nuxt._refresh();
-                    }
-                })
-                .catch(error => {
-                    // 在这里处理请求失败的情况
-                    console.error('API请求失败', error);
-                });
+            this.$axios.post(url, data).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '添加API成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
         },
         ClickRemove(removeId) { //执行删除操作
             const url = `/api/deleteApi?id=${removeId}`;
             this.$axios.post(url).then(res => {
                 if (res.data.code === 20000) {
                     // 显示成功提示框
-                    this.$nuxt._refresh();
+                    notification.success({
+                        message: '删除成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
                 }
             });
         },
