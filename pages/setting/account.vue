@@ -8,7 +8,7 @@
                         <h4 class="text-capitalize breadcrumb-title">账号列表</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="#" class="btn btn-sm btn-primary btn-add" @click="showModal">
                                     <i class="la la-plus"></i> 添加新账号</a>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                                 <!-- 选择搜索框 -->
                                 <div class="d-flex justify-content-between align-items-center mb-30">
                                     <div class="d-flex align-items-center">
-                                        
+
                                         <div class="d-flex align-items-center">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="输入关键字">
@@ -40,16 +40,13 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        
+
                                         <div class="d-flex align-items-center">
                                             <span class="mr-10">类型</span>
                                             <div class="atbd-select">
                                                 <select name="type" class="form-control form-control-sm" id="type"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="pve">Proxmox</option>
-                                                    <option value="vmware">VMware</option>
-                                                    <option value="openstack">OpenStack</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -82,7 +79,7 @@
                                                 <th>
                                                     <span class="userDatatable-title">邮箱</span>
                                                 </th>
-                                            
+
                                                 <th>
                                                     <span class="userDatatable-title">操作</span>
                                                 </th>
@@ -104,7 +101,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/node/edit/${item.id}`" class="text-black-50 fw-500">
+                                                        <nuxt-link :to="`/setting/accountedit/${item.id}`"
+                                                            class="text-black-50 fw-500">
                                                             {{ item.id }}
                                                         </nuxt-link>
                                                     </div>
@@ -131,13 +129,9 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                                        <li>
-                                                            <a href="#" class="view" v-if="item.status === 0">
-                                                                <feather-icon name="pause" />
-                                                            </a>
-                                                            <a href="#" class="edit" v-if="item.status === 1">
-                                                                <feather-icon name="play" />
-                                                            </a>
+                                                        <li><nuxt-link :to="`/setting/accountedit/${item.id}`" class="edit">
+                                                                <feather-icon name="edit" />
+                                                            </nuxt-link>
                                                         </li>
                                                         <li>
                                                             <a href="#" class="remove">
@@ -220,9 +214,33 @@
                 </div>
             </div>
         </div>
+        <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="handleCancel" @ok="handleOk">
+            <p>请输入以下信息：</p><br>
+            <a-form :form="form">
+                <a-form-item label="用户名" name="username" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.username" />
+                </a-form-item>
+                <a-form-item label="密码" name="password" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.password" :type="'password'" />
+                </a-form-item>
+                <a-form-item label="确认密码" name="confirmPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.confirmPassword" :type="'password'" />
+                </a-form-item>
+                <a-form-item label="姓名" name="name" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.name" />
+                </a-form-item>
+                <a-form-item label="电话" name="phone" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.phone" />
+                </a-form-item>
+                <a-form-item label="邮箱" name="email" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.email" />
+                </a-form-item>
+            </a-form>
+        </a-modal>
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -250,7 +268,17 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            visible: false,
+            formData: {
+                username: '',
+                password: '',
+                confirmPassword: '',
+                name: '',
+                phone: '',
+                email: '',
+            },
+            form: null,
         }
     },
     // 计算属性
@@ -342,7 +370,51 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
-        }
+        },
+        showModal() {
+            this.visible = true;
+        },
+        handleOk() {
+            // 处理提交表单的逻辑
+            if (this.formData.phone !== '' && this.formData.password !== '' && this.formData.email !== '' && this.formData.username !== '' && this.formData.name !== '') {
+                if (this.formData.password === this.formData.confirmPassword) {
+                    const url = '/api/registerDo';
+                    const data = {
+                        phone: this.formData.phone,
+                        password: this.formData.password,
+                        email: this.formData.email,
+                        username: this.formData.username,
+                        name: this.formData.name
+                    };
+                    this.$axios.post(url, data).then(res => {
+                        if (res.data.code === 20000) {
+                            notification.success({
+                                message: '添加管理员账号成功!',
+                                duration: 2,
+                                placement: 'bottomRight'
+                            });
+                        }
+                    })
+                    this.visible = false;
+                }
+                else {
+                    notification.error({
+                        message: '两次输入的密码不正确!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            } else {
+                notification.error({
+                    message: '请确保各项都不为空!',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
+        },
+        handleCancel() {
+            this.visible = false;
+        },
     },
     mounted() {
         this.fetchData();

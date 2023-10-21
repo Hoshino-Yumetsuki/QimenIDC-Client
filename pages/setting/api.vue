@@ -119,9 +119,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/vm/${item.id}`" class="text-black-50 fw-500">
-                                                            {{ item.id }}
-                                                        </nuxt-link>
+                                                        {{ item.id }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -364,6 +362,10 @@ export default {
             // 判断最后一位是否为0，如果是则删除
             if (range[range.length - 1] === 0) {
                 range.pop();
+            }
+            // 判断第一位是否为1，如果是则删除
+            if (range[0] === 1) {
+                range.shift();
             }
             return range;
         },
