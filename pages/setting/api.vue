@@ -484,7 +484,7 @@ export default {
         },
         ClickRemove(removeId) { //执行删除操作
             const url = `/api/deleteApi?id=${removeId}`;
-            this.$axios.post(url).then(res => {
+            this.$axios.delete(url).then(res => {
                 if (res.data.code === 20000) {
                     // 显示成功提示框
                     notification.success({

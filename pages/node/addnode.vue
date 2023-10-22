@@ -9,10 +9,10 @@
                             <div class="edit-profile__body">
                                 <form>
                                     <div class="form-group mb-25">
-                                        <label for="id">名称</label>
+                                        <label for="id">别称</label>
 
                                         <input type="text" v-model="nodeData.name" class="form-control" id="id"
-                                            placeholder="名称(选填)">
+                                            placeholder="别称(选填)">
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">{与同集群非同节点区别开}</small>
                                     </div>

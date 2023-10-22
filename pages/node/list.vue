@@ -166,16 +166,16 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                                        <li>
-                                                            <a href="#" class="view" v-if="item.status === 0">
-                                                                <feather-icon name="pause" />
-                                                            </a>
-                                                            <a href="#" class="edit" v-if="item.status === 1">
-                                                                <feather-icon name="play" />
-                                                            </a>
+                                                        <li><nuxt-link
+                                                                :to="{ name: 'node-edit-id', params: { id: item.id, data: item } }"
+                                                                class="edit">
+                                                                <feather-icon name="edit" />
+                                                            </nuxt-link>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="remove">
+                                                            <a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-confirmed"
+                                                                @click="setRemoveId(item.id)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -255,9 +255,36 @@
                 </div>
             </div>
         </div>
+        <!-- ends: .modal-info-warning -->
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认删除?</h6>
+                                <p>确认删除这个API吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickRemove(removeId)">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-confirmed -->
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -285,7 +312,8 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            removeId: null //删除的Id 确认使用
         }
     },
     // 计算属性
@@ -342,8 +370,14 @@ export default {
                             area: record.area || '未知',
                             host: record.host,
                             port: record.port,
+                            username: record.username,
+                            password: record.password,
+                            realm: record.realm,
                             nodeName: record.nodeName,
                             status: record.status,
+                            sshPort: record.sshPort,
+                            sshUsername: record.sshUsername,
+                            sshPassword: record.sshPassword,
                             controllerStatus: record.controllerStatus,
                         };
 
@@ -379,7 +413,32 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
-        }
+        },
+        ClickRemove(removeId) { //执行删除操作
+            const url = `/api/deleteNodeById?nodeId=${removeId}`;
+
+            this.$axios.delete(url).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '删除节点成功!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                } else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
+        },
+        ClickCancel() {//取消
+            this.removeId = null;
+        },
+        setRemoveId(id) { //设置删除的ID
+            this.removeId = id;
+        },
     },
     mounted() {
         this.fetchData();
