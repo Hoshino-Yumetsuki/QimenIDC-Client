@@ -101,10 +101,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/setting/accountedit/${item.id}`"
-                                                            class="text-black-50 fw-500">
+                                                        <a href="#" style="color:black;" @click="showChangeModal(item.id)">
                                                             {{ item.id }}
-                                                        </nuxt-link>
+                                                        </a>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -129,13 +128,8 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                                        <li><nuxt-link :to="`/setting/accountedit/${item.id}`" class="edit">
+                                                        <li><a href="#" class="edit" @click="showChangeModal(item.id)">
                                                                 <feather-icon name="edit" />
-                                                            </nuxt-link>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="remove">
-                                                                <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -214,17 +208,46 @@
                 </div>
             </div>
         </div>
-        <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="handleCancel" @ok="handleOk">
+        <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickOk">
             <p>请输入以下信息：</p><br>
             <a-form :form="form">
                 <a-form-item label="用户名" name="username" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.username" />
                 </a-form-item>
-                <a-form-item label="密码" name="password" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                    <a-input v-model="formData.password" :type="'password'" />
+                <a-form-item label="密码" :rules="[{ required: true, message: 'Please input your password!' }]"
+                    name="password" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input-password v-model="formData.password" :type="'password'"></a-input-password>
                 </a-form-item>
-                <a-form-item label="确认密码" name="confirmPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                    <a-input v-model="formData.confirmPassword" :type="'password'" />
+                <a-form-item label="确认密码" :rules="[{ required: true, message: 'Please input your password!' }]"
+                    name="confirmPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input-password v-model="formData.confirmPassword" :type="'password'"></a-input-password>
+                </a-form-item>
+                <a-form-item label="姓名" name="name" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.name" />
+                </a-form-item>
+                <a-form-item label="电话" name="phone" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.phone" />
+                </a-form-item>
+                <a-form-item label="邮箱" name="email" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.email" />
+                </a-form-item>
+            </a-form>
+        </a-modal>
+        <a-modal :visible="changeVisible" :ok-text="'修改'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickChange">
+            <p>修改管理员账号：</p><br>
+            <a-form :form="form">
+                <a-form-item label="用户名" name="username" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.username" />
+                </a-form-item>
+                <a-form-item label="密码" :rules="[{ required: true, message: 'Please input your password!' }]"
+                    name="password" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input-password v-model="formData.password" :type="'password'"
+                        :placeholder="'密码留空则表示不修改'"></a-input-password>
+                </a-form-item>
+                <a-form-item label="确认密码" :rules="[{ required: true, message: 'Please input your password!' }]"
+                    name="confirmPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input-password v-model="formData.confirmPassword" :type="'password'"
+                        :placeholder="'密码留空则表示不修改'"></a-input-password>
                 </a-form-item>
                 <a-form-item label="姓名" name="name" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.name" />
@@ -270,7 +293,9 @@ export default {
             totalPages: 10, // 总页数
             timer: null, // 定时器
             visible: false,
+            changeVisible: false,
             formData: {
+                id: '',
                 username: '',
                 password: '',
                 confirmPassword: '',
@@ -367,6 +392,14 @@ export default {
                 this.fetchData();
             }
         },
+        showChangeModal(id) {
+            this.formData.username = this.tableData[id - 2].username;
+            this.formData.name = this.tableData[id - 2].name;
+            this.formData.phone = this.tableData[id - 2].phone;
+            this.formData.email = this.tableData[id - 2].email;
+            this.formData.id = id;
+            this.changeVisible = true;
+        },
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
@@ -374,8 +407,8 @@ export default {
         showModal() {
             this.visible = true;
         },
-        handleOk() {
-            // 处理提交表单的逻辑
+        clickOk() {
+            // 创建管理员确认
             if (this.formData.phone !== '' && this.formData.password !== '' && this.formData.email !== '' && this.formData.username !== '' && this.formData.name !== '') {
                 if (this.formData.password === this.formData.confirmPassword) {
                     const url = '/api/registerDo';
@@ -399,7 +432,7 @@ export default {
                 }
                 else {
                     notification.error({
-                        message: '两次输入的密码不正确!',
+                        message: '两次输入的密码不一样!',
                         duration: 2,
                         placement: 'bottomRight'
                     });
@@ -412,8 +445,56 @@ export default {
                 });
             }
         },
-        handleCancel() {
+        clickChange() {
+            // 修改管理员确认
+            if (this.formData.phone !== '' && this.formData.email !== '' && this.formData.username !== '' && this.formData.name !== '') {
+                if (this.formData.password === this.formData.confirmPassword) {
+                    //if (this.formData.password == '') this.formData.password = null; //防止等于''时不是值null
+                    const url = '/api/updateSysuser';
+                    const data = {
+                        id: this.formData.id,
+                        phone: this.formData.phone,
+                        password: this.formData.password,
+                        email: this.formData.email,
+                        username: this.formData.username,
+                        name: this.formData.name
+                    };
+                    this.$axios.post(url, data).then(res => {
+                        if (res.data.code === 20000) {
+                            notification.success({
+                                message: '修改管理员账号成功!',
+                                duration: 2,
+                                placement: 'bottomRight'
+                            });
+                        }
+                        else {
+                            notification.error({
+                                message: res.data.message,
+                                duration: 2,
+                                placement: 'bottomRight'
+                            });
+                        }
+                    })
+                    this.changeVisible = false;
+                }
+                else {
+                    notification.error({
+                        message: '两次输入的密码不一样!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            } else {
+                notification.error({
+                    message: '请确保各项都不为空!',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
+        },
+        clickCancel() {
             this.visible = false;
+            this.changeVisible = false;
         },
     },
     mounted() {
