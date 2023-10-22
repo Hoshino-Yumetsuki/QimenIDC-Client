@@ -8,7 +8,7 @@
                         <h4 class="text-capitalize breadcrumb-title">节点列表</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="/node/addnode" class="btn btn-sm btn-primary btn-add">
                                     <i class="la la-plus"></i> 添加节点</a>
                             </div>
                         </div>
