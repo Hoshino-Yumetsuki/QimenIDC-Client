@@ -5,7 +5,7 @@
 
                 <div class="breadcrumb-main">
                     <h4 class="text-capitalize breadcrumb-title">地区管理</h4>
-                    
+
                 </div>
 
             </div>
@@ -16,13 +16,15 @@
                 <div class="card shadow-lg">
                     <div class="card-body p-0">
                         <div class="d-flex align-content-center px-15">
-                            <button class="btn btn-success btn-default btn-squared text-capitalize px-30"><i class="la la-plus"></i>添加新地区
-                                </button>
+                            <button class="btn btn-success btn-default btn-squared text-capitalize px-30"><i
+                                    class="la la-plus"></i>添加新地区
+                            </button>
                         </div>
-                        
+
                         <div class="faqs-wrapper">
                             <div class="faqs-wrapper-tab p-15 pt-25 pb-30">
-                                <div class="nav flex-column text-left mb-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <div class="nav flex-column text-left mb-2" id="v-pills-tab" role="tablist"
+                                    aria-orientation="vertical">
                                     <!-- <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
                                         <span class="dot bg-primary"></span>中国</a>
                                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
@@ -36,8 +38,10 @@
                                     <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
                                         <span class="dot bg-danger"></span>火星</a> -->
 
-                                    <a v-for="item in tableData" :key="item.id" class="nav-link" :id="`v-polls-${item.id}-tab`" data-toggle="pill" :href="`#v-polls-${item.id}-tab`" role="tab" :aria-controls="`v-polls-${item.id}-tab`" aria-selected="false">
-                                        <span class="dot bg-danger"></span>{{item.name}}</a>
+                                    <a v-for="item in tableData" :key="item.id" class="nav-link"
+                                        :id="`v-polls-${item.id}-tab`" data-toggle="pill" :href="`#v-polls-${item.id}-tab`"
+                                        role="tab" :aria-controls="`v-polls-${item.id}-tab`" aria-selected="false">
+                                        <span class="dot bg-danger"></span>{{ item.name }}</a>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +51,8 @@
             <div class="col-xl-9 col-sm-7">
                 <div class="mb-30">
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel"
+                            aria-labelledby="v-pills-home-tab">
                             <!-- Edit Profile -->
 
                             <div class="card h-100 shadow-lg pb-md-50 pb-30 mb-md-50 mb-30">
@@ -61,14 +66,18 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading" role="tab" id="headingOne">
                                                     <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        <a data-toggle="collapse" data-parent="#accordion"
+                                                            href="#collapseOne" aria-expanded="true"
+                                                            aria-controls="collapseOne">
                                                             北京电信 - A区
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="collapseOne" class="panel-collapse collapse in show" role="tabpanel" aria-labelledby="headingOne">
+                                                <div id="collapseOne" class="panel-collapse collapse in show"
+                                                    role="tabpanel" aria-labelledby="headingOne">
                                                     <div class="panel-body">
-                                                        <p class="mb-sm-35 mb-20">Many support queries and technical questions will
+                                                        <p class="mb-sm-35 mb-20">Many support queries and technical
+                                                            questions will
                                                             already be answered in supporting documentation such as FAQ's
                                                             and comments from previous buyers. Anim pariatur cliche
                                                             reprehenderit, enim eiusmod high life accusamus terry richardson
@@ -79,10 +88,14 @@
                                                         <span class="fs-14 fw-500 color-dark">Was this article
                                                             helpful?</span>
                                                         <div class="button-group d-flex mt-2">
-                                                            <button class="btn btn-default btn-squared btn-outline-success px-15 "><span data-feather="meh"></span>
+                                                            <button
+                                                                class="btn btn-default btn-squared btn-outline-success px-15 "><span
+                                                                    data-feather="meh"></span>
                                                                 Yes
                                                             </button>
-                                                            <button class="btn btn-default btn-squared btn-outline-warning px-15 "><span data-feather="frown"></span>
+                                                            <button
+                                                                class="btn btn-default btn-squared btn-outline-warning px-15 "><span
+                                                                    data-feather="frown"></span>
                                                                 No
                                                             </button>
                                                         </div>
@@ -93,15 +106,19 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-heading" role="tab" id="headingTwo">
                                                     <h4 class="panel-title">
-                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                                                            href="#collapseTwo" aria-expanded="false"
+                                                            aria-controls="collapseTwo">
                                                             北京电信 - B区
                                                         </a>
                                                     </h4>
 
                                                 </div>
-                                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel"
+                                                    aria-labelledby="headingTwo">
                                                     <div class="panel-body">
-                                                        <p class="mb-sm-35 mb-20">Many support queries and technical questions will
+                                                        <p class="mb-sm-35 mb-20">Many support queries and technical
+                                                            questions will
                                                             already be answered in supporting documentation such as FAQ's
                                                             and comments from previous buyers. Anim pariatur cliche
                                                             reprehenderit, enim eiusmod high life accusamus terry richardson
@@ -112,10 +129,14 @@
                                                         <span class="fs-14 fw-500 color-dark">Was this article
                                                             helpful?</span>
                                                         <div class="button-group d-flex mt-2">
-                                                            <button class="btn btn-default btn-squared btn-outline-success px-15 "><span data-feather="meh"></span>
+                                                            <button
+                                                                class="btn btn-default btn-squared btn-outline-success px-15 "><span
+                                                                    data-feather="meh"></span>
                                                                 Yes
                                                             </button>
-                                                            <button class="btn btn-default btn-squared btn-outline-warning px-15 "><span data-feather="frown"></span>
+                                                            <button
+                                                                class="btn btn-default btn-squared btn-outline-warning px-15 "><span
+                                                                    data-feather="frown"></span>
                                                                 No
                                                             </button>
                                                         </div>
@@ -130,15 +151,20 @@
 
                             <!-- Edit Profile End -->
                         </div>
-                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+                            aria-labelledby="v-pills-profile-tab">
                         </div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
+                            aria-labelledby="v-pills-messages-tab">
                         </div>
-                        <div class="tab-pane fade " id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                        <div class="tab-pane fade " id="v-pills-settings" role="tabpanel"
+                            aria-labelledby="v-pills-settings-tab">
                         </div>
-                        <div class="tab-pane fade" id="v-pills-notification" role="tabpanel" aria-labelledby="v-pills-notification-tab">
+                        <div class="tab-pane fade" id="v-pills-notification" role="tabpanel"
+                            aria-labelledby="v-pills-notification-tab">
                         </div>
-                        <div class="tab-pane fade" id="v-pills-support" role="tabpanel" aria-labelledby="v-pills-support-tab">
+                        <div class="tab-pane fade" id="v-pills-support" role="tabpanel"
+                            aria-labelledby="v-pills-support-tab">
                         </div>
                     </div>
                 </div>
@@ -206,9 +232,11 @@ export default {
             if (range[range.length - 1] === 0) {
                 range.pop();
             }
-            // 判断第一位是否为1，如果是则删除
-            if (range[0] === 1) {
-                range.shift();
+            // 判断第一位是否为1，如果是则删除 页面小于2才执行，否则有BUG
+            if (totalPages < 2) {
+                if (range[0] === 1) {
+                    range.shift();
+                }
             }
             return range;
         },

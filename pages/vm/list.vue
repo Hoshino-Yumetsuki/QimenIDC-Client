@@ -20,7 +20,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header color-dark fw-500">
-                                实例列表
+                            实例列表
                         </div>
                         <div class="card-body">
                             <div class="userDatatable global-shadow border-0 bg-white w-100">
@@ -29,7 +29,8 @@
                                     <div class="d-flex align-items-center">
                                         <div class="d-flex align-items-center mr-30">
                                             <div class="atbd-select">
-                                                <select name="column" class="form-control form-control-sm" id="column"  style="height: 45px;">
+                                                <select name="column" class="form-control form-control-sm" id="column"
+                                                    style="height: 45px;">
                                                     <option value="all">全部</option>
                                                     <option value="IP">IP</option>
                                                     <option value="hostname">主机名</option>
@@ -53,7 +54,8 @@
                                         <div class="d-flex align-items-center mr-30">
                                             <span class="mr-10">状态</span>
                                             <div class="atbd-select">
-                                                <select name="status" class="form-control form-control-sm" id="status"  style="height: 45px;">
+                                                <select name="status" class="form-control form-control-sm" id="status"
+                                                    style="height: 45px;">
                                                     <option value="all">全部</option>
                                                     <option value="running">运行中</option>
                                                     <option value="stop">关机</option>
@@ -65,7 +67,8 @@
                                         <div class="d-flex align-items-center">
                                             <span class="mr-10">类型</span>
                                             <div class="atbd-select">
-                                                <select name="type" class="form-control form-control-sm" id="type"  style="height: 45px;">
+                                                <select name="type" class="form-control form-control-sm" id="type"
+                                                    style="height: 45px;">
                                                     <option value="all">全部</option>
                                                     <option value="pve">Proxmox</option>
                                                     <option value="vmware">VMware</option>
@@ -133,8 +136,10 @@
                                                         <div class="userDatatable__imgWrapper d-flex align-items-center">
                                                             <div class="checkbox-group-wrapper">
                                                                 <div class="checkbox-group d-flex">
-                                                                    <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
-                                                                        <input class="checkbox" type="checkbox" id="check-grp-12">
+                                                                    <div
+                                                                        class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
+                                                                        <input class="checkbox" type="checkbox"
+                                                                            id="check-grp-12">
                                                                         <label for="check-grp-12"></label>
                                                                     </div>
                                                                 </div>
@@ -145,9 +150,10 @@
                                                         </nuxt-link>
                                                     </div>
                                                 </td>
-                                                
+
                                                 <td>
-                                                    <img height="24" width="24" :src="item.type === 'pve' ? 'https://cdn.simpleicons.org/proxmox/E57000' : 'https://cdn.simpleicons.org/vmware/607078'" />
+                                                    <img height="24" width="24"
+                                                        :src="item.type === 'pve' ? 'https://cdn.simpleicons.org/proxmox/E57000' : 'https://cdn.simpleicons.org/vmware/607078'" />
                                                 </td>
                                                 <td>
                                                     <div class="text-info">
@@ -157,7 +163,8 @@
                                                 <td>
                                                     <div class="status-cell">
 
-                                                        <img height="24" width="24" :src="'/assets/icons/svg/'+ item.status +'.svg'" />
+                                                        <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.status + '.svg'" />
                                                         <!-- 0=开机，1=关机，2=挂起，4=封禁 -->
                                                         <span v-if="item.status === 0" class="text-success">运行中</span>
                                                         <span v-if="item.status === 1" class="text-danger">关机</span>
@@ -173,7 +180,8 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <img height="24" width="24" :src="'/assets/icons/svg/'+ item.osType +'.svg'" />
+                                                        <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.osType + '.svg'" />
                                                         {{ item.operatingSystem }}
                                                     </div>
                                                 </td>
@@ -186,13 +194,20 @@
                                                     <div class="progress-wrap d-flex align-items-center mb-15">
                                                         <span class="progress-text">CPU：</span>
                                                         <div class="progress" style="height: 10px;">
-                                                            <div :class="cpuBarClass(item.cpuUsage)" role="progressbar" :style="{ width: item.cpuUsage + '%' }" :aria-valuenow="item.cpuUsage" aria-valuemin="0" aria-valuemax="100">{{ item.cpuUsage }}%</div>
+                                                            <div :class="cpuBarClass(item.cpuUsage)" role="progressbar"
+                                                                :style="{ width: item.cpuUsage + '%' }"
+                                                                :aria-valuenow="item.cpuUsage" aria-valuemin="0"
+                                                                aria-valuemax="100">{{ item.cpuUsage }}%</div>
                                                         </div>
                                                     </div>
                                                     <div class="progress-wrap d-flex align-items-center">
                                                         <span class="progress-text">内存：</span>
                                                         <div class="progress">
-                                                            <div :class="memoryBarClass(item.memoryUsage)" role="progressbar" :style="{ width: item.memoryUsage + '%' }" :aria-valuenow="item.memoryUsage" aria-valuemin="0" aria-valuemax="100">{{ item.memoryUsage }}%</div>
+                                                            <div :class="memoryBarClass(item.memoryUsage)"
+                                                                role="progressbar"
+                                                                :style="{ width: item.memoryUsage + '%' }"
+                                                                :aria-valuenow="item.memoryUsage" aria-valuemin="0"
+                                                                aria-valuemax="100">{{ item.memoryUsage }}%</div>
                                                         </div>
                                                     </div>
 
@@ -364,7 +379,9 @@
                                         <div class="d-flex align-items-center mr-30">
                                             <div class="atbd-select">
                                                 <div class="dropdown">
-                                                    <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <button class="btn btn-sm btn-default btn-white dropdown-toggle"
+                                                        type="button" id="dropdownMenu4" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
                                                         批量操作
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu4">
@@ -376,9 +393,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    
+
                                     </div>
-                                    
+
                                 </div>
 
 
@@ -389,29 +406,31 @@
                                     <nav class="atbd-page ">
                                         <ul class="atbd-pagination d-flex">
                                             <li class="atbd-pagination__item">
-                                                <a href="#" class="atbd-pagination__link pagination-control" @click="changePage(currentPage - 1)"><span class="la la-angle-left"></span></a>
+                                                <a href="#" class="atbd-pagination__link pagination-control"
+                                                    @click="changePage(currentPage - 1)"><span
+                                                        class="la la-angle-left"></span></a>
                                                 <!-- 生成页码链接 -->
                                                 <template v-for="pageNumber in visiblePages">
-                                                <a
-                                                    href="#"
-                                                    class="atbd-pagination__link"
-                                                    :class="{ active: pageNumber === currentPage }"
-                                                    @click="changePage(pageNumber)"
-                                                >
-                                                    <span class="page-number">{{ pageNumber }}</span>
-                                                </a>
+                                                    <a href="#" class="atbd-pagination__link"
+                                                        :class="{ active: pageNumber === currentPage }"
+                                                        @click="changePage(pageNumber)">
+                                                        <span class="page-number">{{ pageNumber }}</span>
+                                                    </a>
                                                 </template>
-                                                <a href="#" class="atbd-pagination__link pagination-control" @click="changePage(currentPage + 1)"><span class="la la-angle-right"></span></a>
+                                                <a href="#" class="atbd-pagination__link pagination-control"
+                                                    @click="changePage(currentPage + 1)"><span
+                                                        class="la la-angle-right"></span></a>
                                             </li>
                                             <li class="atbd-pagination__item">
                                                 <div class="paging-option">
-                                                <select name="page-number" class="page-selection" v-model="pageSize" @change="changePageSize">
-                                                    <option value="20">20/page</option>
-                                                    <option value="40">40/page</option>
-                                                    <option value="60">60/page</option>
-                                                    <option value="100">100/page</option>
-                                                    <option value="200">200/page</option>
-                                                </select>
+                                                    <select name="page-number" class="page-selection" v-model="pageSize"
+                                                        @change="changePageSize">
+                                                        <option value="20">20/page</option>
+                                                        <option value="40">40/page</option>
+                                                        <option value="60">60/page</option>
+                                                        <option value="100">100/page</option>
+                                                        <option value="200">200/page</option>
+                                                    </select>
                                                 </div>
                                             </li>
                                         </ul>
@@ -428,228 +447,233 @@
     </div>
 </template>
 <script>
-    export default {
-        layout: 'Console',
-        head() {
-            return {
-                title: '实例列表 - QimenIDC',
-                meta: [
-                    {
-                        hid: 'description',
-                        name: 'description',
-                        content: '实例列表 - QimenIDC'
-                    }
-                ],
-                link: [
-                    {
-                        rel: 'stylesheet',
-                        href: '//at.alicdn.com/t/c/font_4242563_kromlkm7t9r.css'
-                    }
-                ]
-            }
+export default {
+    layout: 'Console',
+    head() {
+        return {
+            title: '实例列表 - QimenIDC',
+            meta: [
+                {
+                    hid: 'description',
+                    name: 'description',
+                    content: '实例列表 - QimenIDC'
+                }
+            ],
+            link: [
+                {
+                    rel: 'stylesheet',
+                    href: '//at.alicdn.com/t/c/font_4242563_kromlkm7t9r.css'
+                }
+            ]
+        }
+    },
+    data() {
+        return {
+            tableData: [], // 表格数据
+            total: 2, // 总条数
+            currentPage: 1, // 当前页
+            pageSize: 20, // 每页条数
+            totalPages: 10, // 总页数
+            timer: null // 定时器
+        }
+    },
+    // 计算属性
+    computed: {
+        paginationText() {
+            return `共 ${this.total} 条数据`;
         },
-        data() {
-            return {
-                tableData: [], // 表格数据
-                total: 2, // 总条数
-                currentPage: 1, // 当前页
-                pageSize: 20, // 每页条数
-                totalPages: 10, // 总页数
-                timer: null // 定时器
-            }
-        },
-        // 计算属性
-        computed: {
-            paginationText() {
-                return `共 ${this.total} 条数据`;
-            },
-            visiblePages() {
-                const currentPage = this.currentPage;
-                const totalPages = this.totalPages;
-                
-                
-                const delta = 2;
-                let range = [];
-                for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
-                    range.push(i);
-                }
-                if (currentPage - delta > 2) {
-                    range.unshift('...');
-                }
-                if (currentPage + delta < totalPages - 1) {
-                    range.push('...');
-                }
-                
-                range.unshift(1);
-                range.push(totalPages);
+        visiblePages() {
+            const currentPage = this.currentPage;
+            const totalPages = this.totalPages;
 
-                // 判断最后一位是否为0，如果是则删除
-                if (range[range.length - 1] === 0) {
-                    range.pop();
-                }
-                // 判断第一位是否为1，如果是则删除
+
+            const delta = 2;
+            let range = [];
+            for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
+                range.push(i);
+            }
+            if (currentPage - delta > 2) {
+                range.unshift('...');
+            }
+            if (currentPage + delta < totalPages - 1) {
+                range.push('...');
+            }
+
+            range.unshift(1);
+            range.push(totalPages);
+
+            // 判断最后一位是否为0，如果是则删除
+            if (range[range.length - 1] === 0) {
+                range.pop();
+            }
+            // 判断第一位是否为1，如果是则删除 页面小于2才执行，否则有BUG
+            if (totalPages < 2) {
                 if (range[0] === 1) {
                     range.shift();
                 }
-                return range;
-            },
-            
+            }
+            return range;
         },
-        methods: {
-            fetchData() {
-                // 使用异步获取数据
-                const url = `/api/getVmByPage?page=${this.currentPage}&size=${this.pageSize}`;
-                this.$axios.get(url).then(res => {
-                    if (res.data.code === 20000) {
-                        const data = res.data.data;
-                        const records = data.records;
-                        const newTableData = [];
-                        records.forEach(record => {
-                                const vmhost = record.vmhost;
-                                const os = record.os;
-                                const current = record.current;
-                                if (current != null) {
-                                    current = record.current.data || {}; // 处理current可能为空的情况
-                                }
-                                let diskIOReadTotal = 0;
-                                let diskIOWriteTotal = 0;
 
-                                let netInTotal = 0;
-                                let netOutTotal = 0;
+    },
+    methods: {
+        fetchData() {
+            // 使用异步获取数据
+            const url = `/api/getVmByPage?page=${this.currentPage}&size=${this.pageSize}`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    const records = data.records;
+                    const newTableData = [];
+                    records.forEach(record => {
+                        const vmhost = record.vmhost;
+                        const os = record.os;
+                        const current = record.current;
+                        if (current != null) {
+                            current = record.current.data || {}; // 处理current可能为空的情况
+                        }
+                        let diskIOReadTotal = 0;
+                        let diskIOWriteTotal = 0;
 
-                                let cpuUsage = 0;
-                                let memoryUsage = 0;
-                                if (current != null) {
-                                    // 计算磁盘IO的读写总量
-                                    const blockstat = current.blockstat || {}; // 处理blockstat可能为空的情况
-                                    
-                                    for (const device in blockstat) {
-                                        diskIOReadTotal += blockstat[device].rd_bytes || 0;
-                                        diskIOWriteTotal += blockstat[device].wr_bytes || 0;
-                                    }
-                                    // 计算实时带宽的入口和出口总量
-                                    const nics = current.nics || {}; // 处理nics可能为空的情况
-                                    
-                                    for (const nic in nics) {
-                                        netInTotal += nics[nic].netin || 0;
-                                        netOutTotal += nics[nic].netout || 0;
-                                    }
+                        let netInTotal = 0;
+                        let netOutTotal = 0;
 
-                                    cpuUsage = `${vmhost.cores}C/${vmhost.memory}M`;
-                                    memoryUsage = current.mem ? (current.mem / 1024 / 1024 / 10).toFixed(2) : 0;
-                                }
-                                
-                                
-                                let ip = `none`;
-                                // 获取IP为1的地址
-                                const ipConfig = vmhost.ipConfig['1'];
-                                if (ipConfig) {
-                                    // ip=192.168.36.1/24,gw=192.168.36.2
-                                    ip = ipConfig.split('/')[0].split('=')[1];
-                                }
+                        let cpuUsage = 0;
+                        let memoryUsage = 0;
+                        if (current != null) {
+                            // 计算磁盘IO的读写总量
+                            const blockstat = current.blockstat || {}; // 处理blockstat可能为空的情况
 
-                                // 构建新的记录对象
-                                const newRecord = {
-                                    id: vmhost.id,
-                                    type: `pve`,
-                                    nodeName: record.nodeName,
-                                    area: record.area,
-                                    hostname: vmhost.name,
-                                    status: vmhost.status, // 处理status可能为空的情况
-                                    IP: ip,
-                                    operatingSystem: os.name || 'none', // 处理operatingSystem可能为空的情况
-                                    osType: os.osType || 'none', // 处理osType可能为空的情况
-                                    vCpu: vmhost.cores,
-                                    memory: vmhost.memory,
-                                    // 组合成文字
-                                    cpuMemory: `${vmhost.cores}C/${vmhost.memory}M`,
-                                    // cpuUsage: current.cpu ? current.cpu * 100 : 0, 
-                                    cpuUsage: cpuUsage,
-                                    memoryUsage: memoryUsage,
-                                    netIn : netInTotal,
-                                    netOut: netOutTotal,
-                                    diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB`,
-                                };
+                            for (const device in blockstat) {
+                                diskIOReadTotal += blockstat[device].rd_bytes || 0;
+                                diskIOWriteTotal += blockstat[device].wr_bytes || 0;
+                            }
+                            // 计算实时带宽的入口和出口总量
+                            const nics = current.nics || {}; // 处理nics可能为空的情况
 
-                                // 添加到新的数组中
-                                newTableData.push(newRecord);
-                            });
-                        this.tableData = newTableData;
-                        this.total = data.total;
-                        this.currentPage = data.current;
-                        this.totalPages = data.pages;
-                    }
-                });
+                            for (const nic in nics) {
+                                netInTotal += nics[nic].netin || 0;
+                                netOutTotal += nics[nic].netout || 0;
+                            }
 
-            },
-            prevPage() {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                    this.fetchData();
+                            cpuUsage = `${vmhost.cores}C/${vmhost.memory}M`;
+                            memoryUsage = current.mem ? (current.mem / 1024 / 1024 / 10).toFixed(2) : 0;
+                        }
+
+
+                        let ip = `none`;
+                        // 获取IP为1的地址
+                        const ipConfig = vmhost.ipConfig['1'];
+                        if (ipConfig) {
+                            // ip=192.168.36.1/24,gw=192.168.36.2
+                            ip = ipConfig.split('/')[0].split('=')[1];
+                        }
+
+                        // 构建新的记录对象
+                        const newRecord = {
+                            id: vmhost.id,
+                            type: `pve`,
+                            nodeName: record.nodeName,
+                            area: record.area,
+                            hostname: vmhost.name,
+                            status: vmhost.status, // 处理status可能为空的情况
+                            IP: ip,
+                            operatingSystem: os.name || 'none', // 处理operatingSystem可能为空的情况
+                            osType: os.osType || 'none', // 处理osType可能为空的情况
+                            vCpu: vmhost.cores,
+                            memory: vmhost.memory,
+                            // 组合成文字
+                            cpuMemory: `${vmhost.cores}C/${vmhost.memory}M`,
+                            // cpuUsage: current.cpu ? current.cpu * 100 : 0, 
+                            cpuUsage: cpuUsage,
+                            memoryUsage: memoryUsage,
+                            netIn: netInTotal,
+                            netOut: netOutTotal,
+                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB`,
+                        };
+
+                        // 添加到新的数组中
+                        newTableData.push(newRecord);
+                    });
+                    this.tableData = newTableData;
+                    this.total = data.total;
+                    this.currentPage = data.current;
+                    this.totalPages = data.pages;
                 }
-            },
-            nextPage() {
-                if (this.currentPage < this.totalPages) {
-                    this.currentPage++;
-                    this.fetchData();
-                }
-            },
-            changePage(pageNumber) {
-                if (pageNumber !== this.currentPage) {
-                    this.currentPage = pageNumber;
-                    this.fetchData();
-                }
-            },
-            changePageSize() {
-                this.currentPage = 1;
+            });
+
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
                 this.fetchData();
-            },
-            cpuBarClass(cpuUsage) {
-                if (cpuUsage < 30) {
-                    return 'progress-bar bg-success';
-                } else if (cpuUsage < 70) {
-                    return 'progress-bar bg-warning';
-                } else {
-                    return 'progress-bar bg-danger';
-                }
-            },
-            memoryBarClass(memoryUsage) {
-                if (memoryUsage < 30) {
-                    return 'progress-bar bg-success';
-                } else if (memoryUsage < 70) {
-                    return 'progress-bar bg-warning';
-                } else {
-                    return 'progress-bar bg-danger';
-                }
             }
         },
-        mounted() {
-            this.fetchData();
-            // 定时刷新数据
-            this.timer = setInterval(() => {
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
                 this.fetchData();
-            }, 5000);
+            }
         },
-        // 组件销毁时清除定时器
-        beforeDestroy() {
-            clearInterval(this.timer);
+        changePage(pageNumber) {
+            if (pageNumber !== this.currentPage) {
+                this.currentPage = pageNumber;
+                this.fetchData();
+            }
+        },
+        changePageSize() {
+            this.currentPage = 1;
+            this.fetchData();
+        },
+        cpuBarClass(cpuUsage) {
+            if (cpuUsage < 30) {
+                return 'progress-bar bg-success';
+            } else if (cpuUsage < 70) {
+                return 'progress-bar bg-warning';
+            } else {
+                return 'progress-bar bg-danger';
+            }
+        },
+        memoryBarClass(memoryUsage) {
+            if (memoryUsage < 30) {
+                return 'progress-bar bg-success';
+            } else if (memoryUsage < 70) {
+                return 'progress-bar bg-warning';
+            } else {
+                return 'progress-bar bg-danger';
+            }
         }
-        
+    },
+    mounted() {
+        this.fetchData();
+        // 定时刷新数据
+        this.timer = setInterval(() => {
+            this.fetchData();
+        }, 5000);
+    },
+    // 组件销毁时清除定时器
+    beforeDestroy() {
+        clearInterval(this.timer);
     }
+
+}
 </script>
 
 <style scoped>
-    .userDatatable-header th {
-        text-align: center; /* 设置文本居中对齐 */
-    }
-    .status-cell {
-        display: flex;
-        /* align-items: center; */
-        justify-content: center;
-    }
-    .status-cell img {
-        margin-right: 8px;
-    }
+.userDatatable-header th {
+    text-align: center;
+    /* 设置文本居中对齐 */
+}
+
+.status-cell {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.status-cell img {
+    margin-right: 8px;
+}
 </style>
 
 

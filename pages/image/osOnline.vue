@@ -18,7 +18,7 @@
                                 <!-- 选择搜索框 -->
                                 <div class="d-flex justify-content-between align-items-center mb-30">
                                     <div class="d-flex align-items-center">
-                                        
+
                                         <div class="d-flex align-items-center">
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="输入关键字">
@@ -31,7 +31,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        
+
                                         <div class="d-flex align-items-center">
                                             <span class="mr-10">类型</span>
                                             <div class="atbd-select">
@@ -262,9 +262,11 @@ export default {
             if (range[range.length - 1] === 0) {
                 range.pop();
             }
-            // 判断第一位是否为1，如果是则删除
-            if (range[0] === 1) {
-                range.shift();
+            // 判断第一位是否为1，如果是则删除 页面小于2才执行，否则有BUG
+            if (totalPages < 2) {
+                if (range[0] === 1) {
+                    range.shift();
+                }
             }
             return range;
         },

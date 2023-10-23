@@ -7,7 +7,7 @@
                         <h4 class="text-capitalize breadcrumb-title">IPV4池列表</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="#" class="btn btn-sm btn-primary btn-add" @click="showModal">
                                     <i class="la la-plus"></i>新建IPV4池</a>
                             </div>
                         </div>
@@ -68,9 +68,6 @@
                                                 <select name="type" class="form-control form-control-sm" id="type"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="pve">Proxmox</option>
-                                                    <option value="vmware">VMware</option>
-                                                    <option value="openstack">OpenStack</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -192,12 +189,14 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
+                                                        <li><a href="" class="edit" @click="showChangeModal(item, $event)">
+                                                                <feather-icon name="edit" />
+                                                            </a>
+                                                        </li>
                                                         <li>
                                                             <nuxt-link :to="`/ip/poollist/${item.id}`"
-                                                                class="text-black-50 fw-500">
-                                                                <a href="#" class="view">
-                                                                    <feather-icon name="eye" />
-                                                                </a>
+                                                                class="text-black-50 fw-500 view">
+                                                                <feather-icon name="eye" />
                                                             </nuxt-link>
                                                         </li>
                                                         <li>
@@ -211,7 +210,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <!-- 选择框操作 -->
                                 <div class="d-flex justify-content-between align-items-center mb-30">
                                     <div class="d-flex align-items-center">
@@ -230,12 +228,8 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
-
-
                                 <!-- 底部右侧页码 -->
                                 <div class="d-flex justify-content-end mt-30">
                                     <div class="pagination-total-text">{{ paginationText }}</div>
@@ -272,8 +266,6 @@
                                             </li>
                                         </ul>
                                     </nav>
-
-
                                 </div>
                             </div>
                         </div>
@@ -281,9 +273,63 @@
                 </div>
             </div>
         </div>
+        <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickOk">
+            <p>通过掩码批量添加IPV4地址池：</p><br>
+            <a-form :form="form">
+                <a-form-item label="地址池名" name="poolName" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.poolName" :placeholder="'IPV4地址池名'" />
+                </a-form-item>
+                <a-form-item label="节点ID" name="nodeId" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.nodeId" :placeholder="'绑定节点ID'" />
+                </a-form-item>
+                <a-form-item label="网关" name="gateway" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.gateway" :placeholder="'网关'" />
+                </a-form-item>
+                <a-form-item label="掩码位" name="mask" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.mask" :placeholder="'掩码位,如:24'" />
+                </a-form-item>
+                <a-form-item label="DNS1" name="dns1" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.dns1" :placeholder="'DNS1'" />
+                </a-form-item>
+                <a-form-item label="DNS2" name="dns2" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.dns2" :placeholder="'DNS2'" />
+                </a-form-item>
+            </a-form>
+        </a-modal>
+        <a-modal :visible="changeVisible" :ok-text="'修改'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickChange">
+            <p>修改地址池：</p><br>
+            <a-form :form="form">
+                <a-form-item label="地址池名" name="poolName" :placeholder="'IPV4地址池名'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.poolName" />
+                </a-form-item>
+                <a-form-item label="节点ID" name="nodeId" :placeholder="'绑定节点ID'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.nodeId" />
+                </a-form-item>
+                <a-form-item label="网关" name="gateway" :placeholder="'网关'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.gateway" />
+                </a-form-item>
+                <a-form-item label="掩码位" name="mask" :placeholder="'掩码位,如:24'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.mask" />
+                </a-form-item>
+                <a-form-item label="DNS1" name="dns1" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.dns1" />
+                </a-form-item>
+                <a-form-item label="DNS2" name="dns2" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.dns2" />
+                </a-form-item>
+            </a-form>
+        </a-modal>
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -311,7 +357,19 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            visible: false,
+            changeVisible: false,
+            formData: {
+                id: '',
+                poolName: '',
+                nodeId: '',
+                gateway: '',
+                mask: '',
+                dns1: '',
+                dns2: '',
+            },
+            form: null,
         }
     },
     // 计算属性
@@ -343,9 +401,11 @@ export default {
             if (range[range.length - 1] === 0) {
                 range.pop();
             }
-            // 判断第一位是否为1，如果是则删除
-            if (range[0] === 1) {
-                range.shift();
+            // 判断第一位是否为1，如果是则删除 页面小于2才执行，否则有BUG
+            if (totalPages < 2) {
+                if (range[0] === 1) {
+                    range.shift();
+                }
             }
             return range;
         },
@@ -407,7 +467,93 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
-        }
+        },
+        showChangeModal(item, event) {
+            event.preventDefault();
+            this.formData.id = item.id;
+            this.formData.poolName = item.name;
+            this.formData.nodeId = item.nodeid;
+            this.formData.gateway = item.gateway;
+            this.formData.mask = item.mask;
+            this.formData.dns1 = item.dns1;
+            this.formData.dns2 = item.dns2;
+            this.changeVisible = true;
+        },
+        showModal() {
+            this.visible = true;
+        },
+        clickOk() {
+            if (this.formData.poolName != '' && this.formData.nodeId != '' && this.formData.gateway != '' && this.formData.mask != '' && this.formData.dns1 != '' && this.formData.dns2 != '') {
+                // 创建IPV4地址池确认
+                const url = '/api/insertIpPoolByMask';
+                const data = {
+                    poolName: this.formData.poolName,
+                    nodeId: this.formData.nodeId,
+                    gateway: this.formData.gateway,
+                    mask: this.formData.mask,
+                    dns1: this.formData.dns1,
+                    dns2: this.formData.dns2
+                };
+                this.$axios.post(url, data).then(res => {
+                    if (res.data.code === 20000) {
+                        notification.success({
+                            message: '添加地址池成功!',
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                    else {
+                        notification.error({
+                            message: res.data.message,
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                })
+                this.visible = false;
+            }
+            else {
+                notification.error({
+                    message: '请确保各项都不为空!',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
+        },
+        clickChange() {
+            // 修改确认
+            const url = '/api/updateIpPool';
+            const data = {
+                id: this.formData.id,
+                name: this.formData.poolName,
+                gateway: this.formData.gateway,
+                mask: this.formData.mask,
+                dns1: this.formData.dns1,
+                dns2: this.formData.dns2,
+                nodeid: this.formData.nodeId
+            };
+            this.$axios.put(url, data).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '修改地址池成功!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+                else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
+            this.changeVisible = false;
+        },
+        clickCancel() {
+            this.visible = false;
+            this.changeVisible = false;
+        },
     },
     mounted() {
         this.fetchData();

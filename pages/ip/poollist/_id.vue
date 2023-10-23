@@ -4,11 +4,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-main">
-                        <h4 class="text-capitalize breadcrumb-title">IPV4池列表</h4>
+                        <h4 class="text-capitalize breadcrumb-title">IPV4列表</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
-                                    <i class="la la-plus"></i>新建IPV4池</a>
+                                <a href="#" class="btn btn-sm btn-primary btn-add" @click="showModal">
+                                    <i class="la la-plus"></i>插入IPV4地址</a>
                             </div>
                         </div>
                     </div>
@@ -18,7 +18,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header color-dark fw-500">
-                            IPV4池列表
+                            IPV4地址池 {{ poolId }} 列表
                         </div>
                         <div class="card-body">
                             <div class="userDatatable global-shadow border-0 bg-white w-100">
@@ -30,10 +30,6 @@
                                                 <select name="column" class="form-control form-control-sm" id="column"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="id">id</option>
-                                                    <option value="appid">appid</option>
-                                                    <option value="appkey">appkey</option>
-                                                    <option value="info">info</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -95,13 +91,10 @@
                                                     <span class="userDatatable-title">节点ID</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">绑定虚拟机</span>
+                                                    <span class="userDatatable-title">虚拟机</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">地址池ID</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">ip地址</span>
+                                                    <span class="userDatatable-title">IP地址</span>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">子网掩码</span>
@@ -154,11 +147,6 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.poolId }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div>
                                                         {{ item.ip }}
                                                     </div>
                                                 </td>
@@ -187,18 +175,17 @@
 
                                                         <!-- <img height="24" width="24"
                                                             :src="'/assets/icons/svg/' + item.status + '.svg'" /> -->
-                                                        <!-- 0=开机，1=暂停 吕你来填，我不知道-->
+                                                        <!-- 0=正常，1=正在使用 2停止-->
                                                         <span v-if="item.status === 0" class="text-success">可用</span>
-                                                        <span v-if="item.status === 1" class="text-danger">绑定</span>
-                                                        <span v-if="item.status === 2" class="text-danger">正常</span>
-                                                        <span v-if="item.status === 3" class="text-danger">暂停</span>
+                                                        <span v-if="item.status === 1" class="text-danger">正在使用</span>
+                                                        <span v-if="item.status === 2" class="text-danger">暂停</span>
+                                                        <span v-if="item.status === 3" class="text-danger">网关IP</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                                        <li>
-                                                            <a href="#" class="view">
-                                                                <feather-icon name="eye" />
+                                                        <li><a href="" class="edit" @click="showChangeModal(item, $event)">
+                                                                <feather-icon name="edit" />
                                                             </a>
                                                         </li>
                                                         <li>
@@ -282,19 +269,88 @@
                 </div>
             </div>
         </div>
+        <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickOk">
+            <p>插入IP地址</p><br>
+            <a-form :form="form">
+                <a-form-item label="开始IP" name="poolName" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="addData.startIp" :placeholder="'开始IP,例如192.168.10.1'" />
+                </a-form-item>
+                <a-form-item label="结束IP" name="nodeId" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="addData.endIp" :placeholder="'结束IP,例如192.168.10.10'" />
+                </a-form-item>
+                <a-form-item label="DNS1" name="dns1" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="addData.dns1" :placeholder="'DNS1'" />
+                </a-form-item>
+                <a-form-item label="DNS2" name="dns2" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="addData.dns2" :placeholder="'DNS2'" />
+                </a-form-item>
+            </a-form>
+        </a-modal>
+        <a-modal :visible="changeVisible" :ok-text="'修改'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickChange">
+            <p>修改IP：</p><br>
+            <a-form :form="form">
+                <a-form-item label="IP地址" name="poolName" :placeholder="'IPV4地址'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.ip" />
+                </a-form-item>
+                <a-form-item label="节点ID" name="nodeId" :placeholder="'绑定节点ID'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.nodeId" />
+                </a-form-item>
+                <a-form-item label="虚拟机ID" name="vmId" :placeholder="'虚拟机ID'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.vmId" />
+                </a-form-item>
+                <a-form-item label="IP池ID" name="poolId" :placeholder="'IP池ID'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.poolId" />
+                </a-form-item>
+                <a-form-item label="子网掩码" name="subnetMask" :placeholder="'子网掩码'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.subnetMask" />
+                </a-form-item>
+                <a-form-item label="网关" name="gateway" :placeholder="'网关'" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.gateway" />
+                </a-form-item>
+                <a-form-item label="DNS1" name="dns1" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.dns1" />
+                </a-form-item>
+                <a-form-item label="DNS2" name="dns2" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.dns2" />
+                </a-form-item>
+                <a-form-item label="状态" name="status" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.status">
+                        <a-select-option :value="0">可用</a-select-option>
+                        <a-select-option :value="1">绑定</a-select-option>
+                        <a-select-option :value="2">暂停</a-select-option>
+                        <a-select-option :value="3">网关不可用</a-select-option>
+                    </a-select>
+                </a-form-item>
+            </a-form>
+        </a-modal>
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
+    async asyncData({ params }) {
+        const poolId = params.id; // 通过 $route.params.id 获取路由参数中的 ID 值
+        return {
+            poolId
+        };
+    },
     head() {
         return {
-            title: 'IPV4池列表 - QimenIDC',
+            title: 'IPV4列表 - QimenIDC',
             meta: [
                 {
                     hid: 'description',
                     name: 'description',
-                    content: 'IPV4池列表 - QimenIDC'
+                    content: 'IPV4列表 - QimenIDC'
                 }
             ],
             link: [
@@ -312,7 +368,28 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            visible: false,
+            changeVisible: false,
+            addData: {
+                startIp: '',
+                endIp: '',
+                dns1: '',
+                dns2: '',
+            },
+            formData: {
+                id: '',
+                ip: '',
+                nodeId: '',
+                vmId: '',
+                poolId: '',
+                subnetMask: '',
+                gateway: '',
+                dns1: '',
+                dns2: '',
+                status: '',
+            },
+            form: null,
         }
     },
     // 计算属性
@@ -344,9 +421,14 @@ export default {
             if (range[range.length - 1] === 0) {
                 range.pop();
             }
+
             // 判断第一位是否为1，如果是则删除
-            if (range[0] === 1) {
-                range.shift();
+            if (totalPages < 2) {
+                if (totalPages < 2) {
+                    if (range[0] === 1) {
+                        range.shift();
+                    }
+                }
             }
             return range;
         },
@@ -355,7 +437,7 @@ export default {
     methods: {
         fetchData() {
             // 使用异步获取数据
-            const url = `/api/selectIpListByPoolId?page=${this.currentPage}&size=${this.pageSize}&poolid=7`;
+            const url = `/api/selectIpListByPoolId?page=${this.currentPage}&size=${this.pageSize}&poolid=${this.poolId}`;
             this.$axios.get(url).then(res => {
                 if (res.data.code === 20000) {
                     const data = res.data.data;
@@ -375,7 +457,6 @@ export default {
                             dns2: record.dns2 || ' ',
                             status: record.status,
                         };
-
                         // 添加到新的数组中
                         newTableData.push(newRecord);
                     });
@@ -408,7 +489,98 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
-        }
+        },
+        showModal() {
+            this.visible = true;
+        },
+        clickOk() {
+            if (this.addData.startIp != '' && this.addData.endIp != '' && this.addData.dns1 != '' && this.addData.dns2 != '') {
+                // 创建IPV4地址池确认
+                const url = '/api/insertIpPoolByRange';
+                const data = {
+                    poolId: this.poolId,
+                    startIp: this.addData.startIp,
+                    endIp: this.addData.endIp,
+                    dns1: this.addData.dns1,
+                    dns2: this.addData.dns2
+                };
+                this.$axios.post(url, data).then(res => {
+                    if (res.data.code === 20000) {
+                        notification.success({
+                            message: '添加地址成功!',
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                    else {
+                        notification.error({
+                            message: res.data.message,
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                })
+                this.visible = false;
+            }
+            else {
+                notification.error({
+                    message: '请确保各项都不为空!',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
+        },
+        showChangeModal(item, event) {
+            event.preventDefault();
+            this.formData.id = item.id;
+            this.formData.ip = item.ip;
+            this.formData.nodeId = item.nodeId;
+            this.formData.vmId = item.vmId;
+            this.formData.poolId = item.poolId;
+            this.formData.subnetMask = item.subnetMask;
+            this.formData.gateway = item.gateway;
+            this.formData.dns1 = item.dns1;
+            this.formData.dns2 = item.dns2;
+            this.formData.status = item.status;
+            this.changeVisible = true;
+        },
+        clickChange() {
+            // 修改确认
+            const url = '/api/updateIp';
+            const data = [{
+                id: this.formData.id,
+                nodeId: this.formData.nodeId,
+                vmId: this.formData.vmId,
+                poolId: this.formData.poolId,
+                subnetMask: this.formData.subnetMask,
+                gateway: this.formData.gateway,
+                dns1: this.formData.dns1,
+                dns2: this.formData.dns2,
+                status: this.formData.status
+            }];
+            this.$axios.put(url, data).then(res => {
+                console.log(res);
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '修改地址成功!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+                else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
+            this.changeVisible = false;
+        },
+        clickCancel() {
+            this.visible = false;
+            this.changeVisible = false;
+        },
     },
     mounted() {
         this.fetchData();

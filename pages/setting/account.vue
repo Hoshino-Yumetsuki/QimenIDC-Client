@@ -101,7 +101,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <a href="#" style="color:black;" @click="showChangeModal(item.id)">
+                                                        <a href="" style="color:black;"
+                                                            @click="showChangeModal(item, $event)">
                                                             {{ item.id }}
                                                         </a>
                                                     </div>
@@ -128,7 +129,7 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                                        <li><a href="#" class="edit" @click="showChangeModal(item.id)">
+                                                        <li><a href="" class="edit" @click="showChangeModal(item, $event)">
                                                                 <feather-icon name="edit" />
                                                             </a>
                                                         </li>
@@ -138,7 +139,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <!-- 选择框操作 -->
                                 <div class="d-flex justify-content-between align-items-center mb-30">
                                     <div class="d-flex align-items-center">
@@ -157,16 +157,11 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
-
-
                                 <!-- 底部右侧页码 -->
                                 <div class="d-flex justify-content-end mt-30">
                                     <div class="pagination-total-text">{{ paginationText }}</div>
-
                                     <nav class="atbd-page ">
                                         <ul class="atbd-pagination d-flex">
                                             <li class="atbd-pagination__item">
@@ -199,8 +194,6 @@
                                             </li>
                                         </ul>
                                     </nav>
-
-
                                 </div>
                             </div>
                         </div>
@@ -335,9 +328,11 @@ export default {
             if (range[range.length - 1] === 0) {
                 range.pop();
             }
-            // 判断第一位是否为1，如果是则删除
-            if (range[0] === 1) {
-                range.shift();
+            // 判断第一位是否为1，如果是则删除 页面小于2才执行，否则有BUG
+            if (totalPages < 2) {
+                if (range[0] === 1) {
+                    range.shift();
+                }
             }
             return range;
         },
@@ -392,17 +387,18 @@ export default {
                 this.fetchData();
             }
         },
-        showChangeModal(id) {
-            this.formData.username = this.tableData[id - 2].username;
-            this.formData.name = this.tableData[id - 2].name;
-            this.formData.phone = this.tableData[id - 2].phone;
-            this.formData.email = this.tableData[id - 2].email;
-            this.formData.id = id;
-            this.changeVisible = true;
-        },
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
+        },
+        showChangeModal(item, event) {
+            event.preventDefault();
+            this.formData.username = item.username;
+            this.formData.name = item.name;
+            this.formData.phone = item.phone;
+            this.formData.email = item.email;
+            this.formData.id = item.id;
+            this.changeVisible = true;
         },
         showModal() {
             this.visible = true;
