@@ -8,7 +8,8 @@
                         <h4 class="text-capitalize breadcrumb-title">API管理</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="#" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                    data-target="#modal-input-notes">
                                     <i class="la la-plus"></i> 新建API</a>
                             </div>
                         </div>
@@ -32,10 +33,6 @@
                                                 <select name="column" class="form-control form-control-sm" id="column"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="id">id</option>
-                                                    <option value="appid">appid</option>
-                                                    <option value="appkey">appkey</option>
-                                                    <option value="info">info</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -57,10 +54,6 @@
                                                 <select name="status" class="form-control form-control-sm" id="status"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="running">运行中</option>
-                                                    <option value="stop">关机</option>
-                                                    <option value="suspend">挂起</option>
-                                                    <option value="ban">封禁</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -70,9 +63,6 @@
                                                 <select name="type" class="form-control form-control-sm" id="type"
                                                     style="height: 45px;">
                                                     <option value="all">全部</option>
-                                                    <option value="pve">Proxmox</option>
-                                                    <option value="vmware">VMware</option>
-                                                    <option value="openstack">OpenStack</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -129,9 +119,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/vm/${item.id}`" class="text-black-50 fw-500">
-                                                            {{ item.id }}
-                                                        </nuxt-link>
+                                                        {{ item.id }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -167,15 +155,19 @@
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <a href="#" class="view" v-if="item.status === 0">
+                                                            <a class="view" v-if="item.status === 0"
+                                                                @click="ClickPause(item.id)">
                                                                 <feather-icon name="pause" />
                                                             </a>
-                                                            <a href="#" class="edit" v-if="item.status === 1">
+                                                            <a href="#" class="edit" v-if="item.status === 1"
+                                                                @click="ClickPlay(item.id)">
                                                                 <feather-icon name="play" />
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="remove">
+                                                            <a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-confirmed"
+                                                                @click="setRemoveId(item.id)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -255,9 +247,62 @@
                 </div>
             </div>
         </div>
+        <!-- ends: .modal-info-warning -->
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认删除?</h6>
+                                <p>确认删除这个API吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickRemove(removeId)">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-confirmed -->
+        <!-- 新建API 填写备注 Start -->
+        <div class="modal-info-confirmed modal fade show" id="modal-input-notes" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>新建API</h6><br>
+                                <input type="text" class="form-control form-control-default" id="ApiNotes"
+                                    placeholder="请输入API备注">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal" @click="addApi()">创建</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 新建API 填写备注 Ends -->
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -285,7 +330,8 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            removeId: null //删除的Id 确认使用
         }
     },
     // 计算属性
@@ -317,9 +363,11 @@ export default {
             if (range[range.length - 1] === 0) {
                 range.pop();
             }
-            // 判断第一位是否为1，如果是则删除
-            if (range[0] === 1) {
-                range.shift();
+            // 判断第一位是否为1，如果是则删除 页面小于2才执行，否则有BUG
+            if (totalPages < 2) {
+                if (range[0] === 1) {
+                    range.shift();
+                }
             }
             return range;
         },
@@ -397,7 +445,64 @@ export default {
             } else {
                 return 'progress-bar bg-danger';
             }
-        }
+        },
+        UpdateData(apiPath, id, msg) {
+            // 更新数据
+            const url = `/api/${apiPath}/${id}`;
+            this.$axios.post(url).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: msg,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            });
+        },
+        ClickPause(id) { //执行暂停操作
+            this.UpdateData('disableApi', id, '暂停成功');
+        },
+        ClickPlay(id) { //执行恢复操作
+            this.UpdateData('enableApi', id, '开启成功');
+        },
+        addApi() {
+            // 获取输入框的值
+            const apiNotes = document.getElementById('ApiNotes').value;
+            document.getElementById('ApiNotes').value = '';//获取之后清空备注
+            const url = '/api/insertApiKey';
+            const data = {
+                info: apiNotes
+            };
+
+            this.$axios.post(url, data).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '添加API成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
+        },
+        ClickRemove(removeId) { //执行删除操作
+            const url = `/api/deleteApi?id=${removeId}`;
+            this.$axios.delete(url).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    notification.success({
+                        message: '删除成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            });
+        },
+        ClickCancel() {//取消
+            this.removeId = null;
+        },
+        setRemoveId(id) { //设置删除的ID
+            this.removeId = id;
+        },
     },
     mounted() {
         this.fetchData();
