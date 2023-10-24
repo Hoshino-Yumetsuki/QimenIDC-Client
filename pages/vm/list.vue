@@ -147,7 +147,7 @@
                                                 </td>
                                                 
                                                 <td>
-                                                    <img height="24" width="24" :src="item.type === 'pve' ? 'https://cdn.simpleicons.org/proxmox/E57000' : 'https://cdn.simpleicons.org/vmware/607078'" />
+                                                    <img height="24" width="24" :src="item.type === 'pve' ? '/assets/icons/svg/pve.svg' : '/assets/icons/svg/vmware.svg'" />
                                                 </td>
                                                 <td>
                                                     <div class="text-info">
