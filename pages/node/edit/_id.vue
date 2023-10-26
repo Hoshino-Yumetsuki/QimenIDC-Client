@@ -173,7 +173,9 @@ export default {
             const url = '/api/updateNodeInfo';
             const data = {
                 id: this.nodeData.id,
+                name: this.nodeData.name,
                 host: this.nodeData.host,
+                area: this.nodeData.area,
                 port: this.nodeData.port,
                 username: this.nodeData.username,
                 password: this.nodeData.password,
