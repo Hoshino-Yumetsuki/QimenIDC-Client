@@ -12,7 +12,7 @@
                                     <i class="la la-ravelry"></i> 镜像库</a>
                             </div>
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="#" class="btn btn-sm btn-primary btn-add" @click="showModal">
                                     <i class="la la-plus"></i> 手动添加镜像</a>
                             </div>
                         </div>
@@ -263,9 +263,73 @@
                 </div>
             </div>
         </div>
+        <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickOk">
+            <p>添加镜像</p><br>
+            <a-form :form="form">
+                <a-form-item label="系统名称" name="name" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.name" :placeholder="'系统名称（别称，可自定义）'" />
+                </a-form-item>
+                <a-form-item label="文件全称" name="fileName" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.fileName" :placeholder="'文件全称，带后缀'" />
+                </a-form-item>
+                <a-form-item label="镜像类型" name="type" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.type">
+                        <a-select-option :value="'win'">Windows</a-select-option>
+                        <a-select-option :value="'linux'">Linux</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="镜像架构" name="arch" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.arch">
+                        <a-select-option :value="'x86_64'">x86_64</a-select-option>
+                        <a-select-option :value="'arm64'">arm64</a-select-option>
+                        <a-select-option :value="'armhf'">armhf</a-select-option>
+                        <a-select-option :value="'ppc64el'">ppc64el</a-select-option>
+                        <a-select-option :value="'riscv64'">riscv64</a-select-option>
+                        <a-select-option :value="'s390x'">s390x</a-select-option>
+                        <a-select-option :value="'aarch64'">aarch64</a-select-option>
+                        <a-select-option :value="'armv7l'">armv7l</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="镜像类型" name="osType" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.osType">
+                        <a-select-option :value="'centos'">CentOS</a-select-option>
+                        <a-select-option :value="'debian'">Debian</a-select-option>
+                        <a-select-option :value="'ubuntu'">Ubuntu</a-select-option>
+                        <a-select-option :value="'alpine'">Alpine</a-select-option>
+                        <a-select-option :value="'fedora'">Fedora</a-select-option>
+                        <a-select-option :value="'opensuse'">Opensuse</a-select-option>
+                        <a-select-option :value="'ubuntukylin'">UbuntuKylin</a-select-option>
+                        <a-select-option :value="'other'">Other</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="下载类型" name="downType" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.downType">
+                        <a-select-option :value="0">自动下载</a-select-option>
+                        <a-select-option :value="1">手动上传</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="下载地址" name="url" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.url" :placeholder="'下载地址（选自动下载时禁止为空）'" />
+                </a-form-item>
+                <a-form-item label="存储路径" name="path" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.path" :placeholder="'值为空或default则默认为/home/images'" />
+                </a-form-item>
+                <a-form-item label="cloud-init" name="cloud" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.cloud">
+                        <a-select-option :value="0">关闭</a-select-option>
+                        <a-select-option :value="1">开启</a-select-option>
+                    </a-select>
+                </a-form-item>
+            </a-form>
+        </a-modal>
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -293,7 +357,21 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            visible: false,
+            changeVisible: false,
+            formData: {
+                name: '',
+                fileName: '',
+                type: '',
+                arch: '',
+                osType: '',
+                downType: '',
+                url: '',
+                path: '',
+                cloud: '',
+            },
+            form: null,
         }
     },
     // 计算属性
@@ -390,7 +468,59 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
-        }
+        },
+        showModal() {
+            this.visible = true;
+        },
+        clickOk() {
+            if (this.formData.name != '' && this.formData.fileName != '') {
+                // 创建IPV4地址池确认
+                const url = '/api/insertOs';
+                const data = {
+                    name: this.formData.name,
+                    fileName: this.formData.fileName,
+                    type: this.formData.type,
+                    arch: this.formData.arch,
+                    osType: this.formData.osType,
+                    downType: this.formData.downType,
+                    url: this.formData.url || null,
+                    path: this.formData.path,
+                    cloud: this.formData.cloud,
+                };
+                this.$axios.post(url, data).then(res => {
+                    if (res.data.code === 20000) {
+                        notification.success({
+                            message: '添加镜像成功!',
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                        this.formData = [];
+                    }
+                    else {
+                        notification.error({
+                            message: res.data.message,
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                })
+                this.visible = false;
+            }
+            else {
+                notification.error({
+                    message: '请确保必填项都不为空!',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
+        },
+        clickCancel() {
+            this.visible = false;
+        },
+        clearCancel() {
+            this.formData = [];
+            this.changeVisible = false;
+        },
     },
     mounted() {
         this.fetchData();
