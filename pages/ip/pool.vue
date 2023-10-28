@@ -501,6 +501,7 @@ export default {
                             duration: 2,
                             placement: 'bottomRight'
                         });
+                        this.formData = [];
                     }
                     else {
                         notification.error({
@@ -539,6 +540,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.formData = [];
                 }
                 else {
                     notification.error({
@@ -551,6 +553,7 @@ export default {
             this.changeVisible = false;
         },
         clickCancel() {
+            this.formData = [];
             this.visible = false;
             this.changeVisible = false;
         },

@@ -355,9 +355,7 @@ export default {
                             username: record.username || '未知',
                             phone: record.phone,
                             email: record.email,
-
                         };
-
                         // 添加到新的数组中
                         newTableData.push(newRecord);
                     });
@@ -422,6 +420,7 @@ export default {
                                 duration: 2,
                                 placement: 'bottomRight'
                             });
+                            this.formData = [];
                         }
                     })
                     this.visible = false;
@@ -462,6 +461,7 @@ export default {
                                 duration: 2,
                                 placement: 'bottomRight'
                             });
+                            this.formData = [];
                         }
                         else {
                             notification.error({
@@ -489,6 +489,7 @@ export default {
             }
         },
         clickCancel() {
+            this.formData = [];
             this.visible = false;
             this.changeVisible = false;
         },
