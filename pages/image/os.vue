@@ -155,8 +155,12 @@
                                                 </td>
                                                 <td>
                                                     <div v-for="(nodeStatus, index) in item.nodeStatus" :key="index">
-                                                        节点id:{{ nodeStatus.nodeId }} 名称:{{ nodeStatus.nodeName }} 状态:{{
-                                                            nodeStatus.status }} 下载进度:{{ nodeStatus.schedule }}
+                                                        <span v-if="nodeStatus.status === 2"
+                                                            class="text-success"><feather-icon name="check-circle" />{{
+                                                                nodeStatus.nodeName }}</span>
+                                                        <span v-if="nodeStatus.status === 1"
+                                                            class="text-success"><feather-icon name="arrow-down-circle" />{{
+                                                                nodeStatus.nodeName }} {{ nodeStatus.schedule }}%</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -695,7 +699,7 @@ export default {
             this.$axios.post(url, data).then(res => {
                 if (res.data.code === 20000) {
                     notification.success({
-                        message: '下载镜像请求发起成功,请等待下载完成!',
+                        message: '下载镜像请求发起成功!',
                         duration: 2,
                         placement: 'bottomRight'
                     });
