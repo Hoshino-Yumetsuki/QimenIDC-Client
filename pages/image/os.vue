@@ -120,10 +120,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/node/edit/${item.id}`"
-                                                            class="text-black-50 fw-500">
-                                                            {{ item.id }}
-                                                        </nuxt-link>
+                                                        {{ item.id }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -157,8 +154,9 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.nodeStatus }}
+                                                    <div v-for="(nodeStatus, index) in item.nodeStatus" :key="index">
+                                                        节点id:{{ nodeStatus.nodeId }} 名称:{{ nodeStatus.nodeName }} 状态:{{
+                                                            nodeStatus.status }} 下载进度:{{ nodeStatus.schedule }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -174,16 +172,19 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                                        <li>
-                                                            <a href="#" class="view" v-if="item.status === 0">
-                                                                <feather-icon name="pause" />
+                                                        <li><a href="" class="view"
+                                                                @click="showDownloadModal(item.id, $event)">
+                                                                <feather-icon name="download" />
                                                             </a>
-                                                            <a href="#" class="edit" v-if="item.status === 1">
-                                                                <feather-icon name="play" />
+                                                        </li>
+                                                        <li><a href="" class="edit" @click="showChangeModal(item, $event)">
+                                                                <feather-icon name="edit" />
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="remove">
+                                                            <a href="" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-confirmed"
+                                                                @click="setRemoveId(item.id, $event)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -263,6 +264,14 @@
                 </div>
             </div>
         </div>
+        <a-modal :visible="downVisible" :ok-text="'下载'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickDownload">
+            <p>下载镜像</p><br>
+            <a-form :form="form">
+                <a-form-item label="节点ID" name="id" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="downData.nodeId" :placeholder="'请输入节点ID'" />
+                </a-form-item>
+            </a-form>
+        </a-modal>
         <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickOk">
             <p>添加镜像</p><br>
             <a-form :form="form">
@@ -326,6 +335,102 @@
                 </a-form-item>
             </a-form>
         </a-modal>
+        <a-modal :visible="changeVisible" :ok-text="'修改'" :cancel-text="'取消'" @cancel="clearCancel" @ok="clickChange">
+            <p>修改镜像</p><br>
+            <a-form :form="form">
+                <a-form-item label="系统名称" name="name" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.name" :placeholder="'系统名称（别称，可自定义）'" />
+                </a-form-item>
+                <a-form-item label="文件全称" name="fileName" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.fileName" :placeholder="'文件全称，带后缀'" />
+                </a-form-item>
+                <a-form-item label="镜像类型" name="type" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.type">
+                        <a-select-option :value="'win'">Windows</a-select-option>
+                        <a-select-option :value="'linux'">Linux</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="镜像架构" name="arch" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.arch">
+                        <a-select-option :value="'x86_64'">x86_64</a-select-option>
+                        <a-select-option :value="'arm64'">arm64</a-select-option>
+                        <a-select-option :value="'armhf'">armhf</a-select-option>
+                        <a-select-option :value="'ppc64el'">ppc64el</a-select-option>
+                        <a-select-option :value="'riscv64'">riscv64</a-select-option>
+                        <a-select-option :value="'s390x'">s390x</a-select-option>
+                        <a-select-option :value="'aarch64'">aarch64</a-select-option>
+                        <a-select-option :value="'armv7l'">armv7l</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="镜像类型" name="osType" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.osType">
+                        <a-select-option :value="'centos'">CentOS</a-select-option>
+                        <a-select-option :value="'debian'">Debian</a-select-option>
+                        <a-select-option :value="'ubuntu'">Ubuntu</a-select-option>
+                        <a-select-option :value="'alpine'">Alpine</a-select-option>
+                        <a-select-option :value="'fedora'">Fedora</a-select-option>
+                        <a-select-option :value="'opensuse'">Opensuse</a-select-option>
+                        <a-select-option :value="'ubuntukylin'">UbuntuKylin</a-select-option>
+                        <a-select-option :value="'other'">Other</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="下载类型" name="downType" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.downType">
+                        <a-select-option :value="0">自动下载</a-select-option>
+                        <a-select-option :value="1">手动上传</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="下载地址" name="url" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.url" :placeholder="'下载地址（选自动下载时禁止为空）'" />
+                </a-form-item>
+                <a-form-item label="存储路径" name="path" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.path" :placeholder="'值为空或default则默认为/home/images'" />
+                </a-form-item>
+                <a-form-item label="cloud-init" name="cloud" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.cloud">
+                        <a-select-option :value="0">关闭</a-select-option>
+                        <a-select-option :value="1">开启</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="镜像状态" name="status" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.status">
+                        <a-select-option :value="0">正常</a-select-option>
+                        <a-select-option :value="1">暂停</a-select-option>
+                    </a-select>
+                </a-form-item>
+            </a-form>
+        </a-modal>
+        <!-- ends: .modal-info-warning -->
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认删除?</h6>
+                                <p>确认删除这个镜像吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickRemove()">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="clickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-confirmed -->
     </div>
 </template>
 <script>
@@ -334,7 +439,7 @@ export default {
     layout: 'Console',
     head() {
         return {
-            title: 'API管理 - QimenIDC',
+            title: '镜像列表 - QimenIDC',
             meta: [
                 {
                     hid: 'description',
@@ -358,9 +463,16 @@ export default {
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
             timer: null, // 定时器
+            removeId: null,
             visible: false,
             changeVisible: false,
+            downVisible: false,
+            downData: {
+                nodeId: '',
+                osId: ''
+            },
             formData: {
+                id: '',
                 name: '',
                 fileName: '',
                 type: '',
@@ -434,6 +546,10 @@ export default {
                             nodeStatus: record.nodeStatus,
                             size: record.size,
                             status: record.status,
+                            url: record.url,
+                            path: record.path,
+                            cloud: record.cloud,
+                            downType: record.downType,
                         };
 
                         // 添加到新的数组中
@@ -468,6 +584,26 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
+        },
+        showDownloadModal(itemid, event) {
+            event.preventDefault();//阻止a标签的默认点击行为
+            this.downData.osId = itemid; //传入下载镜像ID
+            this.downVisible = true;
+        },
+        showChangeModal(item, event) {
+            event.preventDefault();
+            this.formData.id = item.id;
+            this.formData.name = item.name;
+            this.formData.fileName = item.fileName;
+            this.formData.type = item.type;
+            this.formData.arch = item.arch;
+            this.formData.osType = item.osType;
+            this.formData.downType = item.downType;
+            this.formData.url = item.url;
+            this.formData.path = item.path;
+            this.formData.cloud = item.cloud;
+            this.formData.status = item.status;
+            this.changeVisible = true;
         },
         showModal() {
             this.visible = true;
@@ -514,12 +650,104 @@ export default {
                 });
             }
         },
+        clickChange() {
+            // 修改确认
+            const url = '/api/updateOs';
+            const data = {
+                id: this.formData.id,
+                name: this.formData.name,
+                fileName: this.formData.fileName,
+                type: this.formData.type,
+                arch: this.formData.arch,
+                osType: this.formData.osType,
+                downType: this.formData.downType,
+                url: this.formData.url,
+                path: this.formData.path,
+                cloud: this.formData.cloud,
+                status: this.formData.status,
+            };
+            this.$axios.put(url, data).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '修改镜像成功!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                    this.formData = [];
+                }
+                else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
+            this.changeVisible = false;
+        },
+        clickDownload() {
+            // 下载镜像
+            const url = '/api/downloadOs';
+            const data = {
+                osId: this.downData.osId,
+                nodeId: this.downData.nodeId,
+            };
+            this.$axios.post(url, data).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '下载镜像请求发起成功,请等待下载完成!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                    this.formData = [];
+                }
+                else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
+            this.downVisible = false;
+        },
         clickCancel() {
+            this.downVisible = false;
             this.visible = false;
+            this.removeId = null;
         },
         clearCancel() {
             this.formData = [];
             this.changeVisible = false;
+        },
+        setRemoveId(id, event) { //设置删除的ID
+            event.preventDefault();
+            this.removeId = id;
+        },
+        ClickRemove() { //执行删除操作
+            const url = `/api/deleteOs`;
+            const data = {
+                osId: this.removeId
+            };
+            this.$axios.delete(url, { data: data }).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    notification.success({
+                        message: '删除成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                } else {
+                    if (res.data.code === 20000) {
+                        // 显示成功提示框
+                        notification.error({
+                            message: res.data.message,
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                }
+            });
         },
     },
     mounted() {

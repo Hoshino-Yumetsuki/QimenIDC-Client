@@ -112,16 +112,13 @@
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <a href="#" class="view" v-if="item.status === 0">
+                                                            <a href="" class="view" v-if="item.status === 1"
+                                                                @click="ClickPause($event)">
                                                                 <feather-icon name="pause" />
                                                             </a>
-                                                            <a href="#" class="edit" v-if="item.status === 1">
+                                                            <a href="" class="edit" v-if="item.status === 0"
+                                                                @click="ClickPlay(item.fileName, $event)">
                                                                 <feather-icon name="play" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="remove">
-                                                                <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -203,6 +200,7 @@
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -328,7 +326,38 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
-        }
+        },
+        ClickPause(event) { //执行暂停操作
+            event.preventDefault();
+            notification.error({
+                message: '请在镜像列表删除',
+                duration: 2,
+                placement: 'bottomRight'
+            });
+        },
+        ClickPlay(fileName, event) { //执行恢复操作
+            event.preventDefault();
+            const url = `/api/activeOsByOnline`;
+            const data = {
+                fileName: fileName,
+            };
+            this.$axios.post(url, data).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '激活镜像成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+                else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            });
+        },
     },
     mounted() {
         this.fetchData();
