@@ -159,7 +159,7 @@
                                                                 @click="ClickPause(item.id)">
                                                                 <feather-icon name="pause" />
                                                             </a>
-                                                            <a href="#" class="edit" v-if="item.status === 1"
+                                                            <a class="edit" v-if="item.status === 1"
                                                                 @click="ClickPlay(item.id)">
                                                                 <feather-icon name="play" />
                                                             </a>
