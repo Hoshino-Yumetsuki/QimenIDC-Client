@@ -26,7 +26,7 @@
                                         <input type="text" v-model="systemDisk.Windows" class="form-control" id="host"
                                             placeholder="Windows系统盘大小">
                                     </div>
-                                    <div class="form-group mb-25">
+                                    <!-- <div class="form-group mb-25">
                                         <label for="port">端口</label>
                                         <input type="number" class="form-control" id="port" placeholder="8006">
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
@@ -100,7 +100,7 @@
                                         <label for="ticket">ticket</label>
                                         <textarea type="text" readonly class="form-control-plaintext" id="ticket"
                                             placeholder="Position" />
-                                    </div>
+                                    </div> -->
                                     <div class="button-group d-flex pt-25 justify-content-end">
 
 
