@@ -169,8 +169,8 @@
                                                         <!-- <img height="24" width="24"
                                                             :src="'/assets/icons/svg/' + item.status + '.svg'" /> -->
                                                         <!-- 0=开机，1=暂停 -->
-                                                        <span v-if="item.status === 0" class="text-success">正常</span>
-                                                        <span v-if="item.status === 1" class="text-danger">暂停</span>
+                                                        <span v-if="item.status === 0" class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">正常</span>
+                                                        <span v-if="item.status === 1" class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">暂停</span>
                                                         <span v-if="item.status === 2" class="text-danger">镜像地址无法连接</span>
                                                     </div>
                                                 </td>
