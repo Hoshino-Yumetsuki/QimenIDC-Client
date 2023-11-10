@@ -152,11 +152,12 @@
                                                 </td>
 
                                                 <td>
-                                                    <img height="24" width="24" :src="item.type === 'pve' ? '/assets/icons/svg/pve.svg' : '/assets/icons/svg/vmware.svg'" />
+                                                    <img height="24" width="24"
+                                                        :src="item.type === 'pve' ? '/assets/icons/svg/pve.svg' : '/assets/icons/svg/vmware.svg'" />
                                                 </td>
                                                 <td>
                                                     <div class="text-info">
-                                                        <a :href="`/vm/${item.id}`">{{ item.hostname }}</a>
+                                                        <a :href="`/vm/${item.vmid}`">{{ item.hostname }}</a>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -235,7 +236,7 @@
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <a :href="`/vm/${item.id}`" class="view">
+                                                            <a :href="`/vm/${item.vmid}`" class="view">
                                                                 <feather-icon name="eye" />
                                                             </a>
                                                         </li>
@@ -570,25 +571,26 @@ export default {
 
                         // 构建新的记录对象
                         const newRecord = {
-                            id: vmhost.id,
+                            id: vmhost.id || 'none',
+                            vmid: vmhost.vmid,
                             type: `pve`,
-                            nodeName: record.nodeName,
-                            area: record.area,
-                            hostname: vmhost.name,
+                            nodeName: record.nodeName || 'none',
+                            area: record.area || 'none',
+                            hostname: vmhost.name || 'none',
                             status: vmhost.status, // 处理status可能为空的情况
-                            IP: ip,
+                            IP: ip || 'none',
                             operatingSystem: os.name || 'none', // 处理operatingSystem可能为空的情况
                             osType: os.osType || 'none', // 处理osType可能为空的情况
-                            vCpu: vmhost.cores,
-                            memory: vmhost.memory,
+                            vCpu: vmhost.cores || '0',
+                            memory: vmhost.memory || '0',
                             // 组合成文字
                             cpuMemory: `${vmhost.cores}C/${vmhost.memory}M`,
                             // cpuUsage: current.cpu ? current.cpu * 100 : 0, 
-                            cpuUsage: cpuUsage,
-                            memoryUsage: memoryUsage,
-                            netIn: netInTotal,
-                            netOut: netOutTotal,
-                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB`,
+                            cpuUsage: cpuUsage || '0',
+                            memoryUsage: memoryUsage || '0',
+                            netIn: netInTotal || '0',
+                            netOut: netOutTotal || '0',
+                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB` || '0',
                         };
 
                         // 添加到新的数组中
