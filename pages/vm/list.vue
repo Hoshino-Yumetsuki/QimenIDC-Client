@@ -8,7 +8,7 @@
                         <h4 class="text-capitalize breadcrumb-title">实例列表</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="add" class="btn btn-sm btn-primary btn-add">
                                     <i class="la la-plus"></i> 创建虚拟机</a>
                             </div>
                         </div>
@@ -145,8 +145,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/vm/${item.id}`" class="text-black-50 fw-500">
-                                                            {{ item.id }}
+                                                        <nuxt-link :to="`/vm/${item.vmid}`" class="text-black-50 fw-500">
+                                                            {{ item.vmid }}
                                                         </nuxt-link>
                                                     </div>
                                                 </td>
@@ -526,9 +526,9 @@ export default {
                     const records = data.records;
                     const newTableData = [];
                     records.forEach(record => {
-                        const vmhost = record.vmhost;
-                        const os = record.os;
-                        const current = record.current;
+                        const vmhost = record.vmhost || 'none';
+                        const os = record.os || 'none';
+                        const current = record.current || null;
                         if (current != null) {
                             current = record.current.data || {}; // 处理current可能为空的情况
                         }
@@ -572,12 +572,12 @@ export default {
                         // 构建新的记录对象
                         const newRecord = {
                             id: vmhost.id || 'none',
-                            vmid: vmhost.vmid,
+                            vmid: vmhost.vmid || 'none',
                             type: `pve`,
                             nodeName: record.nodeName || 'none',
                             area: record.area || 'none',
                             hostname: vmhost.name || 'none',
-                            status: vmhost.status, // 处理status可能为空的情况
+                            status: vmhost.status || 'none', // 处理status可能为空的情况
                             IP: ip || 'none',
                             operatingSystem: os.name || 'none', // 处理operatingSystem可能为空的情况
                             osType: os.osType || 'none', // 处理osType可能为空的情况
