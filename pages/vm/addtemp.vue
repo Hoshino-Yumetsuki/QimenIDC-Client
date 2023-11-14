@@ -161,7 +161,7 @@ export default {
                         placement: 'bottomRight'
                     });
                     setTimeout(() => { //1秒后跳转到node界面，让消息提示充分显示
-                        this.$router.push('/vm/list');
+                        this.$router.push('/vm/template');
                     }, 1000); // 1000毫秒 = 1秒
                 }
                 else {

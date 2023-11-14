@@ -292,7 +292,9 @@
                                                             </nuxt-link>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="remove" @click='del(item.id)'>
+                                                            <a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-confirmed"
+                                                                @click="setRemoveId(item.id)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -372,9 +374,36 @@
                 </div>
             </div>
         </div>
+        <!-- ends: .modal-info-warning -->
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认删除?</h6>
+                                <p>确认删除这个配置模板吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickRemove(removeId)">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-confirmed -->
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -511,7 +540,26 @@ export default {
         changePageSize() {
             this.currentPage = 1;
             this.fetchData();
-        }
+        },
+        ClickRemove(removeId) { //执行删除操作
+            const url = `/api/deleteConfiguretemplate/${removeId}`;
+            this.$axios.delete(url).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    notification.success({
+                        message: '删除成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            });
+        },
+        ClickCancel() {//取消
+            this.removeId = null;
+        },
+        setRemoveId(id) { //设置删除的ID
+            this.removeId = id;
+        },
     },
     mounted() {
         this.fetchData();
