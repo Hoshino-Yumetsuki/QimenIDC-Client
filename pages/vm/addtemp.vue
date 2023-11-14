@@ -141,12 +141,12 @@ export default {
     layout: 'Console',
     head() {
         return {
-            title: '创建虚拟机 - QimenIDC',
+            title: '创建实例模板 - QimenIDC',
             meta: [
                 {
                     hid: 'description',
                     name: 'description',
-                    content: '创建虚拟机 - QimenIDC'
+                    content: '创建实例模板 - QimenIDC'
                 }
             ]
         }
