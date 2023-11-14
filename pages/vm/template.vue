@@ -7,7 +7,7 @@
                         <h4 class="text-capitalize breadcrumb-title">配置模板列表</h4>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
                             <div class="action-btn">
-                                <a href="" class="btn btn-sm btn-primary btn-add">
+                                <a href="addtemp" class="btn btn-sm btn-primary btn-add">
                                     <i class="la la-plus"></i>新建配置模板</a>
                             </div>
                         </div>
