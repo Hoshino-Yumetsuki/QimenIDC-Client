@@ -6,6 +6,14 @@
                 <div class="row justify-content-center">
                     <div class="col-sm-5 col-10">
                         <div class="mt-40 mb-50">
+                            <div class="checkbox-theme-default custom-checkbox">
+                                <input class="checkbox" type="checkbox" id="check-1" v-model="isChecked">
+                                <label for="check-1">
+                                    <span class="checkbox-text">
+                                        高级选项
+                                    </span>
+                                </label>
+                            </div>
                             <div class="edit-profile__body">
                                 <form>
                                     <div class="form-group mb-25">
@@ -15,6 +23,7 @@
                                                 v-model="nodeData.nodeid">
                                                 <option v-for="item in nodesData" :key="item.id" :value="item.id">{{
                                                     item.name }}</option>
+
                                             </select>
                                         </div>
                                     </div>
@@ -73,6 +82,22 @@
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">带宽 单位Mbps</small>
                                     </div>
+                                    <div v-if="isChecked">
+                                        <div class="form-group mb-25">
+                                            <label for="username">高级选项测试</label>
+                                            <input type="text" v-model="nodeData.username" class="form-control"
+                                                id="username" value="root" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">高级选项测试</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="password">高级选项测试</label>
+                                            <input type="text" v-model="nodeData.password" class="form-control"
+                                                id="password" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">高级选项测试</small>
+                                        </div>
+                                    </div>
                                     <div class="form-group mb-25">
                                         <label for="username">ssh用户名</label>
                                         <input type="text" v-model="nodeData.username" class="form-control" id="username"
@@ -83,24 +108,22 @@
                                     <div class="form-group mb-25">
                                         <label for="password">ssh密码</label>
                                         <input type="text" v-model="nodeData.password" class="form-control" id="password"
-                                            placeholder="123456" required>
+                                            required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">密码</small>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="password">确认密码</label>
                                         <input type="text" v-model="nodeData.confirmPassword" class="form-control"
-                                            id="password" placeholder="123456" required>
+                                            id="password" required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">确认密码</small>
                                     </div>
                                     <div class="button-group d-flex pt-25 justify-content-end">
-
                                         <a href="" style="color: white;"
                                             class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2"
                                             @click="clickAdd($event)">创建虚拟机
                                         </a>
-
                                     </div>
                                 </form>
                             </div>
@@ -111,6 +134,7 @@
         </div>
     </div>
 </template>
+<style src="static/css/now-ui-addvm.css"></style>
 <script>
 import { notification } from 'ant-design-vue';
 export default {
@@ -147,8 +171,10 @@ export default {
             nodesData: [],
             osTypeData: [],
             systemData: [],
+            isChecked: false
         }
     },
+
     methods: {
         fetchData() {
             // 使用异步获取数据
@@ -170,12 +196,10 @@ export default {
                     this.nodesData = newTableData;
                 }
             });
-
         },
         getOsType() {
             // 使用异步获取数据
             const url = `/api/selectOsByPage?page=1&size=200`;
-
             // 存储ostype,后面判断用,防止重复
             const osTypeSet = new Set();
 

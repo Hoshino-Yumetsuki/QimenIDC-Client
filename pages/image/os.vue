@@ -169,8 +169,10 @@
                                                         <!-- <img height="24" width="24"
                                                             :src="'/assets/icons/svg/' + item.status + '.svg'" /> -->
                                                         <!-- 0=开机，1=暂停 -->
-                                                        <span v-if="item.status === 0" class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">正常</span>
-                                                        <span v-if="item.status === 1" class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">暂停</span>
+                                                        <span v-if="item.status === 0"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">正常</span>
+                                                        <span v-if="item.status === 1"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">暂停</span>
                                                         <span v-if="item.status === 2" class="text-danger">镜像地址无法连接</span>
                                                     </div>
                                                 </td>
@@ -271,8 +273,11 @@
         <a-modal :visible="downVisible" :ok-text="'下载'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickDownload">
             <p>下载镜像</p><br>
             <a-form :form="form">
-                <a-form-item label="节点ID" name="id" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                    <a-input v-model="downData.nodeId" :placeholder="'请输入节点ID'" />
+                <a-form-item label="节点" name="id" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="downData.nodeId">
+                        <a-select-option v-for="item in nodesData" :key="item.id" :value="item.id">{{
+                            item.name }}</a-select-option>
+                    </a-select>
                 </a-form-item>
             </a-form>
         </a-modal>
@@ -488,6 +493,7 @@ export default {
                 cloud: '',
             },
             form: null,
+            nodesData: [],//节点数据
         }
     },
     // 计算属性
@@ -566,6 +572,27 @@ export default {
                 }
             });
 
+        },
+        getNodeData() {
+            // 使用异步获取数据
+            const url = `/api/selectNodeByPage?page=1&size=200`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    const records = data.records;
+                    const newTableData = [];
+                    records.forEach(record => {
+                        // 构建新的记录对象
+                        const newRecord = {
+                            id: record.id,
+                            name: record.name || '未知',
+                        };
+                        // 添加到新的数组中
+                        newTableData.push(newRecord);
+                    });
+                    this.nodesData = newTableData;
+                }
+            });
         },
         prevPage() {
             if (this.currentPage > 1) {
@@ -755,6 +782,7 @@ export default {
         },
     },
     mounted() {
+        this.getNodeData();
         this.fetchData();
         // 定时刷新数据
         this.timer = setInterval(() => {
