@@ -17,19 +17,9 @@
                             <div class="edit-profile__body">
                                 <form>
                                     <div class="form-group mb-25">
-                                        <div>
-                                            <label for="nodesData">节点</label>
-                                            <a-select class="add-aselect" id="nodeid" v-model="nodeData.nodeid">
-                                                <a-select-option v-for="item in nodesData" :key="item.id"
-                                                    :value="item.id">{{
-                                                        item.name }}</a-select-option>
-                                            </a-select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="hostname">虚拟机名</label>
-                                        <input type="text" v-model="nodeData.hostname" class="form-control" id="hostname"
-                                            placeholder="虚拟机名(选填)">
+                                        <label for="hostname">模板名称</label>
+                                        <input type="text" v-model="nodeData.name" class="form-control" id="hostname"
+                                            placeholder="配置模板名称(必填)">
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="sockets">CPU插槽数</label>
@@ -59,23 +49,6 @@
                                         <small class="text-danger">内存,单位Mb</small>
                                     </div>
                                     <div class="form-group mb-25">
-                                        <label for="memory">系统类型</label>
-                                        <a-select class="add-aselect" id="osType" v-model="nodeData.osType"
-                                            @change="handleOsTypeChange">
-                                            <a-select-option v-for="item in osTypeData" :value="item.osType"
-                                                :key="item.osType">{{
-                                                    item.osType }}</a-select-option>
-                                        </a-select>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="os">操作系统</label>
-                                        <a-select class="add-aselect" id="os" v-model="nodeData.os">
-                                            <a-select-option v-for="item in systemData" :value="item.name"
-                                                :key="item.name">{{
-                                                    item.name }}</a-select-option>
-                                        </a-select>
-                                    </div>
-                                    <div class="form-group mb-25">
                                         <label for="bandwidth">带宽</label>
                                         <input type="number" v-model="nodeData.bandwidth" class="form-control"
                                             id="bandwidth" value="1" required>
@@ -84,45 +57,24 @@
                                     </div>
                                     <div v-if="isChecked">
                                         <div class="form-group mb-25">
-                                            <label for="username">高级选项测试</label>
-                                            <input type="text" v-model="nodeData.username" class="form-control"
-                                                id="username" value="root" required>
+                                            <label for="username">系统盘大小</label>
+                                            <input type="text" v-model="nodeData.systemDiskSize" class="form-control"
+                                                id="systemDiskSize" required>
                                             <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                            <small class="text-danger">高级选项测试</small>
+                                            <small class="text-danger">留空则使用系统默认系统盘大小</small>
                                         </div>
                                         <div class="form-group mb-25">
-                                            <label for="password">高级选项测试</label>
-                                            <input type="text" v-model="nodeData.password" class="form-control"
+                                            <label for="password">去虚拟化</label>
+                                            <input type="text" v-model="nodeData.devirtualization" class="form-control"
                                                 id="password" required>
                                             <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                            <small class="text-danger">高级选项测试</small>
+                                            <small class="text-danger">去虚拟化</small>
                                         </div>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="username">ssh用户名</label>
-                                        <input type="text" v-model="nodeData.username" class="form-control" id="username"
-                                            value="root" required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">一般为root，请根据实际情况填写</small>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="password">ssh密码</label>
-                                        <input type="text" v-model="nodeData.password" class="form-control" id="password"
-                                            required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">密码</small>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="password">确认密码</label>
-                                        <input type="text" v-model="nodeData.confirmPassword" class="form-control"
-                                            id="password" required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">确认密码</small>
                                     </div>
                                     <div class="button-group d-flex pt-25 justify-content-end">
                                         <a href="" style="color: white;"
                                             class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2"
-                                            @click="clickAdd($event)">创建虚拟机
+                                            @click="clickAdd($event)">创建实例模板
                                         </a>
                                     </div>
                                 </form>
@@ -154,79 +106,28 @@ export default {
     data() {
         return {
             nodeData: {
-                nodeid: null,//节点id
-                hostname: null,//虚拟机名
+                name: null,//模板名称
                 sockets: 1, //插槽数
                 cores: 1,//核心
                 threads: 1,//线程
                 memory: 512,//内存
                 dataDisk: null,//附加磁盘
-                osType: null,//操作系统类型
-                os: null,//操作系统
                 bandwidth: null,//带宽
-                username: 'root',//用户名
-                password: null,//密码
-                confirmPassword: null,//确认密码
+                systemDiskSize: null,//系统盘大小
+                devirtualization: null,//去虚拟化boolean 默认false
+                kvm: null,//带宽
+                nested: null,//带宽
+                cpu: null,//带宽
+                cpuUnits: null,//带宽
+                bwlimit: null,//带宽
+                arch: null,//带宽
+                onBoot: null,//带宽
             },
-            nodesData: [],
-            osTypeData: [],
-            systemData: [],
             isChecked: false
         }
     },
 
     methods: {
-        fetchData() {
-            // 使用异步获取数据
-            const url = `/api/selectNodeByPage?page=1&size=200`;
-            this.$axios.get(url).then(res => {
-                if (res.data.code === 20000) {
-                    const data = res.data.data;
-                    const records = data.records;
-                    const newTableData = [];
-                    records.forEach(record => {
-                        // 构建新的记录对象
-                        const newRecord = {
-                            id: record.id,
-                            name: record.name || '未知',
-                        };
-                        // 添加到新的数组中
-                        newTableData.push(newRecord);
-                    });
-                    this.nodesData = newTableData;
-                }
-            });
-        },
-        getOsType() {
-            // 使用异步获取数据
-            const url = `/api/selectOsByPage?page=1&size=200`;
-            // 存储ostype,后面判断用,防止重复
-            const osTypeSet = new Set();
-
-            this.$axios.get(url).then(res => {
-                if (res.data.code === 20000) {
-                    const data = res.data.data;
-                    const records = data.records;
-                    const newTableData = [];
-
-                    records.forEach(record => {
-                        // 检查osType是否已经存在于Set中，避免重复
-                        if (!osTypeSet.has(record.osType)) {
-                            // 构建新的记录对象
-                            const newRecord = {
-                                osType: record.osType,
-                            };
-                            // 添加到新的数组中
-                            newTableData.push(newRecord);
-                            // 将osType添加到Set中，确保唯一性
-                            osTypeSet.add(record.osType);
-                        }
-                    });
-                    // 将Set转为数组，并赋值给osTypeData
-                    this.osTypeData = newTableData;
-                }
-            });
-        },
         handleOsTypeChange() {
             // 获取选中的值
             const selectedOsType = this.nodeData.osType;
@@ -234,30 +135,9 @@ export default {
             // 执行相应的函数
             this.getSysData(selectedOsType);
         },
-        getSysData(type) {
-            // 使用异步获取数据
-            const url = `/api/selectOsByPageAndCondition?page=1&size=200&param=osType&value=${type}`;
-            this.$axios.get(url).then(res => {
-                if (res.data.code === 20000) {
-                    const data = res.data.data;
-                    const records = data.records;
-                    const newTableData = [];
-                    records.forEach(record => {
-                        // 构建新的记录对象
-                        const newRecord = {
-                            osType: record.osType,
-                            name: record.name,
-                        };
-                        // 添加到新的数组中
-                        newTableData.push(newRecord);
-                    });
-                    this.systemData = newTableData;
-                }
-            });
-        },
         clickAdd(event) {
             event.preventDefault();
-            const url = '/api/createVm';
+            const url = '/api/addConfiguretemplate';
             const data = {
                 nodeid: this.nodeData.nodeid,
                 hostname: this.nodeData.hostname,
@@ -276,7 +156,7 @@ export default {
             this.$axios.post(url, data).then(res => {
                 if (res.data.code === 20000) {
                     notification.success({
-                        message: '创建虚拟机成功',
+                        message: '创建模板成功',
                         duration: 2,
                         placement: 'bottomRight'
                     });
@@ -293,10 +173,6 @@ export default {
                 }
             })
         },
-    },
-    mounted() {
-        this.fetchData();
-        this.getOsType();
     },
 }
 </script>
