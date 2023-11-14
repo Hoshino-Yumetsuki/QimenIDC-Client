@@ -2,3 +2,12 @@
     margin-bottom: 10px;
     margin-left: 388px;
 }
+
+
+.add-aselect .ant-select-selection--single {
+    height: 48px;
+}
+
+.add-aselect .ant-select-selection--single .ant-select-selection__rendered {
+    line-height: 48px;
+}

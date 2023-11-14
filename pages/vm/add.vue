@@ -19,12 +19,11 @@
                                     <div class="form-group mb-25">
                                         <div>
                                             <label for="nodesData">节点</label>
-                                            <select class="js-example-basic-single js-states form-control" id="nodeid"
-                                                v-model="nodeData.nodeid">
-                                                <option v-for="item in nodesData" :key="item.id" :value="item.id">{{
-                                                    item.name }}</option>
-
-                                            </select>
+                                            <a-select class="add-aselect" id="nodeid" v-model="nodeData.nodeid">
+                                                <a-select-option v-for="item in nodesData" :key="item.id"
+                                                    :value="item.id">{{
+                                                        item.name }}</a-select-option>
+                                            </a-select>
                                         </div>
                                     </div>
                                     <div class="form-group mb-25">
@@ -61,19 +60,18 @@
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="memory">系统类型</label>
-                                        <select class="js-example-basic-single js-states form-control" id="osType"
-                                            v-model="nodeData.osType" @change="handleOsTypeChange">
-                                            <option v-for="item in osTypeData" :value="item.osType">{{
-                                                item.osType }}</option>
-                                        </select>
+                                        <a-select class="add-aselect" id="osType" v-model="nodeData.osType"
+                                            @change="handleOsTypeChange">
+                                            <a-select-option v-for="item in osTypeData" :value="item.osType">{{
+                                                item.osType }}</a-select-option>
+                                        </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="os">操作系统</label>
-                                        <select class="js-example-basic-single js-states form-control" id="os"
-                                            v-model="nodeData.os">
-                                            <option v-for="item in systemData" :value="item.name">{{
-                                                item.name }}</option>
-                                        </select>
+                                        <a-select class="add-aselect" id="os" v-model="nodeData.os">
+                                            <a-select-option v-for="item in systemData" :value="item.name">{{
+                                                item.name }}</a-select-option>
+                                        </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="bandwidth">带宽</label>
