@@ -284,11 +284,10 @@
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <nuxt-link :to="`/ip/poollist/${item.id}`"
-                                                                class="text-black-50 fw-500">
-                                                                <a href="#" class="view">
-                                                                    <feather-icon name="eye" />
-                                                                </a>
+                                                            <nuxt-link
+                                                                :to="{ name: 'vm-edittemp-id', params: { id: item.id, data: item } }"
+                                                                class="edit">
+                                                                <feather-icon name="edit" />
                                                             </nuxt-link>
                                                         </li>
                                                         <li>
