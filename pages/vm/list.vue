@@ -193,21 +193,23 @@
                                                 <td>
                                                     <div class="progress-wrap d-flex align-items-center mb-15">
                                                         <span class="progress-text">CPU：</span>
-                                                        <div class="progress" style="height: 10px;">
+                                                        <div class="progress" style="height: 12px;">
                                                             <div :class="cpuBarClass(item.cpuUsage)" role="progressbar"
                                                                 :style="{ width: item.cpuUsage + '%' }"
                                                                 :aria-valuenow="item.cpuUsage" aria-valuemin="0"
-                                                                aria-valuemax="100">{{ item.cpuUsage }}%</div>
+                                                                aria-valuemax="100"><span class="progress_text">{{
+                                                                    item.cpuUsage }}%</span></div>
                                                         </div>
                                                     </div>
                                                     <div class="progress-wrap d-flex align-items-center">
                                                         <span class="progress-text">内存：</span>
-                                                        <div class="progress">
+                                                        <div class="progress" style="height: 12px;">
                                                             <div :class="memoryBarClass(item.memoryUsage)"
                                                                 role="progressbar"
                                                                 :style="{ width: item.memoryUsage + '%' }"
                                                                 :aria-valuenow="item.memoryUsage" aria-valuemin="0"
-                                                                aria-valuemax="100">{{ item.memoryUsage }}%</div>
+                                                                aria-valuemax="100"><span class="progress_text">{{
+                                                                    item.memoryUsage }}%</span></div>
                                                         </div>
                                                     </div>
 
@@ -215,11 +217,11 @@
                                                 <td>
                                                     <div>
                                                         <img height="16" width="16" src="/assets/icons/svg/up.svg" />
-                                                        <span class="text-warning">{{ item.netOut }}</span>
+                                                        <span class="text-warning">{{ item.netOut }} MB/s</span>
                                                     </div>
                                                     <div>
                                                         <img height="16" width="16" src="/assets/icons/svg/down.svg" />
-                                                        <span class="text-success">{{ item.netOut }}</span>
+                                                        <span class="text-success">{{ item.netIn }} MB/s</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -585,9 +587,9 @@ export default {
                             // cpuUsage: current.cpu ? current.cpu * 100 : 0, 
                             cpuUsage: cpuUsage || '0',
                             memoryUsage: memoryUsage || '0',
-                            netIn: netInTotal || '0',
-                            netOut: netOutTotal || '0',
-                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB` || '0',
+                            netIn: (netInTotal / 1024 / 1024).toFixed(2) || '0',
+                            netOut: (netOutTotal / 1024 / 1024).toFixed(2) || '0',
+                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB/s / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB/s` || '0',
                         };
 
                         // 添加到新的数组中
@@ -671,6 +673,16 @@ export default {
 
 .status-cell img {
     margin-right: 8px;
+}
+
+.progress-bar {
+    overflow: visible;
+    color: black;
+    font-size: 12px;
+}
+
+.progress-bar .progress_text {
+    padding-left: 5px;
 }
 </style>
 
