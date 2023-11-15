@@ -6,70 +6,108 @@
                 <div class="row justify-content-center">
                     <div class="col-sm-5 col-10">
                         <div class="mt-40 mb-50">
-                            <div class="checkbox-theme-default custom-checkbox add-checkbox">
-                                <input class="checkbox" type="checkbox" id="check-1" v-model="isChecked">
-                                <label for="check-1">
-                                    <span class="checkbox-text">
-                                        高级选项
-                                    </span>
-                                </label>
-                            </div>
                             <div class="edit-profile__body">
                                 <form>
                                     <div class="form-group mb-25">
                                         <label for="hostname">模板名称</label>
-                                        <input type="text" v-model="nodeData.name" class="form-control" id="hostname"
+                                        <input type="text" v-model="formData.name" class="form-control" id="hostname"
                                             placeholder="配置模板名称(必填)">
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="sockets">CPU插槽数</label>
-                                        <input type="number" v-model="nodeData.sockets" class="form-control" id="sockets"
+                                        <input type="number" v-model="formData.sockets" class="form-control" id="sockets"
                                             required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">CPU插槽数</small>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="cores">CPU核心数</label>
-                                        <input type="number" v-model="nodeData.cores" class="form-control" id="cores"
+                                        <input type="number" v-model="formData.cores" class="form-control" id="cores"
                                             required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">CPU核心数</small>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="threads">CPU线程数</label>
-                                        <input type="number" v-model="nodeData.threads" class="form-control" id="threads">
+                                        <input type="number" v-model="formData.threads" class="form-control" id="threads">
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">CPU线程数</small>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="memory">内存</label>
-                                        <input type="number" v-model="nodeData.memory" class="form-control" id="memory"
+                                        <input type="number" v-model="formData.memory" class="form-control" id="memory"
                                             value="512" required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">内存,单位Mb</small>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="bandwidth">带宽</label>
-                                        <input type="number" v-model="nodeData.bandwidth" class="form-control"
+                                        <input type="number" v-model="formData.bandwidth" class="form-control"
                                             id="bandwidth" value="1" required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">带宽 单位Mbps</small>
                                     </div>
-                                    <div v-if="isChecked">
-                                        <div class="form-group mb-25">
-                                            <label for="username">系统盘大小</label>
-                                            <input type="text" v-model="nodeData.systemDiskSize" class="form-control"
-                                                id="systemDiskSize" required>
-                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                            <small class="text-danger">留空则使用系统默认系统盘大小</small>
-                                        </div>
-                                        <div class="form-group mb-25">
-                                            <label for="password">去虚拟化</label>
-                                            <input type="text" v-model="nodeData.devirtualization" class="form-control"
-                                                id="password" required>
-                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                            <small class="text-danger">去虚拟化</small>
-                                        </div>
+
+                                    <div class="form-group mb-25">
+                                        <label for="username">系统盘大小</label>
+                                        <input type="number" v-model="formData.systemDiskSize" class="form-control"
+                                            id="systemDiskSize" required>
+                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                        <small class="text-danger">留空则使用系统默认系统盘大小</small>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="password">去虚拟化</label>
+                                        <a-select class="add-aselect" id="osType" v-model="formData.devirtualization">
+                                            <a-select-option :value="true">开启</a-select-option>
+                                            <a-select-option :value="false">关闭</a-select-option>
+                                        </a-select>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="password">kvm虚拟化</label>
+                                        <a-select class="add-aselect" id="osType" v-model="formData.kvm">
+                                            <a-select-option :value="true">开启</a-select-option>
+                                            <a-select-option :value="false">关闭</a-select-option>
+                                        </a-select>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="password">嵌套虚拟化</label>
+                                        <a-select class="add-aselect" id="osType" v-model="formData.nested">
+                                            <a-select-option :value="true">开启</a-select-option>
+                                            <a-select-option :value="false">关闭</a-select-option>
+                                        </a-select>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="username">CPU类型</label>
+                                        <input type="text" v-model="formData.cpu" class="form-control" id="cpu" required>
+                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                        <small class="text-danger">cpu类型,如果开启嵌套虚拟化,cpu类型必须host或者max</small>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="username">CPU限制</label>
+                                        <input type="number" v-model="formData.cpuUnits" class="form-control" id="cpuUnits"
+                                            required>
+                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                        <small class="text-danger">CPU限制,单位:百分比 如填80则限制80%</small>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="username">I/O限制</label>
+                                        <input type="number" v-model="formData.bwlimit" class="form-control" id="cpuUnits"
+                                            required>
+                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                        <small class="text-danger">I/O限制,单位:mb/s 如填80则限制80mb/s</small>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="username">系统架构</label>
+                                        <input type="text" v-model="formData.arch" class="form-control" id="cpu" required>
+                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                        <small class="text-danger">系统架构(x86_64,arrch64)</small>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="password">是否开机自启</label>
+                                        <a-select class="add-aselect" id="osType" v-model="formData.onBoot">
+                                            <a-select-option value="1">开启</a-select-option>
+                                            <a-select-option value="0">关闭</a-select-option>
+                                        </a-select>
                                     </div>
                                     <div class="button-group d-flex pt-25 justify-content-end">
                                         <a href="" style="color: white;"
@@ -105,7 +143,7 @@ export default {
     },
     data() {
         return {
-            nodeData: {
+            formData: {
                 name: null,//模板名称
                 sockets: 1, //插槽数
                 cores: 1,//核心
@@ -114,23 +152,22 @@ export default {
                 dataDisk: null,//附加磁盘
                 bandwidth: null,//带宽
                 systemDiskSize: null,//系统盘大小
-                devirtualization: null,//去虚拟化boolean 默认false
-                kvm: null,//带宽
-                nested: null,//带宽
-                cpu: null,//带宽
-                cpuUnits: null,//带宽
-                bwlimit: null,//带宽
-                arch: null,//带宽
-                onBoot: null,//带宽
+                devirtualization: false,//去虚拟化boolean 默认false
+                kvm: true,//是否开启kvm虚拟化，默认开启 boolean
+                nested: false,//嵌套虚拟化 默认关闭boolean
+                cpu: 'kvm64',//cpu类型 默认kvm64，如果开启了nested，cpu必须为host或max
+                cpuUnits: null,//cpu限制 百分比
+                bwlimit: null,//I/O限制 mb/s
+                arch: 'x86_64',//系统架构(x86_64,arrch64)，默认x86_64
+                onBoot: '1',//是否开机自启 0 1 默认0关闭
             },
-            isChecked: false
         }
     },
 
     methods: {
         handleOsTypeChange() {
             // 获取选中的值
-            const selectedOsType = this.nodeData.osType;
+            const selectedOsType = this.formData.osType;
 
             // 执行相应的函数
             this.getSysData(selectedOsType);
@@ -139,19 +176,22 @@ export default {
             event.preventDefault();
             const url = '/api/addConfiguretemplate';
             const data = {
-                nodeid: this.nodeData.nodeid,
-                hostname: this.nodeData.hostname,
-                sockets: this.nodeData.sockets,
-                cores: this.nodeData.cores,
-                threads: this.nodeData.threads,
-                memory: this.nodeData.memory,
-                dataDisk: this.nodeData.dataDisk,
-                osType: null,
-                os: this.nodeData.os,
-                bandwidth: this.nodeData.bandwidth,
-                username: this.nodeData.username,
-                password: this.nodeData.password,
-                confirmPassword: this.nodeData.confirmPassword,
+                name: this.formData.name,
+                sockets: this.formData.sockets,
+                cores: this.formData.cores,
+                threads: this.formData.threads,
+                memory: this.formData.memory,
+                dataDisk: this.formData.dataDisk,
+                bandwidth: this.formData.bandwidth,
+                systemDiskSize: this.formData.systemDiskSize,
+                // devirtualization: this.formData.devirtualization,
+                // kvm: this.formData.kvm,
+                // nested: this.formData.nested,
+                cpu: this.formData.cpu,
+                cpuUnits: this.formData.cpuUnits,
+                bwlimit: this.formData.bwlimit,
+                arch: this.formData.arch,
+                onBoot: this.formData.onBoot,
             };
             this.$axios.post(url, data).then(res => {
                 if (res.data.code === 20000) {
