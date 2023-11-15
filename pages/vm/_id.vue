@@ -7,12 +7,12 @@
                     <div class="breadcrumb-main">
                         <div>
                             <span class="text-monospace font-weight-bolder fw-500 fs-20 mb-0"
-                                style="max-width: 300px;">ECS-vm100</span>
-                            <span class="breadcrumb-text" style="margin-left: 10px;">中国 - 广州</span>
+                                style="max-width: 300px;">ECS-vm{{ vmId }}</span>
+                            <span class="breadcrumb-text" style="margin-left: 10px;">中国 - {{ tableData.area }}</span>
                             <span>&nbsp;&nbsp;|&nbsp;&nbsp;(</span>
                             <span class="breadcrumb-text">公</span>
                             <span>)</span>
-                            <span class="breadcrumb-text">192.168.36.1 <i class="la la-copy"
+                            <span class="breadcrumb-text">{{ tableData.IP }} <i class="la la-copy"
                                     style="cursor: pointer;"></i></span>
                         </div>
                         <div class="breadcrumb-action justify-content-center flex-wrap btn-action">
@@ -72,9 +72,13 @@
                             </div>
                             <div>
                                 <label>实例状态</label>
+
                                 <span class="span-level-5"><img height="24" width="24"
-                                        :src="'/assets/icons/svg/0.svg'" /></span>
-                                <span>运行中{{ tableData.type }}</span>
+                                        :src="'/assets/icons/svg/' + tableData.status + '.svg'" /></span>
+                                <span v-if="tableData.status === 0">运行中</span>
+                                <span v-if="tableData.status === 1">关机</span>
+                                <span v-if="tableData.status === 2">挂起</span>
+                                <span v-if="tableData.status === 4">封禁</span>
                             </div>
                             <div>
                                 <label>地域和可用区</label>
@@ -91,7 +95,7 @@
                                 <label>操作系统</label>
                                 <span class="span-level-5"><img height="24" width="24"
                                         :src="'/assets/icons/svg/ubuntu.svg'" /></span>
-                                <span>{{ tableData }}</span>
+                                <span>{{ tableData.osName }}</span>
                             </div>
                             <div>
                                 <label>公网IP</label>
@@ -101,17 +105,17 @@
                             </div>
                             <div>
                                 <label>用户名密码</label>
-                                <span class="span-level-user">root</span>
+                                <span class="span-level-user">{{ tableData.username }}</span>
                                 <span>/</span>
-                                <span>123456</span>
+                                <span>{{ tableData.password }}</span>
                             </div>
                             <div>
                                 <label>创建时间</label>
-                                <span class="span-level-5">2023-9-1 12:34:12</span>
+                                <span class="span-level-5">{{ formatDateTime(tableData.createTime) }}</span>
                             </div>
                             <div>
                                 <label>到期时间</label>
-                                <span class="span-level-5">2023-9-1 12:34:12</span>
+                                <span class="span-level-5">{{ formatDateTime(tableData.expirationTime) }}</span>
                             </div>
                         </div>
                     </div>
@@ -273,10 +277,7 @@ export default {
                 if (res.data.code === 20000) {
                     const data = res.data.data;
                     const vmhost = data.vmhost;
-                    //const current = data.current;
-                    // if (current != null) {
-                    //     current = data.current.data || {}; // 处理current可能为空的情况
-                    // }
+                    const current = data.current;
                     let ip = `none`;
                     // 获取IP为1的地址
                     const ipConfig = vmhost.ipConfig['1'];
@@ -287,8 +288,13 @@ export default {
                     // 构建新的记录对象
                     const newRecord = {
                         type: `pve`,
-                        area: data.area,
+                        area: data.area || '空',
+                        osName: vmhost.osName,
                         hostname: vmhost.name,
+                        username: vmhost.username,
+                        password: vmhost.password,
+                        createTime: vmhost.createTime,
+                        expirationTime: vmhost.expirationTime,
                         status: vmhost.status, // 处理status可能为空的情况
                         IP: ip,
                         vCpu: vmhost.cores,
@@ -299,6 +305,13 @@ export default {
                     this.tableData = newRecord;
                 }
             });
+        },
+        formatDateTime(timestamp) {
+            const dateObject = new Date(timestamp);
+            return `${dateObject.getFullYear()}-${this.padZero(dateObject.getMonth() + 1)}-${this.padZero(dateObject.getDate())} ${this.padZero(dateObject.getHours())}:${this.padZero(dateObject.getMinutes())}:${this.padZero(dateObject.getSeconds())}`;
+        },
+        padZero(value) {
+            return value < 10 ? `0${value}` : value;
         },
         cpuEcharts() {
             // 找到容器

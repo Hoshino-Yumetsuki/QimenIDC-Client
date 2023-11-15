@@ -529,9 +529,6 @@ export default {
                         const vmhost = record.vmhost || 'none';
                         const os = record.os || 'none';
                         const current = record.current || null;
-                        if (current != null) {
-                            current = record.current.data || {}; // 处理current可能为空的情况
-                        }
                         let diskIOReadTotal = 0;
                         let diskIOWriteTotal = 0;
 
@@ -542,22 +539,22 @@ export default {
                         let memoryUsage = 0;
                         if (current != null) {
                             // 计算磁盘IO的读写总量
-                            const blockstat = current.blockstat || {}; // 处理blockstat可能为空的情况
+                            const blockstat = current.data.blockstat || {}; // 处理blockstat可能为空的情况
 
                             for (const device in blockstat) {
                                 diskIOReadTotal += blockstat[device].rd_bytes || 0;
                                 diskIOWriteTotal += blockstat[device].wr_bytes || 0;
                             }
                             // 计算实时带宽的入口和出口总量
-                            const nics = current.nics || {}; // 处理nics可能为空的情况
+                            const nics = current.data.nics || {}; // 处理nics可能为空的情况
 
                             for (const nic in nics) {
                                 netInTotal += nics[nic].netin || 0;
                                 netOutTotal += nics[nic].netout || 0;
                             }
 
-                            cpuUsage = `${vmhost.cores}C/${vmhost.memory}M`;
-                            memoryUsage = current.mem ? (current.mem / 1024 / 1024 / 10).toFixed(2) : 0;
+                            cpuUsage = current.data.cpu ? (current.data.cpu * 100).toFixed(2) : 0;
+                            memoryUsage = current.data.mem ? (current.data.freemem / current.data.mem).toFixed(2) : 0;
                         }
 
 
@@ -577,7 +574,7 @@ export default {
                             nodeName: record.nodeName || 'none',
                             area: record.area || 'none',
                             hostname: vmhost.name || 'none',
-                            status: vmhost.status || 'none', // 处理status可能为空的情况
+                            status: vmhost.status, // 处理status可能为空的情况
                             IP: ip || 'none',
                             operatingSystem: os.name || 'none', // 处理operatingSystem可能为空的情况
                             osType: os.osType || 'none', // 处理osType可能为空的情况
