@@ -7,8 +7,8 @@
                     <div class="breadcrumb-main">
                         <div>
                             <span class="text-monospace font-weight-bolder fw-500 fs-20 mb-0"
-                                style="max-width: 300px;">ECS-vm{{ vmId }}</span>
-                            <span class="breadcrumb-text" style="margin-left: 10px;">中国 - {{ tableData.area }}</span>
+                                style="max-width: 300px;">ECS-{{ tableData.vmName }}</span>
+                            <span class="breadcrumb-text" style="margin-left: 10px;">{{ tableData.area }}</span>
                             <span>&nbsp;&nbsp;|&nbsp;&nbsp;(</span>
                             <span class="breadcrumb-text">公</span>
                             <span>)</span>
@@ -23,8 +23,13 @@
                             </div>
                             <!-- 关机 或 开机 -->
                             <div>
-                                <button class="btn btn-default btn-sm btn-white text-info" type="button" id="button2">
+                                <button v-if="tableData.status === 0" class="btn btn-default btn-sm btn-white text-info"
+                                    type="button" id="button2">
                                     关机
+                                </button>
+                                <button v-if="tableData.status === 1" class="btn btn-default btn-sm btn-white text-info"
+                                    type="button" id="button2">
+                                    开机
                                 </button>
                             </div>
                             <!-- 重启 -->
@@ -81,8 +86,10 @@
                                 <span v-if="tableData.status === 4">封禁</span>
                             </div>
                             <div>
-                                <label>地域和可用区</label>
-                                <span class="span-level-2">中国&nbsp;&nbsp;|&nbsp;&nbsp;{{ tableData.area }}</span>
+                                <label>可用区</label>
+                                <span class="span-level-5">&nbsp;&nbsp;&nbsp;&nbsp;{{
+                                    tableData.area
+                                }}</span>
                             </div>
                             <div>
                                 <label>实例规格</label>
@@ -289,6 +296,7 @@ export default {
                     const newRecord = {
                         type: `pve`,
                         area: data.area || '空',
+                        vmName: vmhost.name,
                         osName: vmhost.osName,
                         hostname: vmhost.name,
                         username: vmhost.username,

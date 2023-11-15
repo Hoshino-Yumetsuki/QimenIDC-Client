@@ -217,11 +217,11 @@
                                                 <td>
                                                     <div>
                                                         <img height="16" width="16" src="/assets/icons/svg/up.svg" />
-                                                        <span class="text-warning">{{ item.netOut }} MB/s</span>
+                                                        <span class="text-warning">{{ item.netOut }} Mbps</span>
                                                     </div>
                                                     <div>
                                                         <img height="16" width="16" src="/assets/icons/svg/down.svg" />
-                                                        <span class="text-success">{{ item.netIn }} MB/s</span>
+                                                        <span class="text-success">{{ item.netIn }} Mbps</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -589,7 +589,7 @@ export default {
                             memoryUsage: memoryUsage || '0',
                             netIn: (netInTotal / 1024 / 1024).toFixed(2) || '0',
                             netOut: (netOutTotal / 1024 / 1024).toFixed(2) || '0',
-                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB/s / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB/s` || '0',
+                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024).toFixed(2)} MB` || '0',
                         };
 
                         // 添加到新的数组中
