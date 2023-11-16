@@ -456,6 +456,12 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                } else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
                 }
             });
         },
@@ -481,6 +487,12 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                } else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
                 }
             })
         },
@@ -491,6 +503,12 @@ export default {
                     // 显示成功提示框
                     notification.success({
                         message: '删除成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                } else {
+                    notification.error({
+                        message: res.data.message,
                         duration: 2,
                         placement: 'bottomRight'
                     });

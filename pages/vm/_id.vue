@@ -24,17 +24,21 @@
                             <!-- 关机 或 开机 -->
                             <div>
                                 <button v-if="tableData.status === 0" class="btn btn-default btn-sm btn-white text-info"
-                                    type="button" id="button2">
+                                    type="button" id="button2" data-toggle="modal" data-target="#modal-info-confirmed"
+                                    @click="setVmStatus('stop', '关机')">
                                     关机
                                 </button>
                                 <button v-if="tableData.status === 1" class="btn btn-default btn-sm btn-white text-info"
-                                    type="button" id="button2">
+                                    type="button" id="button2" data-toggle="modal" data-target="#modal-info-confirmed"
+                                    @click="setVmStatus('start', '开机')">
                                     开机
                                 </button>
                             </div>
                             <!-- 重启 -->
                             <div>
-                                <button class="btn btn-default btn-sm btn-white text-info" type="button" id="button3">
+                                <button class="btn btn-default btn-sm btn-white text-info" type="button" id="button3"
+                                    data-toggle="modal" data-target="#modal-info-confirmed"
+                                    @click="setVmStatus('reboot', '重启')">
                                     重启
                                 </button>
                             </div>
@@ -50,7 +54,19 @@
                                     <i class="la la-download"></i> 更多操作
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <a href="" class="dropdown-item">重装系统</a>
+                                    <a href="" class="dropdown-item" @click="showReinstallModal($event)">重装系统</a>
+                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                        @click="setVmStatus('shutdown', '强制关机')">强制关机</a>
+                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                        @click="setVmStatus('suspend', '挂起')">挂起实例</a>
+                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                        @click="setVmStatus('resume', '取消挂起')">取消挂起</a>
+                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                        @click="setVmStatus('pause', '暂停')">暂停实例</a>
+                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                        @click="setVmStatus('unpause', '取消暂停')">取消暂停</a>
+                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                        @click="setVmStatus('delete', '删除')">删除实例</a>
                                 </div>
                             </div>
 
@@ -101,7 +117,7 @@
                             <div>
                                 <label>操作系统</label>
                                 <span class="span-level-5"><img height="24" width="24"
-                                        :src="'/assets/icons/svg/ubuntu.svg'" /></span>
+                                        :src="'/assets/icons/svg/' + tableData.osType + '.svg'" /></span>
                                 <span>{{ tableData.osName }}</span>
                             </div>
                             <div>
@@ -209,9 +225,9 @@
                                     <div class="info-container">
                                         <span class="font-weight-bold">系统盘</span>
                                         <div class="usage-info">
-                                            <span>50GB</span>
+                                            <span>{{ tableData.diskwrite }}GB</span>
                                             <span>/</span>
-                                            <span>60GB</span>
+                                            <span>{{ tableData.systemDiskSize }}GB</span>
                                         </div>
                                     </div>
                                 </div>
@@ -240,6 +256,59 @@
             </div>
 
         </div>
+        <!-- start: .modal-info-warning 提示框确认-->
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认{{ vmStatusText }}?</h6>
+                                <p>确认对这个虚拟机进行{{ vmStatusText }}吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickConfirm()">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-confirmed -->
+        <a-modal :visible="reinstallVisible" :ok-text="'重装系统'" :cancel-text="'取消'" @cancel="clickCancel"
+            @ok="clickReinstall">
+            <p>重装系统：</p><br>
+            <a-form>
+                <a-form-item label="系统类型" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select class="add-aselect" id="osType" v-model="reinstallData.osType" @change="handleOsTypeChange">
+                        <a-select-option v-for="item in osTypeData" :value="item.osType" :key="item.osType">{{
+                            item.osType }}</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="操作系统" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select class="add-aselect" id="os" v-model="reinstallData.os">
+                        <a-select-option v-for="item in systemData" :value="item.name" :key="item.name">{{
+                            item.name }}</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item label="新密码" name="newPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input :placeholder="'新密码,留空则不重置'" v-model="reinstallData.newPassword" />
+                </a-form-item>
+                <a-form-item label="重置数据盘" name="resetDataDisk" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select class="add-aselect" id="osType" v-model="reinstallData.resetDataDisk">
+                        <a-select-option :value="true">重置</a-select-option>
+                        <a-select-option :value="false">不重置</a-select-option>
+                    </a-select>
+                </a-form-item>
+            </a-form>
+        </a-modal>
     </div>
 </template>
 <script>
@@ -274,6 +343,17 @@ export default {
         return {
             tableData: [], // 表格数据
             vmId: null, // 虚拟机ID
+            vmStatus: null,//虚拟机控制状态start=开机、stop=关机、reboot=重启、shutdown=强制关机、suspend=挂起、resume=恢复、pause=暂停、unpause=恢复
+            vmStatusText: null,//中文提示
+            reinstallData: {
+                os: null,
+                osType: null,
+                newPassword: null,
+                resetDataDisk: false,
+            },//重装系统的数据
+            reinstallVisible: false,//重装窗口
+            osTypeData: [],
+            systemData: [],
         }
     },
     methods: {
@@ -285,6 +365,7 @@ export default {
                     const data = res.data.data;
                     const vmhost = data.vmhost;
                     const current = data.current;
+                    const os = data.os;
                     let ip = `none`;
                     // 获取IP为1的地址
                     const ipConfig = vmhost.ipConfig['1'];
@@ -296,8 +377,10 @@ export default {
                     const newRecord = {
                         type: `pve`,
                         area: data.area || '空',
+                        vmid: vmhost.id,
                         vmName: vmhost.name,
-                        osName: vmhost.osName,
+                        osName: os.name,
+                        osType: os.osType,
                         hostname: vmhost.name,
                         username: vmhost.username,
                         password: vmhost.password,
@@ -307,10 +390,13 @@ export default {
                         IP: ip,
                         vCpu: vmhost.cores,
                         memory: vmhost.memory,
+                        diskwrite: (current.data.diskwrite / 1024 / 1024).toFixed(2),
+                        systemDiskSize: vmhost.systemDiskSize,
                     };
                     // 添加到新的数组中
                     // newTableData.push(newRecord);
                     this.tableData = newRecord;
+                    this.diskFlowEcharts()
                 }
             });
         },
@@ -320,6 +406,146 @@ export default {
         },
         padZero(value) {
             return value < 10 ? `0${value}` : value;
+        },
+        setVmStatus(Status, StatusText) { //设置删除的ID
+            this.vmStatus = Status;
+            this.vmStatusText = StatusText;
+        },
+        ClickConfirm() {//确认操作delete
+            let url;
+            if (this.vmStatus === 'delete') {
+                url = `/api/delete/${this.tableData.vmid}`;
+            }
+            else {
+                url = `/api/power/${this.tableData.vmid}/${this.vmStatus}`;
+            }
+            this.$axios.put(url).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    notification.success({
+                        message: this.vmStatusText + '成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                    if (this.vmStatus === 'delete') {
+                        setTimeout(() => { //1秒后跳转到node界面，让消息提示充分显示
+                            this.$router.push('/vm/list');
+                        }, 1000); // 1000毫秒 = 1秒
+                    }
+                    this.vmStatus = null;
+                    this.vmStatusText = null;
+                }
+                else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            });
+
+        },
+        ClickCancel() {//取消
+            this.removeId = null;
+        },
+        clickCancel() {
+            this.reinstallData = [];
+            this.reinstallVisible = false;
+        },
+        clickReinstall() {
+            const url = `/api/reinstall`;
+            const data = {
+                vmHostId: this.tableData.vmid,
+                os: this.reinstallData.os,
+                newPassword: this.reinstallData.newPassword,
+                resetDataDisk: this.reinstallData.resetDataDisk,
+            };
+            this.$axios.put(url, data).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    notification.success({
+                        message: (
+                            <div style="white-space: pre-line;">
+                                {'发起重装' + this.reinstallData.os + '成功!\n请耐心等待10分钟左右!'}
+                            </div>
+                        ),
+                        duration: 2,
+                        placement: 'bottomRight',
+                    });
+                    this.reinstallVisible = false;
+                }
+                else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            });
+        },
+        showReinstallModal(event) {
+            event.preventDefault();
+            this.getOsType();
+            this.reinstallData.vmHostId = this.tableData.vmid;
+            this.reinstallVisible = true;
+        },
+        handleOsTypeChange() {
+            // 获取选中的值
+            const selectedOsType = this.reinstallData.osType;
+
+            // 执行相应的函数
+            this.getSysData(selectedOsType);
+        },
+        getSysData(type) {
+            // 使用异步获取数据
+            const url = `/api/selectOsByPageAndCondition?page=1&size=200&param=osType&value=${type}`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    const records = data.records;
+                    const newTableData = [];
+                    records.forEach(record => {
+                        // 构建新的记录对象
+                        const newRecord = {
+                            osType: record.osType,
+                            name: record.name,
+                        };
+                        // 添加到新的数组中
+                        newTableData.push(newRecord);
+                    });
+                    this.systemData = newTableData;
+                }
+            });
+        },
+        getOsType() {
+            // 使用异步获取数据
+            const url = `/api/selectOsByPage?page=1&size=200`;
+            // 存储ostype,后面判断用,防止重复
+            const osTypeSet = new Set();
+
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    const records = data.records;
+                    const newTableData = [];
+
+                    records.forEach(record => {
+                        // 检查osType是否已经存在于Set中，避免重复
+                        if (!osTypeSet.has(record.osType)) {
+                            // 构建新的记录对象
+                            const newRecord = {
+                                osType: record.osType,
+                            };
+                            // 添加到新的数组中
+                            newTableData.push(newRecord);
+                            // 将osType添加到Set中，确保唯一性
+                            osTypeSet.add(record.osType);
+                        }
+                    });
+                    // 将Set转为数组，并赋值给osTypeData
+                    this.osTypeData = newTableData;
+                }
+            });
         },
         cpuEcharts() {
             // 找到容器
@@ -588,7 +814,7 @@ export default {
                         label: {
                             show: true,
                             position: 'center',
-                            formatter: `{a|90%}\n{b|已使用}`,
+                            formatter: `{a|` + (this.tableData.diskwrite / this.tableData.systemDiskSize * 100).toFixed(2) + `%}\n{b|已使用}`,
                             rich: {
                                 a: {
                                     fontSize: 20,
@@ -604,14 +830,14 @@ export default {
                         },
                         data: [
                             {
-                                value: 50,
+                                value: this.tableData.diskwrite,
                                 name: '已使用',
                                 itemStyle: {
                                     color: '#00a8ff'
                                 }
                             },
                             {
-                                value: 60,
+                                value: this.tableData.systemDiskSize,
                                 name: '未使用',
                                 itemStyle: {
                                     color: '#e9ecef'
@@ -626,13 +852,15 @@ export default {
         }
     },
     mounted() {
+        this.fetchData()
         this.cpuEcharts()
         this.memoryEcharts()
         this.diskEcharts()
         this.networkEcharts()
         this.flowEcharts()
-        this.diskFlowEcharts()
-        this.fetchData()
+        this.timer = setInterval(() => {
+            this.fetchData();
+        }, 5000);
     }
 }
 </script>
