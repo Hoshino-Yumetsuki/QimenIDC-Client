@@ -92,66 +92,66 @@
                                                     </div>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">name</span>
+                                                    <span class="userDatatable-title">名称</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">cores</span>
+                                                    <span class="userDatatable-title">核心数</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">memory</span>
+                                                    <span class="userDatatable-title">内存</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">sockets</span>
+                                                    <span class="userDatatable-title">CPU插槽</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">threads</span>
+                                                    <span class="userDatatable-title">线程数</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">devirtualization</span>
+                                                    <span class="userDatatable-title">去虚拟化</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">kvm</span>
+                                                    <span class="userDatatable-title">KVM虚拟化</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">cpuModel</span>
+                                                    <span class="userDatatable-title">CPU类型</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">modelGroup</span>
+                                                    <span class="userDatatable-title">模板组</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">nested</span>
+                                                    <span class="userDatatable-title">嵌套虚拟化</span>
                                                 </th>
 
                                                 <th>
-                                                    <span class="userDatatable-title">cpu</span>
+                                                    <span class="userDatatable-title">cpu类型</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">cpuUnits</span>
+                                                    <span class="userDatatable-title">cpu限制</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">bwlimit</span>
+                                                    <span class="userDatatable-title">I/O限制</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">arch</span>
+                                                    <span class="userDatatable-title">系统架构</span>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">acpi</span>
                                                 </th>
 
                                                 <th>
-                                                    <span class="userDatatable-title">storage</span>
+                                                    <span class="userDatatable-title">磁盘名</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">systemDiskSize</span>
+                                                    <span class="userDatatable-title">系统盘大小</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">dataDisk</span>
+                                                    <span class="userDatatable-title">附加磁盘</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">bandwidth</span>
+                                                    <span class="userDatatable-title">带宽</span>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">onboot</span>
+                                                    <span class="userDatatable-title">开机启动</span>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">操作</span>
@@ -174,10 +174,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/ip/poollist/${item.id}`"
-                                                            class="text-black-50 fw-500">
-                                                            {{ item.id }}
-                                                        </nuxt-link>
+                                                        {{ item.id }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -187,12 +184,12 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.cores }}
+                                                        {{ item.cores }}核
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.memory }}
+                                                        {{ item.memory }}MB
                                                     </div>
                                                 </td>
                                                 <td>
@@ -207,12 +204,18 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.devirtualization }}
+                                                        <span v-if="item.devirtualization === 1"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">开启</span>
+                                                        <span v-if="item.devirtualization === 0"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">关闭</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.kvm }}
+                                                        <span v-if="item.kvm === 1"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">开启</span>
+                                                        <span v-if="item.kvm === 0"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">关闭</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -227,7 +230,11 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.nested }}
+
+                                                        <span v-if="item.nested === 1"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">开启</span>
+                                                        <span v-if="item.nested === 0"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">关闭</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -236,13 +243,19 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.cpuUnits }}
+                                                    <div v-if="item.cpuUnits !== null">
+                                                        {{ item.cpuUnits }}%
+                                                    </div>
+                                                    <div v-if="item.cpuUnits === null">
+                                                        无限制
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.bwlimit }}
+                                                    <div v-if="item.bwlimit !== null">
+                                                        {{ item.bwlimit }}MB/S
+                                                    </div>
+                                                    <div v-if="item.bwlimit === null">
+                                                        无限制
                                                     </div>
                                                 </td>
                                                 <td>
@@ -252,7 +265,10 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.acpi }}
+                                                        <span v-if="item.acpi === 1"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">开启</span>
+                                                        <span v-if="item.acpi === 0"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">关闭</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -261,8 +277,11 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.systemDiskSize }}
+                                                    <div v-if="item.systemDiskSize !== null">
+                                                        {{ item.systemDiskSize }}G
+                                                    </div>
+                                                    <div v-if="item.systemDiskSize === null">
+                                                        系统默认
                                                     </div>
                                                 </td>
                                                 <td>
@@ -271,13 +290,20 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.bandwidth }}
+
+                                                    <div v-if="item.bandwidth !== null">
+                                                        {{ item.bandwidth }} Mbps
+                                                    </div>
+                                                    <div v-if="item.bandwidth === null">
+                                                        无限制
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.onboot }}
+                                                        <span v-if="item.onBoot === 1"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">开启</span>
+                                                        <span v-if="item.onBoot === 0"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">关闭</span>
                                                     </div>
                                                 </td>
 
@@ -504,7 +530,7 @@ export default {
                             systemDiskSize: record.systemDiskSize,
                             dataDisk: record.dataDisk,
                             bandwidth: record.bandwidth,
-                            onboot: record.onboot,
+                            onBoot: record.onBoot,
                         };
 
                         // 添加到新的数组中

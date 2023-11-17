@@ -861,6 +861,10 @@ export default {
         this.timer = setInterval(() => {
             this.fetchData();
         }, 5000);
+    },
+    // 组件销毁时清除定时器
+    beforeDestroy() {
+        clearInterval(this.timer);
     }
 }
 </script>

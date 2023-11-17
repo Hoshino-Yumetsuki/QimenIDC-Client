@@ -9,8 +9,8 @@
                             <div class="edit-profile__body">
                                 <form>
                                     <div class="form-group mb-25">
-                                        <label for="hostname">模板名称</label>
-                                        <input type="text" v-model="formData.name" class="form-control" id="hostname"
+                                        <label for="name">模板名称</label>
+                                        <input type="text" v-model="formData.name" class="form-control" id="name"
                                             placeholder="配置模板名称(必填)">
                                     </div>
                                     <div class="form-group mb-25">
@@ -58,22 +58,22 @@
                                     <div class="form-group mb-25">
                                         <label for="password">去虚拟化</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.devirtualization">
-                                            <a-select-option :value="true">开启</a-select-option>
-                                            <a-select-option :value="false">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="password">kvm虚拟化</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.kvm">
-                                            <a-select-option :value="true">开启</a-select-option>
-                                            <a-select-option :value="false">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="password">嵌套虚拟化</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.nested">
-                                            <a-select-option :value="true">开启</a-select-option>
-                                            <a-select-option :value="false">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
@@ -105,8 +105,8 @@
                                     <div class="form-group mb-25">
                                         <label for="password">是否开机自启</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.onBoot">
-                                            <a-select-option value="1">开启</a-select-option>
-                                            <a-select-option value="0">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="button-group d-flex pt-25 justify-content-end">
@@ -152,14 +152,14 @@ export default {
                 dataDisk: null,//附加磁盘
                 bandwidth: null,//带宽
                 systemDiskSize: null,//系统盘大小
-                devirtualization: false,//去虚拟化boolean 默认false
-                kvm: true,//是否开启kvm虚拟化，默认开启 boolean
-                nested: false,//嵌套虚拟化 默认关闭boolean
+                devirtualization: 0,//去虚拟化boolean 默认false
+                kvm: 1,//是否开启kvm虚拟化，默认开启 boolean
+                nested: 0,//嵌套虚拟化 默认关闭boolean
                 cpu: 'kvm64',//cpu类型 默认kvm64，如果开启了nested，cpu必须为host或max
                 cpuUnits: null,//cpu限制 百分比
                 bwlimit: null,//I/O限制 mb/s
                 arch: 'x86_64',//系统架构(x86_64,arrch64)，默认x86_64
-                onBoot: '1',//是否开机自启 0 1 默认0关闭
+                onBoot: 0,//是否开机自启 0 1 默认0关闭
             },
         }
     },
@@ -184,9 +184,9 @@ export default {
                 dataDisk: this.formData.dataDisk,
                 bandwidth: this.formData.bandwidth,
                 systemDiskSize: this.formData.systemDiskSize,
-                // devirtualization: this.formData.devirtualization,
-                // kvm: this.formData.kvm,
-                // nested: this.formData.nested,
+                devirtualization: this.formData.devirtualization,
+                kvm: this.formData.kvm,
+                nested: this.formData.nested,
                 cpu: this.formData.cpu,
                 cpuUnits: this.formData.cpuUnits,
                 bwlimit: this.formData.bwlimit,

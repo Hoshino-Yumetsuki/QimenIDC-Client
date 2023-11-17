@@ -58,22 +58,22 @@
                                     <div class="form-group mb-25">
                                         <label for="password">去虚拟化</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.devirtualization">
-                                            <a-select-option :value="true">开启</a-select-option>
-                                            <a-select-option :value="false">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="password">kvm虚拟化</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.kvm">
-                                            <a-select-option :value="true">开启</a-select-option>
-                                            <a-select-option :value="false">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="password">嵌套虚拟化</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.nested">
-                                            <a-select-option :value="true">开启</a-select-option>
-                                            <a-select-option :value="false">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
@@ -105,14 +105,14 @@
                                     <div class="form-group mb-25">
                                         <label for="password">是否开机自启</label>
                                         <a-select class="add-aselect" id="osType" v-model="formData.onBoot">
-                                            <a-select-option value="1">开启</a-select-option>
-                                            <a-select-option value="0">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="button-group d-flex pt-25 justify-content-end">
                                         <a href="" style="color: white;"
                                             class="btn btn-primary btn-default btn-squared text-capitalize radius-md shadow2"
-                                            @click="clickAdd($event)">创建实例模板
+                                            @click="clickAdd($event)">修改实例模板
                                         </a>
                                     </div>
                                 </form>
@@ -177,7 +177,7 @@ export default {
             event.preventDefault();
             const url = '/api/updateConfiguretemplate';
             const data = {
-                configureTemplateId: this.formData.id,
+                id: this.formData.id,
                 name: this.formData.name,
                 sockets: this.formData.sockets,
                 cores: this.formData.cores,
@@ -186,9 +186,9 @@ export default {
                 dataDisk: this.formData.dataDisk,
                 bandwidth: this.formData.bandwidth,
                 systemDiskSize: this.formData.systemDiskSize,
-                // devirtualization: this.formData.devirtualization,
-                // kvm: this.formData.kvm,
-                // nested: this.formData.nested,
+                devirtualization: this.formData.devirtualization,
+                kvm: this.formData.kvm,
+                nested: this.formData.nested,
                 cpu: this.formData.cpu,
                 cpuUnits: this.formData.cpuUnits,
                 bwlimit: this.formData.bwlimit,
