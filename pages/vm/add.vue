@@ -22,7 +22,7 @@
                                             <a-select class="add-aselect" id="nodeid" v-model="nodeData.nodeid">
                                                 <a-select-option v-for="item in nodesData" :key="item.id"
                                                     :value="item.id">{{
-                                                        item.name }}</a-select-option>
+                                                        item.name }}({{ item.host }})</a-select-option>
                                             </a-select>
                                         </div>
                                     </div>
@@ -189,6 +189,7 @@ export default {
                         const newRecord = {
                             id: record.id,
                             name: record.name || '未知',
+                            host: record.host,
                         };
                         // 添加到新的数组中
                         newTableData.push(newRecord);

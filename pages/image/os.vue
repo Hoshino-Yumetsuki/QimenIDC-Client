@@ -277,7 +277,7 @@
                 <a-form-item label="节点" name="id" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-select v-model="downData.nodeId">
                         <a-select-option v-for="item in nodesData" :key="item.id" :value="item.id">{{
-                            item.name }}</a-select-option>
+                            item.name }}({{ item.host }})</a-select-option>
                     </a-select>
                 </a-form-item>
             </a-form>
