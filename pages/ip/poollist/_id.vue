@@ -176,10 +176,14 @@
                                                         <!-- <img height="24" width="24"
                                                             :src="'/assets/icons/svg/' + item.status + '.svg'" /> -->
                                                         <!-- 0=正常，1=正在使用 2停止-->
-                                                        <span v-if="item.status === 0" class="text-success">可用</span>
-                                                        <span v-if="item.status === 1" class="text-danger">正在使用</span>
-                                                        <span v-if="item.status === 2" class="text-danger">暂停</span>
-                                                        <span v-if="item.status === 3" class="text-danger">网关IP</span>
+                                                        <span v-if="item.status === 0"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">可用</span>
+                                                        <span v-if="item.status === 1"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">正在使用</span>
+                                                        <span v-if="item.status === 2"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">暂停</span>
+                                                        <span v-if="item.status === 3"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">网关IP</span>
                                                     </div>
                                                 </td>
                                                 <td>
