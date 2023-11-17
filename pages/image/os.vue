@@ -587,6 +587,7 @@ export default {
                         const newRecord = {
                             id: record.id,
                             name: record.name || '未知',
+                            host: record.host,
                         };
                         // 添加到新的数组中
                         newTableData.push(newRecord);

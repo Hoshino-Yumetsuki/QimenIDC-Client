@@ -556,7 +556,7 @@ export default {
                             }
 
                             cpuUsage = current.data.cpu ? (current.data.cpu * 100).toFixed(2) : 0;
-                            memoryUsage = current.data.mem ? (current.data.freemem / current.data.mem).toFixed(2) : 0;
+                            memoryUsage = current.data.mem ? (current.data.mem / current.data.maxmem * 100).toFixed(2) : 0;
                         }
 
 
