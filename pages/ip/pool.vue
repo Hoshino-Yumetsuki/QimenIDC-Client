@@ -380,8 +380,6 @@ export default {
         visiblePages() {
             const currentPage = this.currentPage;
             const totalPages = this.totalPages;
-
-
             const delta = 2;
             let range = [];
             for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
@@ -409,7 +407,6 @@ export default {
             }
             return range;
         },
-
     },
     methods: {
         fetchData() {
@@ -434,7 +431,6 @@ export default {
                             disable: record.disable,
                             nodeid: record.nodeid,
                         };
-
                         // 添加到新的数组中
                         newTableData.push(newRecord);
                     });
@@ -501,6 +497,7 @@ export default {
                             duration: 2,
                             placement: 'bottomRight'
                         });
+                        this.fetchData()
                         this.formData = [];
                     }
                     else {
@@ -540,6 +537,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                     this.formData = [];
                 }
                 else {

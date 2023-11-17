@@ -420,6 +420,7 @@ export default {
                                 duration: 2,
                                 placement: 'bottomRight'
                             });
+                            this.fetchData()
                             this.formData = [];
                         }
                     })
@@ -461,6 +462,7 @@ export default {
                                 duration: 2,
                                 placement: 'bottomRight'
                             });
+                            this.fetchData()
                             this.formData = [];
                         }
                         else {

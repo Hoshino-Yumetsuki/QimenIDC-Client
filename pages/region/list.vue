@@ -536,6 +536,7 @@ export default {
                             duration: 2,
                             placement: 'bottomRight'
                         });
+                        this.fetchData()
                     }
                     else {
                         notification.error({
@@ -572,6 +573,7 @@ export default {
                             duration: 2,
                             placement: 'bottomRight'
                         });
+                        this.fetchData()
                     }
                     else {
                         notification.error({
@@ -607,6 +609,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                     this.changeVisible = false;
                 }
             });

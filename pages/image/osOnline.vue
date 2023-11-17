@@ -268,7 +268,6 @@ export default {
             }
             return range;
         },
-
     },
     methods: {
         fetchData() {
@@ -293,7 +292,6 @@ export default {
                             // 如果nodeData中元素数量为0则为0否则为1
                             status: value.nodeData.length === 0 ? 0 : 1
                         };
-
                         // 添加到新的数组中
                         newTableData.push(newRecord);
                     });
@@ -348,6 +346,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                 }
                 else {
                     notification.error({

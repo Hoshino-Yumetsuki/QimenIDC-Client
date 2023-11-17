@@ -271,7 +271,7 @@
                             </div>
                             <div class="modal-info-text">
                                 <h6>确认删除?</h6>
-                                <p>确认删除这个API吗?</p>
+                                <p>确认删除这个节点吗?</p>
                             </div>
                         </div>
                     </div>
@@ -328,8 +328,6 @@ export default {
         visiblePages() {
             const currentPage = this.currentPage;
             const totalPages = this.totalPages;
-
-
             const delta = 2;
             let range = [];
             for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
@@ -386,7 +384,6 @@ export default {
                             sshPassword: record.sshPassword,
                             controllerStatus: record.controllerStatus,
                         };
-
                         // 添加到新的数组中
                         newTableData.push(newRecord);
                     });
@@ -422,7 +419,6 @@ export default {
         },
         ClickRemove(removeId) { //执行删除操作
             const url = `/api/deleteNodeById?nodeId=${removeId}`;
-
             this.$axios.delete(url).then(res => {
                 if (res.data.code === 20000) {
                     notification.success({
@@ -430,6 +426,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                 } else {
                     notification.error({
                         message: res.data.message,

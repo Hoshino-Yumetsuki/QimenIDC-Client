@@ -562,7 +562,6 @@ export default {
                             cloud: record.cloud,
                             downType: record.downType,
                         };
-
                         // 添加到新的数组中
                         newTableData.push(newRecord);
                     });
@@ -663,6 +662,7 @@ export default {
                             duration: 2,
                             placement: 'bottomRight'
                         });
+                        this.fetchData()
                         this.formData = [];
                     }
                     else {
@@ -706,6 +706,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                     this.formData = [];
                 }
                 else {
@@ -732,6 +733,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                     this.formData = [];
                 }
                 else {
@@ -770,6 +772,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                 } else {
                     if (res.data.code === 20000) {
                         // 显示成功提示框

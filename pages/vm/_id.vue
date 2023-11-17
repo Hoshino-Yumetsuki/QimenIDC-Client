@@ -427,6 +427,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                     if (this.vmStatus === 'delete') {
                         setTimeout(() => { //1秒后跳转到node界面，让消息提示充分显示
                             this.$router.push('/vm/list');
@@ -472,6 +473,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight',
                     });
+                    this.fetchData()
                     this.reinstallVisible = false;
                 }
                 else {

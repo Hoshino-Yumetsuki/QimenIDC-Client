@@ -373,7 +373,6 @@ export default {
             }
             return range;
         },
-
     },
     methods: {
         fetchData() {
@@ -396,7 +395,6 @@ export default {
                             status: record.status, // 处理status可能为空的情况
                             createDate: createDate,
                         };
-
                         // 添加到新的数组中
                         newTableData.push(newRecord);
                     });
@@ -458,6 +456,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                 } else {
                     notification.error({
                         message: res.data.message,
@@ -489,6 +488,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                 } else {
                     notification.error({
                         message: res.data.message,
@@ -508,6 +508,7 @@ export default {
                         duration: 2,
                         placement: 'bottomRight'
                     });
+                    this.fetchData()
                 } else {
                     notification.error({
                         message: res.data.message,
