@@ -242,13 +242,15 @@
                                                                 <feather-icon name="eye" />
                                                             </a>
                                                         </li>
-                                                        <li>
+                                                        <!-- <li>
                                                             <a href="#" class="edit">
                                                                 <feather-icon name="edit" />
                                                             </a>
-                                                        </li>
+                                                        </li> -->
                                                         <li>
-                                                            <a href="#" class="remove">
+                                                            <a href="" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-confirmed"
+                                                                @click="setRemoveId(item.id, $event)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -437,8 +439,6 @@
                                             </li>
                                         </ul>
                                     </nav>
-
-
                                 </div>
                             </div>
                         </div>
@@ -446,6 +446,32 @@
                 </div>
             </div>
         </div>
+        <!-- start: .modal-info-warning 提示框确认-->
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认删除?</h6>
+                                <p>确认删除这个虚拟机吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickConfirm()">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ends: .modal-info-confirmed -->
     </div>
 </template>
 <script>
@@ -476,7 +502,8 @@ export default {
             currentPage: 1, // 当前页
             pageSize: 20, // 每页条数
             totalPages: 10, // 总页数
-            timer: null // 定时器
+            timer: null, // 定时器
+            removeId: null,
         }
     },
     // 计算属性
@@ -602,6 +629,33 @@ export default {
                 }
             });
 
+        },
+        setRemoveId(id, event) { //设置删除的ID
+            event.preventDefault();
+            this.removeId = id;
+        },
+        ClickCancel() {//取消
+            this.removeId = null;
+        },
+        ClickConfirm() { //执行删除操作
+            const url = `/api/delete/${this.removeId}`;
+            this.$axios.delete(url).then(res => {
+                if (res.data.code === 20000) {
+                    notification.success({
+                        message: '删除虚拟机成功!',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                    this.removeId = null;
+                    this.fetchData()
+                } else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            })
         },
         prevPage() {
             if (this.currentPage > 1) {

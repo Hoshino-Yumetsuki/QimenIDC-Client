@@ -177,9 +177,9 @@
                                                             </nuxt-link>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="remove" data-toggle="modal"
+                                                            <a href="" class="remove" data-toggle="modal"
                                                                 data-target="#modal-info-confirmed"
-                                                                @click="setRemoveId(item.id)">
+                                                                @click="setRemoveId(item.id, $event)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -439,7 +439,8 @@ export default {
         ClickCancel() {//取消
             this.removeId = null;
         },
-        setRemoveId(id) { //设置删除的ID
+        setRemoveId(id, event) { //设置删除的ID
+            event.preventDefault();
             this.removeId = id;
         },
     },
