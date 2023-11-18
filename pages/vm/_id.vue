@@ -390,7 +390,7 @@ export default {
                         IP: ip,
                         vCpu: vmhost.cores,
                         memory: vmhost.memory,
-                        diskwrite: (current.data.diskwrite / 1024 / 1024).toFixed(2),
+                        diskwrite: (current.data.blockstat.scsi0.wr_bytes / 1024 / 1024 / 1024).toFixed(2),
                         systemDiskSize: vmhost.systemDiskSize,
                     };
                     // 添加到新的数组中

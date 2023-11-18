@@ -212,7 +212,7 @@ export default {
                 sockets: 1, //插槽数
                 cores: 1,//核心
                 threads: 1,//线程
-                memory: 512,//内存
+                memory: 1024,//内存
                 dataDisk: null,//附加磁盘
                 osType: null,//操作系统类型
                 os: null,//操作系统
@@ -292,7 +292,11 @@ export default {
         handleOsTypeChange() {
             // 获取选中的值
             const selectedOsType = this.nodeData.osType;
-
+            if (selectedOsType == 'windows') {
+                this.nodeData.username = 'Administrator'
+            } else {
+                this.nodeData.username = 'root'
+            }
             // 执行相应的函数
             this.getSysData(selectedOsType);
         },
