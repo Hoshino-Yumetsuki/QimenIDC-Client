@@ -614,9 +614,9 @@ export default {
                             // cpuUsage: current.cpu ? current.cpu * 100 : 0, 
                             cpuUsage: cpuUsage || '0',
                             memoryUsage: memoryUsage || '0',
-                            netIn: (netInTotal / 1024 / 1024).toFixed(2) || '0',
-                            netOut: (netOutTotal / 1024 / 1024).toFixed(2) || '0',
-                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024 / 100).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024 / 100).toFixed(2)} MB` || '0',
+                            netIn: (netInTotal / 1024 / 1024 / 1024).toFixed(2) || '0',
+                            netOut: (netOutTotal / 1024 / 1024 / 1024).toFixed(2) || '0',
+                            diskIO: `Read: ${(diskIOReadTotal / 1024 / 1024 / 1024).toFixed(2)} MB / Write: ${(diskIOWriteTotal / 1024 / 1024 / 1024).toFixed(2)} MB` || '0',
                         };
 
                         // 添加到新的数组中

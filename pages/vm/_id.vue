@@ -154,9 +154,9 @@
                                     <span class="font-weight-bold">CPU利用率（%）</span>
                                     <div>
                                         <span>当前：</span>
-                                        <span>4.666%</span>
+                                        <span>{{ (tableData.cpu * 100).toFixed(1) }}%</span>
                                         <span> 总量</span>
-                                        <span>2核</span>
+                                        <span>{{ tableData.vCpu }}核</span>
                                     </div>
                                     <!-- CPU监控 -->
                                     <div id="cpuEcharts" style="width: 100%;height: 150px;"></div>
@@ -165,9 +165,10 @@
                                     <span class="font-weight-bold">内存利用率（%）</span>
                                     <div>
                                         <span>当前：</span>
-                                        <span>2245.83MB(74.66%)</span>
+                                        <span>{{ (tableData.mem / 1024 / 1024).toFixed(1) }}MB({{ (tableData.mem /
+                                            tableData.maxmem * 100).toFixed(1) }}%)</span>
                                         <span> 总量</span>
-                                        <span>4GB</span>
+                                        <span>{{ tableData.memory }}MB</span>
                                     </div>
                                     <!-- 内存监控 -->
                                     <div id="memoryEcharts" style="width: 100%;height: 150px;"></div>
@@ -175,21 +176,21 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <span class="font-weight-bold">磁盘IO使用（kb/s）</span>
+                                    <span class="font-weight-bold">磁盘IO使用（mb/s）</span>
                                     <div>
                                         <span>当前：</span>
-                                        <span>0.015（入）</span>
-                                        <span>0.035（出）</span>
+                                        <span>{{ (tableData.diskread / 1024 / 1024 / 1024).toFixed(1) }}（读）</span>
+                                        <span>{{ (tableData.diskwrites / 1024 / 1024 / 1024).toFixed(1) }}（写）</span>
                                     </div>
                                     <!-- 磁盘监控 -->
                                     <div id="diskEcharts" style="width: 100%;height: 150px;"></div>
                                 </div>
                                 <div class="col">
-                                    <span class="font-weight-bold">网络使用（kb/s）</span>
+                                    <span class="font-weight-bold">网络使用（mb/s）</span>
                                     <div>
                                         <span>当前：</span>
-                                        <span>9.451（读）</span>
-                                        <span>156.954（写）</span>
+                                        <span>{{ (tableData.netin / 1024 / 1024 / 1024).toFixed(1) }}（入）</span>
+                                        <span>{{ (tableData.netout / 1024 / 1024 / 1024).toFixed(1) }}（出）</span>
                                     </div>
                                     <!-- 网络监控 -->
                                     <div id="networkEcharts" style="width: 100%;height: 150px;"></div>
@@ -246,7 +247,6 @@
                             <p class="color-dark fw-500 fs-20 mb-0">资源使用情况</p>
                         </div>
                         <div class="card-body">
-
                         </div>
                     </div>
                 </div>
@@ -366,6 +366,7 @@ export default {
                     const vmhost = data.vmhost;
                     const current = data.current;
                     const os = data.os;
+                    const rrddata = data.rrddata.data;
                     let ip = `none`;
                     // 获取IP为1的地址
                     const ipConfig = vmhost.ipConfig['1'];
@@ -392,11 +393,24 @@ export default {
                         memory: vmhost.memory,
                         diskwrite: (current.data.blockstat.scsi0.wr_bytes / 1024 / 1024 / 1024).toFixed(2),
                         systemDiskSize: vmhost.systemDiskSize,
+                        rrddata: rrddata,
+                        cpu: current.data.cpu,
+                        mem: current.data.mem,
+                        maxmem: current.data.maxmem,
+                        diskread: current.data.diskread,
+                        diskwrites: current.data.diskwrite,
+                        netin: current.data.netin,
+                        netout: current.data.netout,
                     };
                     // 添加到新的数组中
                     // newTableData.push(newRecord);
                     this.tableData = newRecord;
                     this.diskFlowEcharts()
+                    this.cpuEcharts()
+                    this.memoryEcharts()
+                    this.diskEcharts()
+                    this.networkEcharts()
+                    this.flowEcharts()
                 }
             });
         },
@@ -549,6 +563,17 @@ export default {
                 }
             });
         },
+        formatTime(timestamp) {//时间戳转换时间
+            // 将秒转换为毫秒
+            const timestampInMilliseconds = timestamp * 1000;
+            // 创建Date对象
+            const date = new Date(timestampInMilliseconds);
+            // 提取小时和分钟
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            // 格式化时间
+            return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+        },
         cpuEcharts() {
             // 找到容器
             let cpuEcharts = document.getElementById('cpuEcharts')
@@ -568,7 +593,7 @@ export default {
                 xAxis: {
                     // 底部时间
                     type: 'category',
-                    data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    data: this.tableData.rrddata.map(item => this.formatTime(item.time))
                 },
                 yAxis: {
                     // 左侧百分比
@@ -578,7 +603,7 @@ export default {
                     {
                         name: 'CPU利用率（%）',
                         type: 'line',
-                        data: [66, 77, 20, 50, 60, 60, 50, 40, 30, 40, 60, 90, 100, 80, 100, 90, 80, 70, 60, 50, 60, 80, 20, 10, 50],
+                        data: this.tableData.rrddata.map(item => (item.cpu * 100).toFixed(1)),
 
                         // 删除点
                         showSymbol: false,
@@ -609,7 +634,7 @@ export default {
                 xAxis: {
                     // 底部时间
                     type: 'category',
-                    data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    data: this.tableData.rrddata.map(item => this.formatTime(item.time))
                 },
                 yAxis: {
                     // 左侧百分比
@@ -619,7 +644,7 @@ export default {
                     {
                         name: '内存利用率（%）',
                         type: 'line',
-                        data: [66, 77, 20, 50, 60, 60, 50, 40, 30, 40, 60, 90, 100, 80, 100, 90, 80, 70, 60, 50, 60, 80, 20, 10, 50],
+                        data: this.tableData.rrddata.map(item => (item.mem / item.maxmem * 100).toFixed(1)),
 
                         // 删除点
                         showSymbol: false,
@@ -652,7 +677,7 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    data: this.tableData.rrddata.map(item => this.formatTime(item.time))
                 },
                 // 左侧百分比
                 yAxis: {
@@ -660,10 +685,10 @@ export default {
                 },
                 series: [
                     {
-                        name: '读（kb/s）',
+                        name: '读（mb/s）',
                         type: 'line',
                         stack: '总量',
-                        data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134],
+                        data: this.tableData.rrddata.map(item => (item.diskread / 1024).toFixed(1)),
                         // 删除点
                         showSymbol: false,
                         // 颜色
@@ -672,10 +697,10 @@ export default {
                         }
                     },
                     {
-                        name: '写（kb/s）',
+                        name: '写（mb/s）',
                         type: 'line',
                         stack: '总量',
-                        data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234],
+                        data: this.tableData.rrddata.map(item => (item.diskwrite / 1024).toFixed(1)),
                         // 删除点
                         showSymbol: false,
                         // 颜色
@@ -710,7 +735,7 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: ['21:10', '21:11', '21:12', '21:13', '21:14', '21:15', '21:16', '21:17', '21:18', '21:19', '21:20', '21:21', '21:22', '21:23', '21:24', '21:25', '21:26', '21:27', '21:28', '21:29', '21:30', '21:31', '21:32', '21:33', '21:34']
+                    data: this.tableData.rrddata.map(item => this.formatTime(item.time))
                 },
                 // 左侧百分比
                 yAxis: {
@@ -718,10 +743,10 @@ export default {
                 },
                 series: [
                     {
-                        name: '出（kb/s）',
+                        name: '出（mb/s）',
                         type: 'line',
                         stack: '总量',
-                        data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134],
+                        data: this.tableData.rrddata.map(item => (item.netout / 1024).toFixed(1)),
                         // 删除点
                         showSymbol: false,
                         // 颜色
@@ -730,10 +755,10 @@ export default {
                         }
                     },
                     {
-                        name: '入（kb/s）',
+                        name: '入（mb/s）',
                         type: 'line',
                         stack: '总量',
-                        data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234],
+                        data: this.tableData.rrddata.map(item => (item.netin / 1024).toFixed(1)),
                         // 删除点
                         showSymbol: false,
                         // 颜色
@@ -855,11 +880,6 @@ export default {
     },
     mounted() {
         this.fetchData()
-        this.cpuEcharts()
-        this.memoryEcharts()
-        this.diskEcharts()
-        this.networkEcharts()
-        this.flowEcharts()
         this.timer = setInterval(() => {
             this.fetchData();
         }, 5000);

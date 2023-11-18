@@ -216,7 +216,7 @@ export default {
                 dataDisk: null,//附加磁盘
                 osType: null,//操作系统类型
                 os: null,//操作系统
-                bandwidth: null,//带宽
+                bandwidth: 1,//带宽
                 username: 'root',//用户名
                 password: null,//密码
                 onBoot: 1,// 是否开机自启 0 1 默认0关闭
@@ -323,40 +323,48 @@ export default {
         },
         clickAdd(event) {
             event.preventDefault();
-            const url = '/api/createVm';
-            const data = {
-                nodeid: this.nodeData.nodeid,
-                hostname: this.nodeData.hostname,
-                sockets: this.nodeData.sockets,
-                cores: this.nodeData.cores,
-                threads: this.nodeData.threads,
-                memory: this.nodeData.memory,
-                dataDisk: this.nodeData.dataDisk,
-                osType: null,
-                os: this.nodeData.os,
-                bandwidth: this.nodeData.bandwidth,
-                username: this.nodeData.username,
-                password: this.nodeData.password,
-            };
-            this.$axios.post(url, data).then(res => {
-                if (res.data.code === 20000) {
-                    notification.success({
-                        message: '创建虚拟机成功',
-                        duration: 2,
-                        placement: 'bottomRight'
-                    });
-                    setTimeout(() => { //1秒后跳转到node界面，让消息提示充分显示
-                        this.$router.push('/vm/list');
-                    }, 1000); // 1000毫秒 = 1秒
-                }
-                else {
-                    notification.error({
-                        message: res.data.message,
-                        duration: 2,
-                        placement: 'bottomRight'
-                    });
-                }
-            })
+            if (this.nodeData.os !== null && this.nodeData.os !== '' && this.nodeData.password !== null && this.nodeData.password !== '') {
+                const url = '/api/createVm';
+                const data = {
+                    nodeid: this.nodeData.nodeid,
+                    hostname: this.nodeData.hostname,
+                    sockets: this.nodeData.sockets,
+                    cores: this.nodeData.cores,
+                    threads: this.nodeData.threads,
+                    memory: this.nodeData.memory,
+                    dataDisk: this.nodeData.dataDisk,
+                    osType: null,
+                    os: this.nodeData.os,
+                    bandwidth: this.nodeData.bandwidth,
+                    username: this.nodeData.username,
+                    password: this.nodeData.password,
+                };
+                this.$axios.post(url, data).then(res => {
+                    if (res.data.code === 20000) {
+                        notification.success({
+                            message: '创建虚拟机成功',
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                        setTimeout(() => { //1秒后跳转到node界面，让消息提示充分显示
+                            this.$router.push('/vm/list');
+                        }, 1000); // 1000毫秒 = 1秒
+                    }
+                    else {
+                        notification.error({
+                            message: res.data.message,
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                })
+            } {
+                notification.error({
+                    message: '请确保各项不能为空',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
         },
     },
     mounted() {
