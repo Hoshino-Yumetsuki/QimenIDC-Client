@@ -82,42 +82,95 @@
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">带宽 单位Mbps</small>
                                     </div>
-                                    <div v-if="isChecked">
-                                        <div class="form-group mb-25">
-                                            <label for="username">高级选项测试</label>
-                                            <input type="text" v-model="nodeData.username" class="form-control"
-                                                id="username" value="root" required>
-                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                            <small class="text-danger">高级选项测试</small>
-                                        </div>
-                                        <div class="form-group mb-25">
-                                            <label for="password">高级选项测试</label>
-                                            <input type="text" v-model="nodeData.password" class="form-control"
-                                                id="password" required>
-                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                            <small class="text-danger">高级选项测试</small>
-                                        </div>
-                                    </div>
                                     <div class="form-group mb-25">
-                                        <label for="username">ssh用户名</label>
+                                        <label for="username">远程用户名</label>
                                         <input type="text" v-model="nodeData.username" class="form-control" id="username"
                                             value="root" required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">一般为root，请根据实际情况填写</small>
                                     </div>
                                     <div class="form-group mb-25">
-                                        <label for="password">ssh密码</label>
-                                        <input type="text" v-model="nodeData.password" class="form-control" id="password"
-                                            required>
+                                        <label for="password">远程密码</label>
+                                        <a-input-password v-model="nodeData.password" :type="'password'"
+                                            :placeholder="'请输入虚拟机远程的密码'" class="add-aselect"></a-input-password>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">密码</small>
                                     </div>
                                     <div class="form-group mb-25">
-                                        <label for="password">确认密码</label>
-                                        <input type="text" v-model="nodeData.confirmPassword" class="form-control"
-                                            id="password" required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">确认密码</small>
+                                        <label for="password">跟随宿主机开机自启</label>
+                                        <a-select class="add-aselect" id="osType" v-model="nodeData.onBoot">
+                                            <a-select-option :value="1">开启</a-select-option>
+                                            <a-select-option :value="0">关闭</a-select-option>
+                                        </a-select>
+                                    </div>
+                                    <div v-if="isChecked">
+                                        <div class="form-group mb-25">
+                                            <label for="username">系统盘大小</label>
+                                            <input type="number" v-model="nodeData.systemDiskSize" class="form-control"
+                                                id="systemDiskSize" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">留空则使用系统默认系统盘大小</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="password">去虚拟化</label>
+                                            <a-select class="add-aselect" id="osType" v-model="nodeData.devirtualization">
+                                                <a-select-option :value="1">开启</a-select-option>
+                                                <a-select-option :value="0">关闭</a-select-option>
+                                            </a-select>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="password">kvm虚拟化</label>
+                                            <a-select class="add-aselect" id="osType" v-model="nodeData.kvm">
+                                                <a-select-option :value="1">开启</a-select-option>
+                                                <a-select-option :value="0">关闭</a-select-option>
+                                            </a-select>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="password">嵌套虚拟化</label>
+                                            <a-select class="add-aselect" id="osType" v-model="nodeData.nested">
+                                                <a-select-option :value="1">开启</a-select-option>
+                                                <a-select-option :value="0">关闭</a-select-option>
+                                            </a-select>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="username">CPU类型</label>
+                                            <a-select class="add-aselect" id="cpu" v-model="nodeData.cpu">
+                                                <a-select-option :value="'kvm64'">kvm64</a-select-option>
+                                                <a-select-option :value="'host'">host</a-select-option>
+                                                <a-select-option :value="'max'">max</a-select-option>
+                                            </a-select>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">cpu类型,默认kvm64,如果开启嵌套虚拟化,cpu类型必须host或者max</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="username">CPU限制</label>
+                                            <input type="number" v-model="nodeData.cpuUnits" class="form-control"
+                                                id="cpuUnits" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">CPU限制,单位:百分比 如填80则限制80%</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="username">I/O限制</label>
+                                            <input type="number" v-model="nodeData.bwlimit" class="form-control"
+                                                id="cpuUnits" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">I/O限制,单位:mb/s 如填80则限制80mb/s</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="username">系统架构</label>
+                                            <a-select class="add-aselect" id="osType" v-model="nodeData.arch">
+                                                <a-select-option :value="'x86_64'">x86_64</a-select-option>
+                                                <a-select-option :value="'arm64'">arm64</a-select-option>
+                                                <a-select-option :value="'armhf'">armhf</a-select-option>
+                                                <a-select-option :value="'ppc64el'">ppc64el</a-select-option>
+                                                <a-select-option :value="'riscv64'">riscv64</a-select-option>
+                                                <a-select-option :value="'s390x'">s390x</a-select-option>
+                                                <a-select-option :value="'aarch64'">aarch64</a-select-option>
+                                                <a-select-option :value="'armv7l'">armv7l</a-select-option>
+                                            </a-select>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">系统架构(x86_64,arrch64)</small>
+                                        </div>
                                     </div>
                                     <div class="button-group d-flex pt-25 justify-content-end">
                                         <a href="" style="color: white;"
@@ -166,7 +219,15 @@ export default {
                 bandwidth: null,//带宽
                 username: 'root',//用户名
                 password: null,//密码
-                confirmPassword: null,//确认密码
+                onBoot: 1,// 是否开机自启 0 1 默认0关闭
+                systemDiskSize: null,// 系统盘大小
+                devirtualization: 0,// 去虚拟化boolean 默认false
+                kvm: 1,// 是否开启kvm虚拟化，默认开启 boolean
+                nested: 0,// 嵌套虚拟化 默认关闭boolean
+                cpu: 'kvm64',// cpu类型 默认kvm64，如果开启了nested，cpu必须为host或max
+                cpuUnits: null,// cpu限制 百分比
+                bwlimit: null,// I/ O限制 mb/ s
+                arch: 'x86_64',// 系统架构(x86_64, arrch64)，默认x86_64
             },
             nodesData: [],
             osTypeData: [],
@@ -272,7 +333,6 @@ export default {
                 bandwidth: this.nodeData.bandwidth,
                 username: this.nodeData.username,
                 password: this.nodeData.password,
-                confirmPassword: this.nodeData.confirmPassword,
             };
             this.$axios.post(url, data).then(res => {
                 if (res.data.code === 20000) {

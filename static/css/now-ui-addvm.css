@@ -11,3 +11,7 @@
 .add-aselect .ant-select-selection--single .ant-select-selection__rendered {
     line-height: 48px;
 }
+
+.ant-input {
+    height: 48px;
+}

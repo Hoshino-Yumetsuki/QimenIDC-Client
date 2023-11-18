@@ -98,7 +98,16 @@
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="username">系统架构</label>
-                                        <input type="text" v-model="formData.arch" class="form-control" id="cpu" required>
+                                        <a-select class="add-aselect" id="arch" v-model="formData.arch">
+                                            <a-select-option :value="'x86_64'">x86_64</a-select-option>
+                                            <a-select-option :value="'arm64'">arm64</a-select-option>
+                                            <a-select-option :value="'armhf'">armhf</a-select-option>
+                                            <a-select-option :value="'ppc64el'">ppc64el</a-select-option>
+                                            <a-select-option :value="'riscv64'">riscv64</a-select-option>
+                                            <a-select-option :value="'s390x'">s390x</a-select-option>
+                                            <a-select-option :value="'aarch64'">aarch64</a-select-option>
+                                            <a-select-option :value="'armv7l'">armv7l</a-select-option>
+                                        </a-select>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">系统架构(x86_64,arrch64)</small>
                                     </div>
