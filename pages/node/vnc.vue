@@ -83,6 +83,9 @@
                                                     <span class="userDatatable-title">创建时间</span>
                                                 </th>
                                                 <th>
+                                                    <span class="userDatatable-title">SSL是否开启</span>
+                                                </th>
+                                                <th>
                                                     <span class="userDatatable-title">状态</span>
                                                 </th>
                                                 <th>
@@ -135,6 +138,18 @@
                                                 <td>
                                                     <div>
                                                         {{ item.createDate }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="status-cell">
+
+                                                        <!-- <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.status + '.svg'" /> -->
+                                                        <!-- 0=正常，1=暂停 -->
+                                                        <span v-if="item.protocol === 1"
+                                                            class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">开启</span>
+                                                        <span v-if="item.protocol === 0"
+                                                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">关闭</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -271,6 +286,12 @@
                 <a-form-item label="域名" name="domain" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.domain" :placeholder="'对外公开的域名'" />
                 </a-form-item>
+                <a-form-item label="SSL" name="protocol" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.protocol">
+                        <a-select-option :value="0">关闭</a-select-option>
+                        <a-select-option :value="1">开启</a-select-option>
+                    </a-select>
+                </a-form-item>
                 <a-form-item label="状态" name="status" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.status">
                         <a-select-option :value="0">可用</a-select-option>
@@ -293,6 +314,12 @@
                 </a-form-item>
                 <a-form-item label="域名" name="domain" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.domain" :placeholder="'对外公开的域名'" />
+                </a-form-item>
+                <a-form-item label="SSL" name="protocol" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select v-model="formData.protocol">
+                        <a-select-option :value="0">关闭</a-select-option>
+                        <a-select-option :value="1">开启</a-select-option>
+                    </a-select>
                 </a-form-item>
                 <a-form-item label="状态" name="status" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.status">
@@ -343,6 +370,7 @@ export default {
                 port: '',
                 domain: '',
                 status: 0,
+                protocol: 0,
             },
             form: null,
         }
@@ -448,6 +476,7 @@ export default {
             this.formData.port = item.port;
             this.formData.domain = item.domain;
             this.formData.status = item.status;
+            this.formData.protocol = item.protocol;
             this.formData.id = item.id;
             this.changeVisible = true;
         },
@@ -463,6 +492,7 @@ export default {
                     host: this.formData.host,
                     port: this.formData.port,
                     domain: this.formData.domain,
+                    protocol: this.formData.protocol,
                     status: this.formData.status
                 };
                 this.$axios.post(url, data).then(res => {
@@ -495,6 +525,7 @@ export default {
                     host: this.formData.host,
                     port: this.formData.port,
                     domain: this.formData.domain,
+                    protocol: this.formData.protocol,
                     status: this.formData.status
                 };
                 this.$axios.post(url, data).then(res => {
