@@ -17,9 +17,10 @@
                         </div>
                         <div class="breadcrumb-action justify-content-center flex-wrap btn-action">
                             <div>
-                                <button class="btn btn-default btn-sm btn-primary" type="button" id="button1">
+                                <a class="btn btn-default btn-sm btn-primary" type="button" id="button1" :href="vncUrl"
+                                    target="_blank">
                                     登录
-                                </button>
+                                </a>
                             </div>
                             <!-- 关机 或 开机 -->
                             <div>
@@ -94,12 +95,32 @@
                             <div>
                                 <label>实例状态</label>
 
-                                <span class="span-level-5"><img height="24" width="24"
-                                        :src="'/assets/icons/svg/' + tableData.status + '.svg'" /></span>
+                                <span class="span-level-5">
+                                    <img v-if="tableData.status <= 4" height="24" width="24"
+                                        :src="'/assets/icons/svg/' + tableData.status + '.svg'" />
+                                    <img v-if="tableData.status === 5" height="24" width="24"
+                                        :src="'/assets/icons/svg/4.svg'" />
+                                    <img v-if="tableData.status > 5" height="24" width="24"
+                                        :src="'/assets/icons/svg/3.svg'" />
+                                </span>
+
+                                <!--0=运行中、1=已关机、2=挂起、3=恢复中、4=暂停、5=到期、6=创建中、7=开机中、8=关机中
+                                                            9=停止中（强制关机中10=挂起中、11=暂停中、12重启中、13=重装系统中、14=修改密码中-->
                                 <span v-if="tableData.status === 0">运行中</span>
-                                <span v-if="tableData.status === 1">关机</span>
+                                <span v-if="tableData.status === 1">已关机</span>
                                 <span v-if="tableData.status === 2">挂起</span>
-                                <span v-if="tableData.status === 4">封禁</span>
+                                <span v-if="tableData.status === 3">恢复中</span>
+                                <span v-if="tableData.status === 4">暂停</span>
+                                <span v-if="tableData.status === 5">到期</span>
+                                <span v-if="tableData.status === 6">创建中</span>
+                                <span v-if="tableData.status === 7">正在开机</span>
+                                <span v-if="tableData.status === 8">正在关机</span>
+                                <span v-if="tableData.status === 9">正在停止</span>
+                                <span v-if="tableData.status === 10">正在挂起</span>
+                                <span v-if="tableData.status === 11">正在暂停</span>
+                                <span v-if="tableData.status === 12">正在重启</span>
+                                <span v-if="tableData.status === 13">正在重装系统</span>
+                                <span v-if="tableData.status === 14">正在修改密码</span>
                             </div>
                             <div>
                                 <label>可用区</label>
@@ -354,6 +375,7 @@ export default {
             reinstallVisible: false,//重装窗口
             osTypeData: [],
             systemData: [],
+            vncUrl: null,
         }
     },
     methods: {
@@ -391,7 +413,7 @@ export default {
                         IP: ip,
                         vCpu: vmhost.cores,
                         memory: vmhost.memory,
-                        diskwrite: (current.data.blockstat.scsi0.wr_bytes / 1024 / 1024 / 1024).toFixed(2),
+                        diskwrite: current.data.blockstat ? (current.data.blockstat.scsi0.wr_bytes / 1024 / 1024 / 1024).toFixed(2) : null,
                         systemDiskSize: vmhost.systemDiskSize,
                         rrddata: rrddata,
                         cpu: current.data.cpu,
@@ -411,6 +433,7 @@ export default {
                     this.diskEcharts()
                     this.networkEcharts()
                     this.flowEcharts()
+                    this.getVncUrl()
                 }
             });
         },
@@ -560,6 +583,25 @@ export default {
                     });
                     // 将Set转为数组，并赋值给osTypeData
                     this.osTypeData = newTableData;
+                }
+            });
+        },
+        getVncUrl() {
+            // 使用异步获取数据
+            const url = `/api/pve/getVnc?page=1&size=5&hostId=${this.vmId}`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    const records = data.records;
+
+                    if (records.length > 0) {
+                        const firstRecord = records[0];
+                        const firstKey = Object.keys(firstRecord)[0];
+
+                        if (firstKey) {
+                            this.vncUrl = firstRecord[firstKey];
+                        }
+                    }
                 }
             });
         },

@@ -163,13 +163,29 @@
                                                 <td>
                                                     <div class="status-cell">
 
-                                                        <img height="24" width="24"
+                                                        <img v-if="item.status <= 4" height="24" width="24"
                                                             :src="'/assets/icons/svg/' + item.status + '.svg'" />
-                                                        <!-- 0=开机，1=关机，2=挂起，4=封禁 -->
+                                                        <img v-if="item.status === 5" height="24" width="24"
+                                                            :src="'/assets/icons/svg/4.svg'" />
+                                                        <img v-if="item.status > 5" height="24" width="24"
+                                                            :src="'/assets/icons/svg/3.svg'" />
+                                                        <!--0=运行中、1=已关机、2=挂起、3=恢复中、4=暂停、5=到期、6=创建中、7=开机中、8=关机中
+                                                            9=停止中（强制关机中10=挂起中、11=暂停中、12重启中、13=重装系统中、14=修改密码中-->
                                                         <span v-if="item.status === 0" class="text-success">运行中</span>
-                                                        <span v-if="item.status === 1" class="text-danger">关机</span>
+                                                        <span v-if="item.status === 1" class="text-danger">已关机</span>
                                                         <span v-if="item.status === 2" class="text-warning">挂起</span>
-                                                        <span v-if="item.status === 4" class="text-danger">封禁</span>
+                                                        <span v-if="item.status === 3" class="text-danger">恢复中</span>
+                                                        <span v-if="item.status === 4" class="text-danger">暂停</span>
+                                                        <span v-if="item.status === 5" class="text-danger">到期</span>
+                                                        <span v-if="item.status === 6" class="text-warning">创建中</span>
+                                                        <span v-if="item.status === 7" class="text-warning">正在开机</span>
+                                                        <span v-if="item.status === 8" class="text-warning">正在关机</span>
+                                                        <span v-if="item.status === 9" class="text-warning">正在停止</span>
+                                                        <span v-if="item.status === 10" class="text-warning">正在挂起</span>
+                                                        <span v-if="item.status === 11" class="text-warning">正在暂停</span>
+                                                        <span v-if="item.status === 12" class="text-warning">正在重启</span>
+                                                        <span v-if="item.status === 13" class="text-warning">正在重装系统</span>
+                                                        <span v-if="item.status === 14" class="text-warning">正在修改密码</span>
                                                     </div>
                                                 </td>
                                                 <td>
