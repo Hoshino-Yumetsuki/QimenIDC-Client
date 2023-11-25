@@ -114,6 +114,11 @@
                                     <span>节点列表</span>
                                 </nuxt-link>
                             </li>
+                            <li>
+                                <nuxt-link to="/node/vnc" exact-active-class="active">
+                                    <span>VNC控制器</span>
+                                </nuxt-link>
+                            </li>
                         </ul>
                     </li>
                     <!-- 系统设置 -->
