@@ -29,7 +29,12 @@
                                     <div class="form-group mb-25">
                                         <label for="hostname">虚拟机名</label>
                                         <input type="text" v-model="nodeData.hostname" class="form-control" id="hostname"
-                                            placeholder="虚拟机名(选填)">
+                                            placeholder="虚拟机名，请勿输入中文">
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="configureTemplateId">配置模板ID</label>
+                                        <input type="text" v-model="nodeData.configureTemplateId" class="form-control"
+                                            id="configureTemplateId" placeholder="配置模板ID(选填)">
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="sockets">CPU插槽数</label>
@@ -228,6 +233,7 @@ export default {
                 cpuUnits: null,// cpu限制 百分比
                 bwlimit: null,// I/ O限制 mb/ s
                 arch: 'x86_64',// 系统架构(x86_64, arrch64)，默认x86_64
+                configureTemplateId: null,
             },
             nodesData: [],
             osTypeData: [],
@@ -323,7 +329,8 @@ export default {
         },
         clickAdd(event) {
             event.preventDefault();
-            if (this.nodeData.os !== null && this.nodeData.os !== '' && this.nodeData.password !== null && this.nodeData.password !== '') {
+            const hostnameIsValid = /^[a-zA-Z0-9]+$/.test(this.nodeData.hostname);
+            if (this.nodeData.os !== null && this.nodeData.os !== '' && this.nodeData.password !== null && this.nodeData.password !== '' && hostnameIsValid) {
                 const url = '/api/createVm';
                 const data = {
                     nodeid: this.nodeData.nodeid,
@@ -338,6 +345,7 @@ export default {
                     bandwidth: this.nodeData.bandwidth,
                     username: this.nodeData.username,
                     password: this.nodeData.password,
+                    configureTemplateId: this.nodeData.configureTemplateId
                 };
                 this.$axios.post(url, data).then(res => {
                     if (res.data.code === 20000) {
@@ -360,7 +368,7 @@ export default {
                 })
             } {
                 notification.error({
-                    message: '请确保各项不能为空',
+                    message: '请确保各项不能为空且主机名只能包含英文字符或数字',
                     duration: 2,
                     placement: 'bottomRight'
                 });
