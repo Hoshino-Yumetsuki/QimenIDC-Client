@@ -719,7 +719,7 @@ export default {
         // 定时刷新数据
         this.timer = setInterval(() => {
             this.fetchData();
-        }, 5000);
+        }, 60000);
     },
     // 组件销毁时清除定时器
     beforeDestroy() {
