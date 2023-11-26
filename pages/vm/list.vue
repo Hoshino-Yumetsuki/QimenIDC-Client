@@ -145,8 +145,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/vm/${item.vmid}`" class="text-black-50 fw-500">
-                                                            {{ item.vmid }}
+                                                        <nuxt-link :to="`/vm/${item.id}`" class="text-black-50 fw-500">
+                                                            {{ item.id }}
                                                         </nuxt-link>
                                                     </div>
                                                 </td>
@@ -157,7 +157,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="text-info">
-                                                        <a :href="`/vm/${item.vmid}`">{{ item.hostname }}</a>
+                                                        <a :href="`/vm/${item.id}`">{{ item.hostname }}</a>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -254,7 +254,7 @@
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                         <li>
-                                                            <a :href="`/vm/${item.vmid}`" class="view">
+                                                            <a :href="`/vm/${item.id}`" class="view">
                                                                 <feather-icon name="eye" />
                                                             </a>
                                                         </li>

@@ -6,8 +6,8 @@
 
                     <div class="breadcrumb-main">
                         <div>
-                            <span class="text-monospace font-weight-bolder fw-500 fs-20 mb-0"
-                                style="max-width: 300px;">ECS-{{ tableData.vmName }}</span>
+                            <span class="text-monospace font-weight-bolder fw-500 fs-20 mb-0" style="max-width: 300px;">{{
+                                tableData.vmName }}</span>
                             <span class="breadcrumb-text" style="margin-left: 10px;">{{ tableData.area }}</span>
                             <span>&nbsp;&nbsp;|&nbsp;&nbsp;(</span>
                             <span class="breadcrumb-text">公</span>
