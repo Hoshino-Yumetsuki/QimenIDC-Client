@@ -7,7 +7,7 @@
                     <div class="breadcrumb-main">
                         <div>
                             <span class="text-monospace font-weight-bolder fw-500 fs-20 mb-0" style="max-width: 300px;">{{
-                                tableData.vmName }}</span>
+                                tableData.hostname }}</span>
                             <span class="breadcrumb-text" style="margin-left: 10px;">{{ tableData.area }}</span>
                             <span>&nbsp;&nbsp;|&nbsp;&nbsp;(</span>
                             <span class="breadcrumb-text">公</span>
@@ -85,7 +85,7 @@
                         <div class="card-body">
                             <div>
                                 <label>实例ID</label>
-                                <span class="span-level-ip">{{ vmId }}</span>
+                                <span class="span-level-ip">{{ hostId }}</span>
                             </div>
                             <div>
                                 <label>实例名称</label>
@@ -337,9 +337,9 @@ import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     async asyncData({ params }) {
-        const vmId = params.id; // 通过 $route.params.id 获取路由参数中的 ID 值
+        const hostId = params.id; // 通过 $route.params.id 获取路由参数中的 ID 值
         return {
-            vmId
+            hostId
         };
     },
     head() {
@@ -363,7 +363,7 @@ export default {
     data() {
         return {
             tableData: [], // 表格数据
-            vmId: null, // 虚拟机ID
+            hostId: null, // 虚拟机ID
             vmStatus: null,//虚拟机控制状态start=开机、stop=关机、reboot=重启、shutdown=强制关机、suspend=挂起、resume=恢复、pause=暂停、unpause=恢复
             vmStatusText: null,//中文提示
             reinstallData: {
@@ -381,7 +381,7 @@ export default {
     methods: {
         fetchData() {
             // 使用异步获取数据
-            const url = `/api/getVmHostInfo?vmId=${this.vmId}`;
+            const url = `/api/getVmHostInfo?hostId=${this.hostId}`;
             this.$axios.get(url).then(res => {
                 if (res.data.code === 20000) {
                     const data = res.data.data;
@@ -401,10 +401,9 @@ export default {
                         type: `pve`,
                         area: data.area || '空',
                         vmid: vmhost.id,
-                        vmName: vmhost.name,
                         osName: os.name,
                         osType: os.osType,
-                        hostname: vmhost.name,
+                        hostname: vmhost.hostname,
                         username: vmhost.username,
                         password: vmhost.password,
                         createTime: vmhost.createTime,
@@ -588,7 +587,7 @@ export default {
         },
         getVncUrl() {
             // 使用异步获取数据
-            const url = `/api/pve/getVnc?page=1&size=5&hostId=${this.vmId}`;
+            const url = `/api/pve/getVnc?page=1&size=5&hostId=${this.hostId}`;
             this.$axios.get(url).then(res => {
                 if (res.data.code === 20000) {
                     const data = res.data.data;

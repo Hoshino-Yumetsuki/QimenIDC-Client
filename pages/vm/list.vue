@@ -491,6 +491,7 @@
     </div>
 </template>
 <script>
+import { notification } from 'ant-design-vue';
 export default {
     layout: 'Console',
     head() {
@@ -618,7 +619,7 @@ export default {
                             type: `pve`,
                             nodeName: record.nodeName || 'none',
                             area: record.area || 'none',
-                            hostname: vmhost.name || 'none',
+                            hostname: vmhost.hostname || 'none',
                             status: vmhost.status, // 处理status可能为空的情况
                             IP: ip || 'none',
                             operatingSystem: os.name || 'none', // 处理operatingSystem可能为空的情况
