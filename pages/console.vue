@@ -93,47 +93,50 @@
                         <div class="card-progress">
                             <div class="card-progress__summery d-flex justify-content-between">
                                 <div>
-                                    <strong class="color-primary">10</strong>
+                                    <strong class="color-primary">{{ tableData.nodeNum }}</strong>
                                     <span>可用节点</span>
                                 </div>
                                 <div>
-                                    <strong class="color-dark">20</strong>
+                                    <strong class="color-dark">{{ tableData.nodeNum }}</strong>
                                     <span>节点总数</span>
                                 </div>
                             </div>
                             <div class="card-progress__bar">
                                 <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 50%"
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
                                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <div class="progress-excerpt">
                                     <!-- <strong><span class="la la-arrow-up"></span>50%</strong> -->
                                     <p class="progress-upword">
                                         节点在线率</p>
-                                    <span class="progress-total">50%</span>
+                                    <span class="progress-total">100%</span>
                                 </div>
                             </div>
                         </div><!-- ends: .card-progress -->
                         <div class="card-progress">
                             <div class="card-progress__summery d-flex justify-content-between">
                                 <div>
-                                    <strong class="color-info">80</strong>
+                                    <strong class="color-info">{{ tableData.onlineVmNum }}</strong>
                                     <span>在线实例</span>
                                 </div>
                                 <div>
-                                    <strong class="color-dark">100</strong>
+                                    <strong class="color-dark">{{ tableData.vmNum }}</strong>
                                     <span>实例总数</span>
                                 </div>
                             </div>
                             <div class="card-progress__bar">
                                 <div class="progress">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
+                                    <div class="progress-bar bg-info" role="progressbar"
+                                        :style="{ width: `${(tableData.onlineVmNum / tableData.vmNum).toFixed(2) * 100}%` }"
                                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <div class="progress-excerpt">
                                     <p class="progress-downword">
                                         实例在线率</p>
-                                    <span class="progress-total">80%</span>
+                                    <span class="progress-total">{{ (tableData.onlineVmNum / tableData.vmNum).toFixed(2) *
+                                        100
+                                    }}%</span>
                                 </div>
                             </div>
                         </div><!-- ends: .card-progress -->
@@ -147,20 +150,12 @@
                     <div class="card-header">
                         <h6>最近数据</h6>
                         <div class="card-extra">
-                            <ul class="perfomence-tab-links card-tab-links mr-3 nav-tabs nav">
+                            <!-- <ul class="perfomence-tab-links card-tab-links mr-3 nav-tabs nav">
                                 <li>
-                                    <a href="#w_perfomence-week" data-toggle="tab" id="w_perfomence-week-tab" role="tab"
-                                        area-controls="w_perfomence" aria-selected="false">周</a>
+                                    <a class="active" href="#w_perfomence-week" data-toggle="tab" id="w_perfomence-week-tab"
+                                        role="tab" area-controls="w_perfomence" aria-selected="false">周</a>
                                 </li>
-                                <li>
-                                    <a href="#w_perfomence-month" data-toggle="tab" id="w_perfomence-month-tab" role="tab"
-                                        area-controls="w_perfomence" aria-selected="false">月</a>
-                                </li>
-                                <li>
-                                    <a class="active" href="#w_perfomence-year" data-toggle="tab" id="w_perfomence-year-tab"
-                                        role="tab" area-controls="w_perfomence" aria-selected="true">年</a>
-                                </li>
-                            </ul>
+                            </ul> -->
                             <div class="dropdown dropleft">
                                 <a href="#" role="button" id="performance" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
@@ -177,10 +172,10 @@
                     <!-- ends: .card-header -->
                     <div class="card-body pt-0">
                         <div class="tab-content perfomence-tab-wrap">
-                            <div class="tab-pane fade" id="w_perfomence-week" role="tabpanel"
+                            <div class="tab-pane fade active show" id="w_perfomence-week" role="tabpanel"
                                 aria-labelledby="w_perfomence-week">
                                 <div class="performance-stats nav-tabs nav">
-                                    <a href="#w_ps_user" data-toggle="tab" id="w_ps_user-tab" role="tab"
+                                    <a href="#w_ps_user" class="active" data-toggle="tab" id="w_ps_user-tab" role="tab"
                                         area-controls="w_ps_user" aria-selected="false">
                                         <div class="performance-stats__up">
                                             <span>新建</span>
@@ -200,7 +195,7 @@
                                         </div>
                                     </a>
 
-                                    <a href="#w_ps_bRate" class="active" data-toggle="tab" id="w_ps_bRate-tab" role="tab"
+                                    <a href="#w_ps_bRate" data-toggle="tab" id="w_ps_bRate-tab" role="tab"
                                         area-controls="w_ps_bRate" aria-selected="true">
                                         <div class="performance-stats__down">
                                             <span>暂停</span>
@@ -209,55 +204,24 @@
                                             </strong>
                                         </div>
                                     </a>
-
-                                    <!-- <a href="#w_ps_sDuration" data-toggle="tab" id="w_ps_sDuration-tab" role="tab"
-                                        area-controls="w_ps_sDuration" aria-selected="false">
-                                        <div class="performance-stats__up">
-                                            <span>Session Duration</span>
-                                            <strong>2m 43s <sub>
-                                                    <i class="la la-arrow-up"></i> 33%</sub>
-                                            </strong>
-                                        </div>
-                                    </a> -->
                                 </div>
                                 <!-- ends: .performance-stats -->
-
                                 <div class="wp-chart perfomence-chart">
                                     <div class="tab-content">
-                                        <div class="tab-pane fade" id="w_ps_user" role="tabpanel"
+                                        <div class="tab-pane fade active show" id="w_ps_user" role="tabpanel"
                                             aria-labelledby="w_ps_user-tab">
-                                            <div id="currentEcharts" style="width: 100%;height: 150px;"></div>
-                                        </div>
-                                        <div class="tab-pane fade" id="w_ps_session" role="tabpanel"
-                                            aria-labelledby="w_ps_session-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_S_W"></canvas>
-                                                </div>
-
-
+                                            <div id="currentEcharts" style="width: 100%;height: 250px;"></div>
+                                            <div style="text-align: center; font-weight: 700; margin-top: 10px;">
+                                                QimenIDC Community Edition<br>
+                                                Version：1.0.7
                                             </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
                                         </div>
-                                        <div class="tab-pane fade active show" id="w_ps_bRate" role="tabpanel"
+                                        <!-- <div class="tab-pane fade" id="w_ps_bRate" role="tabpanel"
                                             aria-labelledby="w_ps_bRate-tab">
                                             <div class="parentContainer">
-
-
                                                 <div>
                                                     <canvas id="wpChart_R_W"></canvas>
                                                 </div>
-
-
                                             </div>
                                             <ul class="legend-static">
                                                 <li class="custom-label">
@@ -267,289 +231,7 @@
                                                     <span style="background-color: #C6D0DC"></span>Previous Period
                                                 </li>
                                             </ul>
-                                        </div>
-                                        <div class="tab-pane fade" id="w_ps_sDuration" role="tabpanel"
-                                            aria-labelledby="w_ps_user-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_Sd_W"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade" id="w_perfomence-month" role="tabpanel"
-                                aria-labelledby="w_perfomence-month">
-                                <div class="performance-stats nav-tabs nav">
-                                    <a href="#m_ps_user" data-toggle="tab" id="m_ps_user-tab" role="tab"
-                                        area-controls="m_ps_user" aria-selected="false">
-                                        <div class="performance-stats__up">
-                                            <span>Users</span>
-                                            <strong>76.2k <sub>
-                                                    <i class="la la-arrow-up"></i> 25%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-
-                                    <a href="#m_ps_session" data-toggle="tab" id="m_ps_session-tab" role="tab"
-                                        area-controls="m_ps_session" aria-selected="false">
-                                        <div class="performance-stats__up">
-                                            <span>Sessions</span>
-                                            <strong>87.6k <sub>
-                                                    <i class="la la-arrow-up"></i> 46%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-
-                                    <a href="#m_ps_bRate" class="active" data-toggle="tab" id="m_ps_bRate-tab" role="tab"
-                                        area-controls="m_ps_bRate" aria-selected="true">
-                                        <div class="performance-stats__down">
-                                            <span>Bounce Rate</span>
-                                            <strong>45% <sub>
-                                                    <i class="la la-arrow-down"></i> 12%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-
-                                    <a href="#m_ps_sDuration" data-toggle="tab" id="m_ps_sDuration-tab" role="tab"
-                                        area-controls="m_ps_sDuration" aria-selected="false">
-                                        <div class="performance-stats__up">
-                                            <span>Session Duration</span>
-                                            <strong>2m 43s <sub>
-                                                    <i class="la la-arrow-up"></i> 33%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-                                </div>
-                                <!-- ends: .performance-stats -->
-
-                                <div class="wp-chart perfomence-chart">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade" id="m_ps_user" role="tabpanel"
-                                            aria-labelledby="m_ps_user-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_U_M"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="tab-pane fade" id="m_ps_session" role="tabpanel"
-                                            aria-labelledby="m_ps_session-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_S_M"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="tab-pane fade active show" id="m_ps_bRate" role="tabpanel"
-                                            aria-labelledby="m_ps_bRate-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_R_M"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="tab-pane fade" id="m_ps_sDuration" role="tabpanel"
-                                            aria-labelledby="m_ps_user-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_Sd_M"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade active show" id="w_perfomence-year" role="tabpanel"
-                                aria-labelledby="w_perfomence-year">
-                                <div class="performance-stats nav-tabs nav">
-                                    <a href="#y_ps_user" data-toggle="tab" id="y_ps_user-tab" role="tab"
-                                        area-controls="y_ps_user" aria-selected="false">
-                                        <div class="performance-stats__up">
-                                            <span>Users</span>
-                                            <strong>76.2k <sub>
-                                                    <i class="la la-arrow-up"></i> 25%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-
-                                    <a href="#y_ps_session" data-toggle="tab" id="y_ps_session-tab" role="tab"
-                                        area-controls="y_ps_session" aria-selected="false">
-                                        <div class="performance-stats__up">
-                                            <span>Sessions</span>
-                                            <strong>87.6k <sub>
-                                                    <i class="la la-arrow-up"></i> 46%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-
-                                    <a href="#y_ps_bRate" class="active" data-toggle="tab" id="y_ps_bRate-tab" role="tab"
-                                        area-controls="y_ps_bRate" aria-selected="true">
-                                        <div class="performance-stats__down">
-                                            <span>Bounce Rate</span>
-                                            <strong>45% <sub>
-                                                    <i class="la la-arrow-down"></i> 12%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-
-                                    <a href="#y_ps_sDuration" data-toggle="tab" id="y_ps_sDuration-tab" role="tab"
-                                        area-controls="y_ps_sDuration" aria-selected="false">
-                                        <div class="performance-stats__up">
-                                            <span>Session Duration</span>
-                                            <strong>2m 43s <sub>
-                                                    <i class="la la-arrow-up"></i> 33%</sub>
-                                            </strong>
-                                        </div>
-                                    </a>
-                                </div>
-                                <!-- ends: .performance-stats -->
-
-                                <div class="wp-chart perfomence-chart">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade" id="y_ps_user" role="tabpanel"
-                                            aria-labelledby="y_ps_user-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_U_Y"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="tab-pane fade" id="y_ps_session" role="tabpanel"
-                                            aria-labelledby="y_ps_session-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_S_Y"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="tab-pane fade active show" id="y_ps_bRate" role="tabpanel"
-                                            aria-labelledby="y_ps_bRate-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_R_Y"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="tab-pane fade" id="y_ps_sDuration" role="tabpanel"
-                                            aria-labelledby="y_ps_user-tab">
-                                            <div class="parentContainer">
-
-
-                                                <div>
-                                                    <canvas id="wpChart_Sd_Y"></canvas>
-                                                </div>
-
-
-                                            </div>
-                                            <ul class="legend-static">
-                                                <li class="custom-label">
-                                                    <span style="background-color: rgb(95, 99, 242);"></span>Current Period
-                                                </li>
-                                                <li class="custom-label">
-                                                    <span style="background-color: #C6D0DC"></span>Previous Period
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -1026,18 +708,6 @@
                                     <a href="#se_region-today" class="active" data-toggle="tab" id="se_region-today-tab"
                                         role="tab" area-controls="se_region-table" aria-selected="true">Today</a>
                                 </li>
-                                <li>
-                                    <a href="#se_region-week" data-toggle="tab" id="se_region-week-tab" role="tab"
-                                        area-controls="se_region-table" aria-selected="false">Week</a>
-                                </li>
-                                <li>
-                                    <a href="#se_region-month" data-toggle="tab" id="se_region-month-tab" role="tab"
-                                        area-controls="se_region-table" aria-selected="false">Month</a>
-                                </li>
-                                <li>
-                                    <a href="#se_region-year" data-toggle="tab" id="se_region-year-tab" role="tab"
-                                        area-controls="se_region-table" aria-selected="false">Year</a>
-                                </li>
                             </ul>
                             <div class="dropdown dropleft">
                                 <a href="#" role="button" id="else" data-toggle="dropdown" aria-haspopup="true"
@@ -1102,171 +772,7 @@
 
                                     </div>
                                     <div class="col-md-7 d-flex align-items-center justify-content-center">
-                                        <div class="regions-svg">
-                                            <div id="s_region-map_T"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="se_region-week" role="tabpanel"
-                                aria-labelledby="se_region-week-tab">
-                                <div class="row">
-                                    <div class="col-md-5">
-
-                                        <div class="table-responsive table-top-regions">
-                                            <table class="table table--default table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Top Regions</th>
-                                                        <th>Sessions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>United States</td>
-                                                        <td>26,457</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Australia</td>
-                                                        <td>4,658</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Canada</td>
-                                                        <td>1,698</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Japan</td>
-                                                        <td>2,856</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>India</td>
-                                                        <td>5,456</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Bangladesh</td>
-                                                        <td>5,796</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brazil</td>
-                                                        <td>6,458</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-7 d-flex align-items-center justify-content-center">
-                                        <div class="regions-svg">
-                                            <div id="s_region-map_W"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="se_region-month" role="tabpanel"
-                                aria-labelledby="se_region-month-tab">
-                                <div class="row">
-                                    <div class="col-md-5">
-
-                                        <div class="table-responsive table-top-regions">
-                                            <table class="table table--default table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Top Regions</th>
-                                                        <th>Sessions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>United States</td>
-                                                        <td>26,457</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Australia</td>
-                                                        <td>4,658</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Canada</td>
-                                                        <td>1,698</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Japan</td>
-                                                        <td>2,856</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>India</td>
-                                                        <td>5,456</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Bangladesh</td>
-                                                        <td>5,796</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brazil</td>
-                                                        <td>6,458</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-7 d-flex align-items-center justify-content-center">
-                                        <div class="regions-svg">
-                                            <div id="s_region-map_M"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="se_region-year" role="tabpanel"
-                                aria-labelledby="se_region-year-tab">
-                                <div class="row">
-                                    <div class="col-md-5">
-
-                                        <div class="table-responsive table-top-regions">
-                                            <table class="table table--default table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Top Regions</th>
-                                                        <th>Sessions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>United States</td>
-                                                        <td>26,457</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Australia</td>
-                                                        <td>4,658</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Canada</td>
-                                                        <td>1,698</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Japan</td>
-                                                        <td>2,856</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>India</td>
-                                                        <td>5,456</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Bangladesh</td>
-                                                        <td>5,796</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Brazil</td>
-                                                        <td>6,458</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-7 d-flex align-items-center justify-content-center">
-                                        <div class="regions-svg">
-                                            <div id="s_region-map_Y"></div>
-                                        </div>
+                                        <div id="earthEcharts" style="width: 100%;height: 250px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -1298,7 +804,40 @@ export default {
             ]
         }
     },
+    data() {
+        return {
+            tableData: {
+                vmNum: 0, //虚拟机数
+                onlineVmNum: 0, //在线虚拟机数
+                nodeNum: 0, //节点总数
+            },
+        }
+    },
     methods: {
+        fetchData() {
+            // 获取虚拟机总数
+            let url = `/api/getVmCount`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    this.tableData.vmNum = res.data.data;
+                }
+            });
+            // 获取虚拟机开机数
+            url = `/api/getVmCountByStatus?status=0`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    this.tableData.onlineVmNum = res.data.data;
+                }
+            });
+            // 节点总数
+            url = `/api/getNodeCount`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    this.tableData.nodeNum = res.data.data;
+                }
+            });
+
+        },
         currentEcharts() {
             // 找到容器
             let networkEcharts = document.getElementById('currentEcharts')
@@ -1307,13 +846,13 @@ export default {
             // 指定图表的配置项和数据
             let option = {
                 title: {
-                    text: 'Stacked Line'
+                    text: ''
                 },
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: {
-                    data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+                    data: ['新建', '暂停', '删除']
                 },
                 grid: {
                     left: '3%',
@@ -1329,41 +868,88 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    data: ['11.21', '11.22', '11.23', '11.24', '11.25', '11.26', '11.27']
                 },
                 yAxis: {
                     type: 'value'
                 },
                 series: [
                     {
-                        name: 'Email',
-                        type: 'line',
-                        stack: 'Total',
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: 'Union Ads',
+                        name: '新建',
                         type: 'line',
                         stack: 'Total',
                         data: [220, 182, 191, 234, 290, 330, 310]
                     },
                     {
-                        name: 'Video Ads',
+                        name: '暂停',
                         type: 'line',
                         stack: 'Total',
                         data: [150, 232, 201, 154, 190, 330, 410]
                     },
                     {
-                        name: 'Direct',
+                        name: '删除',
                         type: 'line',
                         stack: 'Total',
                         data: [320, 332, 301, 334, 390, 330, 320]
-                    },
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表
+            myChart.setOption(option)
+        },
+        earthEcharts() {
+            // 找到容器
+            let earthEcharts = document.getElementById('earthEcharts')
+            // 初始化echarts实例
+            let myChart = this.$echarts.init(earthEcharts)
+            // 指定图表的配置项和数据
+            let option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['新建', '暂停', '删除']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['11.21', '11.22', '11.23', '11.24', '11.25', '11.26', '11.27']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
                     {
-                        name: 'Search Engine',
+                        name: '新建',
                         type: 'line',
                         stack: 'Total',
-                        data: [820, 932, 901, 934, 1290, 1330, 1320]
+                        data: [220, 182, 191, 234, 290, 330, 310]
+                    },
+                    {
+                        name: '暂停',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [150, 232, 201, 154, 190, 330, 410]
+                    },
+                    {
+                        name: '删除',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [320, 332, 301, 334, 390, 330, 320]
                     }
                 ]
             };
@@ -1372,7 +958,9 @@ export default {
         },
     },
     mounted() {
+        this.fetchData()
         this.currentEcharts()
+        this.earthEcharts()
     }
 }
 </script>
