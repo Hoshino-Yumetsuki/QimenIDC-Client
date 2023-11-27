@@ -68,6 +68,7 @@
                                         @click="setVmStatus('unpause', '取消暂停')">取消暂停</a>
                                     <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
                                         @click="setVmStatus('delete', '删除')">删除实例</a>
+                                    <a href="" class="dropdown-item" @click="showResetVncModal($event)">重置VNC密码</a>
                                 </div>
                             </div>
 
@@ -330,6 +331,15 @@
                 </a-form-item>
             </a-form>
         </a-modal>
+        <a-modal :visible="resetVncVisible" :ok-text="'重置VNC密码'" :cancel-text="'取消'" @cancel="clickCancel"
+            @ok="clickResetVnc">
+            <p>重置VNC密码：</p><br>
+            <a-form>
+                <a-form-item label="新密码" name="vncPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input :placeholder="'请输入新的VNC密码'" v-model="vncPassword" />
+                </a-form-item>
+            </a-form>
+        </a-modal>
     </div>
 </template>
 <script>
@@ -372,7 +382,9 @@ export default {
                 newPassword: null,
                 resetDataDisk: false,
             },//重装系统的数据
-            reinstallVisible: false,//重装窗口
+            reinstallVisible: false,//重装系统窗口
+            resetVncVisible: false,//重置VNC密码窗口
+            vncPassword: null, //vnc密码
             osTypeData: [],
             systemData: [],
             vncUrl: null,
@@ -400,7 +412,6 @@ export default {
                     const newRecord = {
                         type: `pve`,
                         area: data.area || '空',
-                        vmid: vmhost.id,
                         osName: os.name,
                         osType: os.osType,
                         hostname: vmhost.hostname,
@@ -409,6 +420,7 @@ export default {
                         createTime: vmhost.createTime,
                         expirationTime: vmhost.expirationTime,
                         status: vmhost.status, // 处理status可能为空的情况
+                        nodeid: vmhost.nodeid,
                         IP: ip,
                         vCpu: vmhost.cores,
                         memory: vmhost.memory,
@@ -450,10 +462,10 @@ export default {
         ClickConfirm() {//确认操作delete
             let url;
             if (this.vmStatus === 'delete') {
-                url = `/api/delete/${this.tableData.vmid}`;
+                url = `/api/delete/${this.hostId}`;
             }
             else {
-                url = `/api/power/${this.tableData.vmid}/${this.vmStatus}`;
+                url = `/api/power/${this.hostId}/${this.vmStatus}`;
             }
             this.$axios.put(url).then(res => {
                 if (res.data.code === 20000) {
@@ -488,11 +500,12 @@ export default {
         clickCancel() {
             this.reinstallData = [];
             this.reinstallVisible = false;
+            this.resetVncVisible = false;
         },
         clickReinstall() {
             const url = `/api/reinstall`;
             const data = {
-                vmHostId: this.tableData.vmid,
+                hostId: this.hostId,
                 os: this.reinstallData.os,
                 newPassword: this.reinstallData.newPassword,
                 resetDataDisk: this.reinstallData.resetDataDisk,
@@ -524,8 +537,45 @@ export default {
         showReinstallModal(event) {
             event.preventDefault();
             this.getOsType();
-            this.reinstallData.vmHostId = this.tableData.vmid;
             this.reinstallVisible = true;
+        },
+        showResetVncModal(event) {
+            event.preventDefault();
+            this.resetVncVisible = true;
+        },
+        clickResetVnc() {
+            if (this.vncPassword !== null && this.vncPassword !== '') {
+                const url = `/api/${this.tableData.nodeid}/updateVncPassword`;
+                const data = {
+                    hostId: this.hostId,
+                    password: this.vncPassword,
+                };
+                this.$axios.put(url, data).then(res => {
+                    if (res.data.code === 20000) {
+                        // 显示成功提示框
+                        notification.success({
+                            message: '修改VNC密码成功',
+                            duration: 2,
+                            placement: 'bottomRight',
+                        });
+                        this.fetchData()
+                        this.resetVncVisible = false;
+                    }
+                    else {
+                        notification.error({
+                            message: res.data.message,
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                    }
+                });
+            } else {
+                notification.error({
+                    message: '请填写新的VNC密码!',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
         },
         handleOsTypeChange() {
             // 获取选中的值

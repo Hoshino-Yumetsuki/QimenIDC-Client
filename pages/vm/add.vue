@@ -7,8 +7,14 @@
                     <div class="col-sm-5 col-10">
                         <div class="mt-40 mb-50">
                             <div class="checkbox-theme-default custom-checkbox add-checkbox">
-                                <input class="checkbox" type="checkbox" id="check-1" v-model="isChecked">
+                                <input class="checkbox" type="checkbox" id="check-1" v-model="isUseTemplate">
                                 <label for="check-1">
+                                    <span class="checkbox-text">
+                                        使用配置模板
+                                    </span>
+                                </label>
+                                <input class="checkbox" type="checkbox" id="check-2" v-model="isChecked">
+                                <label for="check-2">
                                     <span class="checkbox-text">
                                         高级选项
                                     </span>
@@ -31,37 +37,47 @@
                                         <input type="text" v-model="nodeData.hostname" class="form-control" id="hostname"
                                             placeholder="虚拟机名，请勿输入中文">
                                     </div>
-                                    <div class="form-group mb-25">
+                                    <div class="form-group mb-25" v-if="isUseTemplate">
                                         <label for="configureTemplateId">配置模板ID</label>
                                         <input type="text" v-model="nodeData.configureTemplateId" class="form-control"
-                                            id="configureTemplateId" placeholder="配置模板ID(选填)">
+                                            id="configureTemplateId" placeholder="配置模板ID,若留空则不使用配置模板">
                                     </div>
-                                    <div class="form-group mb-25">
-                                        <label for="sockets">CPU插槽数</label>
-                                        <input type="number" v-model="nodeData.sockets" class="form-control" id="sockets"
-                                            required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">CPU插槽数</small>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="cores">CPU核心数</label>
-                                        <input type="number" v-model="nodeData.cores" class="form-control" id="cores"
-                                            required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">CPU核心数</small>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="threads">CPU线程数</label>
-                                        <input type="number" v-model="nodeData.threads" class="form-control" id="threads">
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">CPU线程数</small>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="memory">内存</label>
-                                        <input type="number" v-model="nodeData.memory" class="form-control" id="memory"
-                                            value="512" required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">内存,单位Mb</small>
+                                    <div v-if="isUseTemplate === false">
+                                        <div class="form-group mb-25">
+                                            <label for="sockets">CPU插槽数</label>
+                                            <input type="number" v-model="nodeData.sockets" class="form-control"
+                                                id="sockets" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">CPU插槽数</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="cores">CPU核心数</label>
+                                            <input type="number" v-model="nodeData.cores" class="form-control" id="cores"
+                                                required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">CPU核心数</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="threads">CPU线程数</label>
+                                            <input type="number" v-model="nodeData.threads" class="form-control"
+                                                id="threads">
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">CPU线程数</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="memory">内存</label>
+                                            <input type="number" v-model="nodeData.memory" class="form-control" id="memory"
+                                                value="512" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">内存,单位Mb</small>
+                                        </div>
+                                        <div class="form-group mb-25">
+                                            <label for="bandwidth">带宽</label>
+                                            <input type="number" v-model="nodeData.bandwidth" class="form-control"
+                                                id="bandwidth" value="1" required>
+                                            <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
+                                            <small class="text-danger">带宽 单位Mbps</small>
+                                        </div>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="memory">系统类型</label>
@@ -79,13 +95,6 @@
                                                 :key="item.name">{{
                                                     item.name }}</a-select-option>
                                         </a-select>
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label for="bandwidth">带宽</label>
-                                        <input type="number" v-model="nodeData.bandwidth" class="form-control"
-                                            id="bandwidth" value="1" required>
-                                        <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
-                                        <small class="text-danger">带宽 单位Mbps</small>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="username">远程用户名</label>
@@ -238,7 +247,8 @@ export default {
             nodesData: [],
             osTypeData: [],
             systemData: [],
-            isChecked: false
+            isChecked: false,
+            isUseTemplate: false
         }
     },
 
@@ -329,7 +339,7 @@ export default {
         },
         clickAdd(event) {
             event.preventDefault();
-            const hostnameIsValid = /^[a-zA-Z0-9]+$/.test(this.nodeData.hostname);
+            const hostnameIsValid = /^[a-zA-Z0-9_-]+$/.test(this.nodeData.hostname);
             if (this.nodeData.os !== null && this.nodeData.os !== '' && this.nodeData.password !== null && this.nodeData.password !== '' && hostnameIsValid) {
                 const url = '/api/createVm';
                 const data = {
@@ -366,7 +376,7 @@ export default {
                         });
                     }
                 })
-            } {
+            } else {
                 notification.error({
                     message: '请确保各项不能为空且主机名只能包含英文字符或数字',
                     duration: 2,
