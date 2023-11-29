@@ -7,7 +7,8 @@
                     <div class="col-sm-5 col-10">
                         <div class="mt-40 mb-50">
                             <div class="checkbox-theme-default custom-checkbox add-checkbox">
-                                <input class="checkbox" type="checkbox" id="check-1" v-model="isUseTemplate">
+                                <input class="checkbox" type="checkbox" id="check-1" v-model="isUseTemplate"
+                                    @click="getTempData()">
                                 <label for="check-1">
                                     <span class="checkbox-text">
                                         使用配置模板
@@ -38,9 +39,11 @@
                                             placeholder="虚拟机名，请勿输入中文">
                                     </div>
                                     <div class="form-group mb-25" v-if="isUseTemplate">
-                                        <label for="configureTemplateId">配置模板ID</label>
-                                        <input type="text" v-model="nodeData.configureTemplateId" class="form-control"
-                                            id="configureTemplateId" placeholder="配置模板ID,若留空则不使用配置模板">
+                                        <label for="configureTemplateId">配置模板</label>
+                                        <a-select class="add-aselect" id="nodeid" v-model="nodeData.configureTemplateId">
+                                            <a-select-option v-for="item in tempData" :key="item.id" :value="item.id">（{{
+                                                item.id }}）{{ item.name }}</a-select-option>
+                                        </a-select>
                                     </div>
                                     <div v-if="isUseTemplate === false">
                                         <div class="form-group mb-25">
@@ -247,6 +250,7 @@ export default {
             nodesData: [],
             osTypeData: [],
             systemData: [],
+            tempData: [],
             isChecked: false,
             isUseTemplate: false
         }
@@ -337,9 +341,32 @@ export default {
                 }
             });
         },
+        getTempData() {
+            if (!this.isUseTemplate) {
+                // 使用异步获取数据
+                const url = `/api/getConfiguretemplateByPage?page=1&limit=200`;
+                this.$axios.get(url).then(res => {
+                    if (res.data.code === 20000) {
+                        const data = res.data.data;
+                        const records = data.records;
+                        const newTableData = [];
+                        records.forEach(record => {
+                            // 构建新的记录对象
+                            const newRecord = {
+                                id: record.id,
+                                name: record.name || '未知',
+                            };
+                            // 添加到新的数组中
+                            newTableData.push(newRecord);
+                        });
+                        this.tempData = newTableData;
+                    }
+                });
+            }
+        },
         clickAdd(event) {
             event.preventDefault();
-            const hostnameIsValid = /^[a-zA-Z0-9_-]+$/.test(this.nodeData.hostname);
+            const hostnameIsValid = /^[a-zA-Z0-9-]+$/.test(this.nodeData.hostname);
             if (this.nodeData.os !== null && this.nodeData.os !== '' && this.nodeData.password !== null && this.nodeData.password !== '' && hostnameIsValid) {
                 const url = '/api/createVm';
                 const data = {
@@ -355,6 +382,15 @@ export default {
                     bandwidth: this.nodeData.bandwidth,
                     username: this.nodeData.username,
                     password: this.nodeData.password,
+                    onBoot: this.nodeData.onBoot,
+                    systemDiskSize: this.nodeData.systemDiskSize,
+                    devirtualization: this.nodeData.devirtualization,
+                    kvm: this.nodeData.kvm,
+                    nested: this.nodeData.nested,
+                    cpu: this.nodeData.cpu,
+                    cpuUnits: this.nodeData.cpuUnits,
+                    bwlimit: this.nodeData.bwlimit,
+                    arch: this.nodeData.arch,
                     configureTemplateId: this.nodeData.configureTemplateId
                 };
                 this.$axios.post(url, data).then(res => {
