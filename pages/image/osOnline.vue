@@ -364,6 +364,10 @@ export default {
     },
     mounted() {
         this.fetchData();
+        // 定时刷新数据
+        this.timer = setInterval(() => {
+            this.fetchData();
+        }, 5000);
     },
 
 }
