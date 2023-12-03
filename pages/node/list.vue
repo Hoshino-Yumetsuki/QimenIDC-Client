@@ -113,8 +113,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <nuxt-link :to="`/node/edit/${item.id}`"
-                                                            class="text-black-50 fw-500">
+                                                        <nuxt-link :to="`/node/${item.id}`" class="text-black-50 fw-500">
                                                             {{ item.id }}
                                                         </nuxt-link>
                                                     </div>
@@ -172,6 +171,11 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
+                                                        <li>
+                                                            <a :href="`/node/${item.id}`" class="view">
+                                                                <feather-icon name="eye" />
+                                                            </a>
+                                                        </li>
                                                         <li><nuxt-link
                                                                 :to="{ name: 'node-edit-id', params: { id: item.id, data: item } }"
                                                                 class="edit">
