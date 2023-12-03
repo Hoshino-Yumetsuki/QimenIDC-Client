@@ -134,8 +134,10 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.type }}
+                                                    <div class="capitalize-text">
+                                                        <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.type + '.svg'" /> {{ item.type
+                                                            }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -144,8 +146,10 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.osType }}
+                                                    <div class="capitalize-text">
+                                                        <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
+                                                                item.osType }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -294,8 +298,10 @@
                 </a-form-item>
                 <a-form-item label="镜像类型" name="type" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.type">
-                        <a-select-option :value="'win'">Windows</a-select-option>
-                        <a-select-option :value="'linux'">Linux</a-select-option>
+                        <a-select-option :value="'win'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/windows.svg'" /> Windows</a-select-option>
+                        <a-select-option :value="'linux'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/linux.svg'" /> Linux</a-select-option>
                     </a-select>
                 </a-form-item>
                 <a-form-item label="镜像架构" name="arch" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
@@ -310,17 +316,27 @@
                         <a-select-option :value="'armv7l'">armv7l</a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item label="镜像类型" name="osType" :required="true" :label-col="{ span: 6 }"
+                <a-form-item label="镜像类别" name="osType" :required="true" :label-col="{ span: 6 }"
                     :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.osType">
-                        <a-select-option :value="'centos'">CentOS</a-select-option>
-                        <a-select-option :value="'debian'">Debian</a-select-option>
-                        <a-select-option :value="'ubuntu'">Ubuntu</a-select-option>
-                        <a-select-option :value="'alpine'">Alpine</a-select-option>
-                        <a-select-option :value="'fedora'">Fedora</a-select-option>
-                        <a-select-option :value="'opensuse'">Opensuse</a-select-option>
-                        <a-select-option :value="'ubuntukylin'">UbuntuKylin</a-select-option>
-                        <a-select-option :value="'other'">Other</a-select-option>
+                        <a-select-option :value="'windows'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/windows.svg'" /> Windows</a-select-option>
+                        <a-select-option :value="'centos'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/centos.svg'" /> CentOS</a-select-option>
+                        <a-select-option :value="'debian'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/debian.svg'" /> Debian</a-select-option>
+                        <a-select-option :value="'ubuntu'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/ubuntu.svg'" /> Ubuntu</a-select-option>
+                        <a-select-option :value="'alpine'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/linux.svg'" /> Alpine</a-select-option>
+                        <a-select-option :value="'fedora'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/fedora.svg'" /> Fedora</a-select-option>
+                        <a-select-option :value="'opensuse'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/opensuse.svg'" /> Opensuse</a-select-option>
+                        <a-select-option :value="'ubuntukylin'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/ubuntu.svg'" /> UbuntuKylin</a-select-option>
+                        <a-select-option :value="'other'"><img height="24" width="24"
+                                :src="'/assets/icons/svg/otheros.svg'" /> Other</a-select-option>
                     </a-select>
                 </a-form-item>
                 <a-form-item label="下载类型" name="downType" :required="true" :label-col="{ span: 6 }"
@@ -824,5 +840,9 @@ export default {
 
 .status-cell img {
     margin-right: 8px;
+}
+
+.capitalize-text {
+    text-transform: capitalize;
 }
 </style>

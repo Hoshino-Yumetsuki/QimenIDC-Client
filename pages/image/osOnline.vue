@@ -77,13 +77,17 @@
                                         <tbody>
                                             <tr v-for="item in tableData" :key="item.id" class="userDatatable-body">
                                                 <td>
-                                                    <div>
-                                                        {{ item.type }}
+                                                    <div class="capitalize-text">
+                                                        <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.type + '.svg'" /> {{ item.type
+                                                            }}
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div>
-                                                        {{ item.osType }}
+                                                    <div class="capitalize-text">
+                                                        <img height="24" width="24"
+                                                            :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
+                                                                item.osType }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -205,7 +209,7 @@ export default {
     layout: 'Console',
     head() {
         return {
-            title: 'API管理 - QimenIDC',
+            title: '镜像库 - QimenIDC',
             meta: [
                 {
                     hid: 'description',
@@ -387,5 +391,9 @@ export default {
 
 .status-cell img {
     margin-right: 8px;
+}
+
+.capitalize-text {
+    text-transform: capitalize;
 }
 </style>

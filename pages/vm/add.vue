@@ -84,19 +84,21 @@
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="memory">系统类型</label>
-                                        <a-select class="add-aselect" id="osType" v-model="nodeData.osType"
+                                        <a-select class="add-aselect capitalize-text" id="osType" v-model="nodeData.osType"
                                             @change="handleOsTypeChange">
-                                            <a-select-option v-for="item in osTypeData" :value="item.osType"
-                                                :key="item.osType">{{
-                                                    item.osType }}</a-select-option>
+                                            <a-select-option class="capitalize-text" v-for="item in osTypeData"
+                                                :value="item.osType" :key="item.osType"><img height="24" width="24"
+                                                    :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
+                                                        item.osType }}</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="os">操作系统</label>
                                         <a-select class="add-aselect" id="os" v-model="nodeData.os">
                                             <a-select-option v-for="item in systemData" :value="item.name"
-                                                :key="item.name">{{
-                                                    item.name }}</a-select-option>
+                                                :key="item.name"><img height="24" width="24"
+                                                    :src="'/assets/icons/svg/' + nodeData.osType + '.svg'" /> {{
+                                                        item.name }}</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
@@ -252,7 +254,7 @@ export default {
             systemData: [],
             tempData: [],
             isChecked: false,
-            isUseTemplate: false
+            isUseTemplate: false,
         }
     },
 
@@ -427,3 +429,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.capitalize-text {
+    text-transform: capitalize !important;
+}
+</style>

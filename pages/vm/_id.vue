@@ -310,14 +310,17 @@
             <a-form>
                 <a-form-item label="系统类型" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                     <a-select class="add-aselect" id="osType" v-model="reinstallData.osType" @change="handleOsTypeChange">
-                        <a-select-option v-for="item in osTypeData" :value="item.osType" :key="item.osType">{{
-                            item.osType }}</a-select-option>
+                        <a-select-option v-for="item in osTypeData" :value="item.osType" :key="item.osType"><img height="24"
+                                width="24" :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
+                                    item.osType }}</a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item label="操作系统" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                    <a-select class="add-aselect" id="os" v-model="reinstallData.os">
-                        <a-select-option v-for="item in systemData" :value="item.name" :key="item.name">{{
-                            item.name }}</a-select-option>
+                <a-form-item class="capitalize-text" label="操作系统" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-select class="add-aselect capitalize-text" id="os" v-model="reinstallData.os">
+                        <a-select-option class="capitalize-text" v-for="item in systemData" :value="item.name"
+                            :key="item.name"><img height="24" width="24"
+                                :src="'/assets/icons/svg/' + reinstallData.osType + '.svg'" /> {{
+                                    item.name }}</a-select-option>
                     </a-select>
                 </a-form-item>
                 <a-form-item label="新密码" name="newPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
@@ -1084,5 +1087,9 @@ export default {
     margin-top: -20px;
     /* 图表向左移动 */
     margin-left: -30px;
+}
+
+.capitalize-text {
+    text-transform: capitalize;
 }
 </style>
