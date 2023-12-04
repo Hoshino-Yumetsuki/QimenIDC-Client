@@ -1,10 +1,11 @@
 <template>
     <div class="container-fluid">
+
         <div class="row">
             <div class="col-lg-12">
 
                 <div class="breadcrumb-main">
-                    <h4 class="text-capitalize breadcrumb-title">节点信息{{ nodeId }}</h4>
+                    <h4 class="text-capitalize breadcrumb-title">节点信息</h4>
                     <div class="breadcrumb-action justify-content-center flex-wrap">
                         <div class="action-btn">
 
@@ -21,26 +22,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="dropdown action-btn">
-                            <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
-                                id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="la la-download"></i> 导入
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <span class="dropdown-item">Export With</span>
-                                <div class="dropdown-divider"></div>
-                                <a href="" class="dropdown-item">
-                                    <i class="la la-print"></i> Printer</a>
-                                <a href="" class="dropdown-item">
-                                    <i class="la la-file-pdf"></i> PDF</a>
-                                <a href="" class="dropdown-item">
-                                    <i class="la la-file-text"></i> Google Sheets</a>
-                                <a href="" class="dropdown-item">
-                                    <i class="la la-file-excel"></i> Excel (XLSX)</a>
-                                <a href="" class="dropdown-item">
-                                    <i class="la la-file-csv"></i> CSV</a>
-                            </div>
-                        </div> -->
                         <div class="dropdown action-btn">
                             <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
                                 id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,6 +49,84 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col-12" style="margin-bottom: 25px;">
+
+                <div class="card">
+                    <div class="card-header color-dark fw-500">
+                        {{ nodeData.name }}（{{ nodeData.host }}）
+                        <span v-if="nodeData.status === 0"
+                            class="text-success bg-opacity-success color-success rounded-pill userDatatable-content-status active">节点正常</span>
+                        <span v-if="nodeData.status === 1"
+                            class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">节点暂停</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table4  p-25 bg-white mb-30">
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr class="userDatatable-header">
+                                            <th>
+                                                <span class="userDatatable-title">名称</span>
+                                            </th>
+                                            <th>
+                                                <span class="userDatatable-title">节点类型</span>
+                                            </th>
+                                            <th>
+                                                <span class="userDatatable-title">版本</span>
+                                            </th>
+                                            <th>
+                                                <span class="userDatatable-title">区域</span>
+                                            </th>
+                                            <th>
+                                                <span class="userDatatable-title">实例数量</span>
+                                            </th>
+                                            <th>
+                                                <span class="userDatatable-title">IP地址数量(已用/总)</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="userDatatable-content">
+                                                    {{ nodeData.name }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="userDatatable-content">
+                                                    <img height="24" width="24" :src="'/assets/icons/svg/pve.svg'" /> {{
+                                                        nodeData.nodeName }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="userDatatable-content">
+                                                    <img height="24" width="24" :src="'/assets/icons/svg/pve.svg'" /> {{
+                                                        nodeInfoData.pveversion }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="userDatatable-content">
+                                                    {{ nodeData.area }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="userDatatable-content">
+                                                    0
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="userDatatable-content">
+                                                    0/0
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-xxl-4 col-lg-5 m-bottom-30">
 
@@ -819,56 +878,67 @@ export default {
                 nodeNum: 0, //节点总数
             },
             nodeData: [],
+            nodeInfoData: [],
         }
     },
     methods: {
         fetchData() {
-            // 获取虚拟机总数
-            let url = `/api/getVmCount`;
-            this.$axios.get(url).then(res => {
-                if (res.data.code === 20000) {
-                    this.tableData.vmNum = res.data.data;
-                }
-            });
-            // 获取虚拟机开机数
-            url = `/api/getVmCountByStatus?status=0`;
-            this.$axios.get(url).then(res => {
-                if (res.data.code === 20000) {
-                    this.tableData.onlineVmNum = res.data.data;
-                }
-            });
-            // 节点总数
-            url = `/api/getNodeCount`;
-            this.$axios.get(url).then(res => {
-                if (res.data.code === 20000) {
-                    this.tableData.nodeNum = res.data.data;
-                }
-            });
-
-            url = `/api/getNodeInfoByOne?nodeId=${this.nodeId}`;
+            // 获取节点数据
+            let url = `/api/selectNodeByPage?page=1&size=200`;
             this.$axios.get(url).then(res => {
                 if (res.data.code === 20000) {
                     const data = res.data.data;
                     const records = data.records;
-                    const newTableData = [];
+                    let newTableData = null;
                     records.forEach(record => {
                         // 构建新的记录对象
-                        const newRecord = {
-                            id: record.id,
-                            nodeId: record.nodeId,
-                            vmId: record.vmId,
-                            poolId: record.poolId,
-                            ip: record.ip,
-                            subnetMask: record.subnetMask,
-                            gateway: record.gateway,
-                            dns1: record.dns1 || ' ',
-                            dns2: record.dns2 || ' ',
-                            status: record.status,
-                        };
-                        // 添加到新的数组中
-                        newTableData.push(newRecord);
+                        if (record.id == this.nodeId) {
+                            newTableData = {
+                                id: record.id,
+                                name: record.name || '未知',
+                                area: record.area || '未知',
+                                host: record.host,
+                                port: record.port,
+                                username: record.username,
+                                password: record.password,
+                                realm: record.realm,
+                                nodeName: record.nodeName,
+                                status: record.status,
+                                sshPort: record.sshPort,
+                                sshUsername: record.sshUsername,
+                                sshPassword: record.sshPassword,
+                                controllerStatus: record.controllerStatus,
+                            };
+                            return;
+                        }
                     });
                     this.nodeData = newTableData;
+                }
+            });
+            //获取节点负载
+            url = `/api/getNodeInfoByOne?nodeId=${this.nodeId}`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    // const newTableData = [];
+                    // records.forEach(record => {
+                    //     // 构建新的记录对象
+                    //     const newRecord = {
+                    //         id: record.id,
+                    //         nodeId: record.nodeId,
+                    //         vmId: record.vmId,
+                    //         poolId: record.poolId,
+                    //         ip: record.ip,
+                    //         subnetMask: record.subnetMask,
+                    //         gateway: record.gateway,
+                    //         dns1: record.dns1 || ' ',
+                    //         dns2: record.dns2 || ' ',
+                    //         status: record.status,
+                    //     };
+                    //     // 添加到新的数组中
+                    //     newTableData.push(newRecord);
+                    // });
+                    this.nodeInfoData = data;
                 }
             });
         },

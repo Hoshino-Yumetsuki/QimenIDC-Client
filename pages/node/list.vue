@@ -140,9 +140,8 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <img height="24" width="24"
-                                                            :src="'/assets/icons/svg/' + item.nodeName + '.svg'" /> {{
-                                                                item.nodeName }}
+                                                        <img height="24" width="24" :src="'/assets/icons/svg/pve.svg'" /> {{
+                                                            item.nodeName }}
                                                     </div>
                                                 </td>
                                                 <td>
