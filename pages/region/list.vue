@@ -76,45 +76,107 @@
                                     <div class="application-faqs">
                                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                             <!-- panel 1 -->
-                                            <!-- <div class="panel panel-default">
+                                            <div v-if="fatherNodeData.length > 0" class="panel panel-default">
                                                 <div class="panel-heading" role="tab" id="headingOne">
                                                     <h4 class="panel-title">
                                                         <a data-toggle="collapse" data-parent="#accordion"
                                                             href="#collapseOne" aria-expanded="true"
                                                             aria-controls="collapseOne">
-                                                            北京电信 - A区
+                                                            {{ item.name }}节点
                                                         </a>
                                                     </h4>
                                                 </div>
                                                 <div id="collapseOne" class="panel-collapse collapse in show"
                                                     role="tabpanel" aria-labelledby="headingOne">
                                                     <div class="panel-body">
-                                                        <p class="mb-sm-35 mb-20">Many support queries and technical
-                                                            questions will
-                                                            already be answered in supporting documentation such as FAQ's
-                                                            and comments from previous buyers. Anim pariatur cliche
-                                                            reprehenderit, enim eiusmod high life accusamus terry richardson
-                                                            ad squid. 3 wolf moon officia aute, non cupidatat skateboard
-                                                            dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch
-                                                            3 wolf moon tempor, sunt aliqua put a bird on it squid
-                                                            single-origin coffee nulla assumenda shoreditch et.</p>
-                                                        <span class="fs-14 fw-500 color-dark">Was this article
-                                                            helpful?</span>
-                                                        <div class="button-group d-flex mt-2">
-                                                            <button
-                                                                class="btn btn-default btn-squared btn-outline-success px-15 "><span
-                                                                    data-feather="meh"></span>
-                                                                Yes
-                                                            </button>
-                                                            <button
-                                                                class="btn btn-default btn-squared btn-outline-warning px-15 "><span
-                                                                    data-feather="frown"></span>
-                                                                No
-                                                            </button>
+                                                        <!-- <p class="mb-sm-35 mb-20">测试1</p> -->
+                                                        <div class="table-responsive">
+                                                            <table class="table mb-0">
+                                                                <thead>
+                                                                    <tr class="userDatatable-header">
+                                                                        <th>
+                                                                            <div class="d-flex align-items-center">
+                                                                                <div class="custom-checkbox  check-all">
+
+                                                                                    <span
+                                                                                        class="checkbox-text userDatatable-title">ID</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="userDatatable-title">别称</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="userDatatable-title">地址</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="userDatatable-title">端口</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="userDatatable-title">节点名称</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="userDatatable-title">状态</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="userDatatable-title">被控状态</span>
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody style="text-align: center !important;">
+                                                                    <tr v-for="nodeItem in fatherNodeData"
+                                                                        :key="nodeItem.id" class="userDatatable-body">
+                                                                        <td>
+                                                                            <div>
+                                                                                <nuxt-link :to="`/node/edit/${nodeItem.id}`"
+                                                                                    class="text-black-50 fw-500">
+                                                                                    {{ nodeItem.id }}
+                                                                                </nuxt-link>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div>
+                                                                                {{ nodeItem.name }}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div>
+                                                                                {{ nodeItem.host }}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div>
+                                                                                {{ nodeItem.port }}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div>
+                                                                                {{ nodeItem.nodeName }}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="status-cell">
+                                                                                <span v-if="nodeItem.status === 0"
+                                                                                    class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">正常</span>
+                                                                                <span v-if="nodeItem.status === 1"
+                                                                                    class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">暂停</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="status-cell">
+                                                                                <span v-if="nodeItem.status === 0"
+                                                                                    class="text-success bg-opacity-success  color-success rounded-pill userDatatable-content-status active">正常</span>
+                                                                                <span v-if="nodeItem.status === 1"
+                                                                                    class="text-danger bg-opacity-warning  color-warning rounded-pill userDatatable-content-status active">暂停</span>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> -->
+                                            </div>
                                             <!-- panel 2 -->
                                             <div v-for="(sitem) in sonData" :key="sitem.id" class="panel panel-default">
                                                 <div class="panel-heading" role="tab" id="headingTwo">
@@ -343,6 +405,7 @@ export default {
         return {
             tableData: [], // 表格数据
             sonData: [], // 子级数据
+            fatherNodeData: [], // 父级节点数据
             nodeData: [], // 子级节点数据
             total: 2, // 总条数
             currentPage: 1, // 当前页
@@ -448,6 +511,40 @@ export default {
                         newTableData.push(newRecord);
                     });
                     this.sonData = newTableData;
+                }
+            });
+            this.fetchFatherNodeData(parent);
+        },
+        fetchFatherNodeData(area) {
+            // 使用异步获取数据
+            const url = `/api/getNodeListByArea?page=${this.currentPage}&limit=${this.pageSize}&area=${area}`;
+            this.$axios.get(url).then(res => {
+                if (res.data.code === 20000) {
+                    const data = res.data.data;
+                    const records = data.records;
+                    const newTableData = [];
+                    records.forEach(record => {
+                        // 构建新的记录对象
+                        const newRecord = {
+                            id: record.id,
+                            name: record.name || '未知',
+                            area: record.area || '未知',
+                            host: record.host,
+                            port: record.port,
+                            username: record.username,
+                            password: record.password,
+                            realm: record.realm,
+                            nodeName: record.nodeName,
+                            status: record.status,
+                            sshPort: record.sshPort,
+                            sshUsername: record.sshUsername,
+                            sshPassword: record.sshPassword,
+                            controllerStatus: record.controllerStatus,
+                        };
+                        // 添加到新的数组中
+                        newTableData.push(newRecord);
+                    });
+                    this.fatherNodeData = newTableData;
                 }
             });
 

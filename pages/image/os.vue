@@ -161,10 +161,11 @@
                                                     <div v-for="(nodeStatus, index) in item.nodeStatus" :key="index">
                                                         <span v-if="nodeStatus.status === 2"
                                                             class="text-success"><feather-icon name="check-circle" />{{
-                                                                nodeStatus.nodeName }}</span>
+                                                                nodeStatus.nodeName }}（{{ nodeStatus.nodeId }}）</span>
                                                         <span v-if="nodeStatus.status === 1"
-                                                            class="text-success"><feather-icon name="arrow-down-circle" />{{
-                                                                nodeStatus.nodeName }} {{ nodeStatus.schedule }}%</span>
+                                                            class="text-success"><feather-icon name="arrow-down-circle" />
+                                                            {{ nodeStatus.nodeName }}（{{ nodeStatus.nodeId }}）
+                                                            {{ nodeStatus.schedule }}%</span>
                                                     </div>
                                                 </td>
                                                 <td>
