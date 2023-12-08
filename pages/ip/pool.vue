@@ -200,7 +200,9 @@
                                                             </nuxt-link>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="remove" @click='del(item.id)'>
+                                                            <a href="" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-confirmed"
+                                                                @click="setRemoveId(item.id, $event)">
                                                                 <feather-icon name="trash-2" />
                                                             </a>
                                                         </li>
@@ -269,6 +271,30 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-info-confirmed modal fade show" id="modal-info-confirmed" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+                            <div class="modal-info-text">
+                                <h6>确认删除?</h6>
+                                <p>确认删除这个地址池吗?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal"
+                            @click="ClickRemove(removeId)">确认</button>
+                        <button type="button" class="btn btn-light btn-outlined btn-sm" data-dismiss="modal"
+                            @click="ClickCancel()">取消</button>
                     </div>
                 </div>
             </div>
@@ -360,6 +386,7 @@ export default {
             timer: null, // 定时器
             visible: false,
             changeVisible: false,
+            removeId: null, //删除的Id 确认使用
             formData: {
                 id: '',
                 poolName: '',
@@ -554,6 +581,33 @@ export default {
             this.formData = [];
             this.visible = false;
             this.changeVisible = false;
+        },
+        ClickRemove(removeId) { //执行删除操作
+            const url = `/api/deleteIpPool/${removeId}`;
+            this.$axios.delete(url).then(res => {
+                if (res.data.code === 20000) {
+                    // 显示成功提示框
+                    notification.success({
+                        message: '删除成功',
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                    this.fetchData()
+                } else {
+                    notification.error({
+                        message: res.data.message,
+                        duration: 2,
+                        placement: 'bottomRight'
+                    });
+                }
+            });
+        },
+        ClickCancel() {//取消
+            this.removeId = null;
+        },
+        setRemoveId(id, event) { //设置删除的ID
+            event.preventDefault();
+            this.removeId = id;
         },
     },
     mounted() {
