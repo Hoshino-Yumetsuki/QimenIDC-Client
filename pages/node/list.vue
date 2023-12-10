@@ -120,7 +120,9 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.name }}
+                                                        <div class="text-info">
+                                                            <a :href="`/node/${item.id}`">{{ item.name }}</a>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td>
