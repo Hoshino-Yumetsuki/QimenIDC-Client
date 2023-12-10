@@ -2,15 +2,17 @@
     <header class="header-top">
         <nav class="navbar navbar-light">
             <div class="navbar-left">
-                <a href="#" @click="toggleSidebar" class="sidebar-toggle"><img class="svg" src="/img/svg/bars.svg" alt="img"></a>
+                <a href="#" @click="toggleSidebar" class="sidebar-toggle"><img class="svg" src="/img/svg/bars.svg"
+                        alt="img"></a>
                 <!-- <a href="" class="sidebar-toggle" id="">
                     <img class="svg" src="img/svg/bars.svg" alt="img"></a> -->
-                <a class="navbar-brand" href="#"><img class="dark" src="/images/logo.png" alt="svg"><img class="light" src="/images/logo.png" alt="img"></a>
+                <a class="navbar-brand" href="#"><img class="dark" src="/images/logo.png" alt="svg"><img class="light"
+                        src="/images/logo.png" alt="img"></a>
                 <form action="/" class="search-form">
                     <feather-icon name="search" className="nav-icon" />
                     <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
                 </form>
-                
+
             </div>
             <!-- ends: navbar-left -->
 
@@ -31,7 +33,8 @@
                             <a href="javascript:;" class="nav-item-toggle">
                                 <feather-icon name="mail" /></a>
                             <div class="dropdown-wrapper">
-                                <h2 class="dropdown-wrapper__title">Messages <span class="badge-circle badge-success ml-1">2</span></h2>
+                                <h2 class="dropdown-wrapper__title">消息 <span
+                                        class="badge-circle badge-success ml-1">2</span></h2>
                                 <ul>
                                     <li class="author-online has-new-message">
                                         <div class="user-avater">
@@ -39,7 +42,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -55,7 +59,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -71,7 +76,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -87,7 +93,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -102,7 +109,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -122,7 +130,8 @@
                             <a href="javascript:;" class="nav-item-toggle">
                                 <feather-icon name="bell" /></a>
                             <div class="dropdown-wrapper">
-                                <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ml-1">4</span></h2>
+                                <h2 class="dropdown-wrapper__title">通知 <span
+                                        class="badge-circle badge-warning ml-1">4</span></h2>
                                 <ul>
                                     <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
                                         <div class="nav-notification__type nav-notification__type--primary">
@@ -130,7 +139,8 @@
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -144,7 +154,8 @@
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -158,7 +169,8 @@
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -172,7 +184,8 @@
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -187,7 +200,8 @@
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">开发中</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -200,7 +214,7 @@
                             </div>
                         </div>
                     </li>
-                    
+
                     <li class="nav-support">
                         <div class="dropdown-custom">
                             <a href="javascript:;" class="nav-item-toggle">
@@ -248,42 +262,43 @@
                     <!-- ends: .nav-flag-select -->
                     <li class="nav-author">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="/img/author-nav.jpg" alt="" class="rounded-circle"></a>
+                            <a href="javascript:;" class="nav-item-toggle"><img src="/img/author-nav.jpg" alt=""
+                                    class="rounded-circle"></a>
                             <div class="dropdown-wrapper">
                                 <div class="nav-author__info">
                                     <div class="author-img">
                                         <img src="/img/author-nav.jpg" alt="" class="rounded-circle">
                                     </div>
                                     <div>
-                                        <h6>Abdullah Bin Talha</h6>
-                                        <span>UI Designer</span>
+                                        <h6>管理员</h6>
+                                        <span>开发中</span>
                                     </div>
                                 </div>
                                 <div class="nav-author__options">
                                     <ul>
                                         <li>
                                             <a href="">
-                                                <span data-feather="user"></span> Profile</a>
+                                                <span data-feather="user"></span> 个人信息</a>
                                         </li>
                                         <li>
                                             <a href="">
-                                                <span data-feather="settings"></span> Settings</a>
+                                                <span data-feather="settings"></span> 设置</a>
                                         </li>
                                         <li>
                                             <a href="">
-                                                <span data-feather="key"></span> Billing</a>
+                                                <span data-feather="key"></span> 账单</a>
                                         </li>
                                         <li>
                                             <a href="">
-                                                <span data-feather="users"></span> Activity</a>
+                                                <span data-feather="users"></span> 用户</a>
                                         </li>
                                         <li>
                                             <a href="">
-                                                <span data-feather="bell"></span> Help</a>
+                                                <span data-feather="bell"></span> 帮助</a>
                                         </li>
                                     </ul>
                                     <a href="" class="nav-author__signout">
-                                        <span data-feather="log-out"></span> Sign Out</a>
+                                        <span data-feather="log-out"></span> 登出</a>
                                 </div>
                             </div>
                             <!-- ends: .dropdown-wrapper -->
@@ -305,15 +320,15 @@
     </header>
 </template>
 <script>
-    export default {
-        methods: {
-            toggleSidebar() {
-                this.$bus.$emit("toggle-sidebar");
-            }
-        },
-        mounted() {
-            // Header mobile view
-            window.addEventListener('resize', () => {
+export default {
+    methods: {
+        toggleSidebar() {
+            this.$bus.$emit("toggle-sidebar");
+        }
+    },
+    mounted() {
+        // Header mobile view
+        window.addEventListener('resize', () => {
             const screenSize = window.innerWidth;
             if (screenSize <= 767.98) {
                 this.$el.querySelector(".navbar-right__menu").classList.add("appendToMobile");
@@ -324,30 +339,30 @@
             } else {
                 this.$el.querySelector(".navbar-right__menu").classList.remove("appendToMobile");
             }
-            });
+        });
 
-            window.addEventListener('resize', () => {
+        window.addEventListener('resize', () => {
             const screenSize = window.innerWidth;
             if (screenSize > 767.98) {
                 this.$el.querySelector(".atbd-mail-sidebar").classList.add("show");
             }
-            });
+        });
 
-            window.addEventListener('resize', () => {
+        window.addEventListener('resize', () => {
             const screenSize = window.innerWidth;
             if (screenSize <= 991) {
-                    this.$el.querySelector(".sidebar").classList.remove("sidebar-collapse");
-                    this.$el.querySelector(".sidebar").classList.add("collapsed");
-                    this.$el.querySelector(".sidebar-toggle").addEventListener("click", () => {
+                this.$el.querySelector(".sidebar").classList.remove("sidebar-collapse");
+                this.$el.querySelector(".sidebar").classList.add("collapsed");
+                this.$el.querySelector(".sidebar-toggle").addEventListener("click", () => {
                     this.$el.querySelector(".overlay-dark-sidebar").classList.toggle("show");
-                    });
-                    this.$el.querySelector(".overlay-dark-sidebar").addEventListener("click", () => {
+                });
+                this.$el.querySelector(".overlay-dark-sidebar").addEventListener("click", () => {
                     this.$el.querySelector(".overlay-dark-sidebar").classList.remove("show");
                     this.$el.querySelector(".sidebar").classList.remove("sidebar-collapse");
                     this.$el.querySelector(".sidebar").classList.add("collapsed");
-                    });
-                }
-            });
-        }
+                });
+            }
+        });
     }
+}
 </script>

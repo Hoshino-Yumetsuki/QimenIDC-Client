@@ -125,7 +125,7 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        {{ item.area }}
+                                                        {{ item.areaName }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -371,12 +371,12 @@ export default {
                     const data = res.data.data;
                     const records = data.records;
                     const newTableData = [];
-                    records.forEach(record => {
+                    records.forEach(async record => {
                         // 构建新的记录对象
                         const newRecord = {
                             id: record.id,
                             name: record.name || '未知',
-                            area: record.area || '未知',
+                            area: record.area || 0,
                             host: record.host,
                             port: record.port,
                             username: record.username,
@@ -388,6 +388,7 @@ export default {
                             sshUsername: record.sshUsername,
                             sshPassword: record.sshPassword,
                             controllerStatus: record.controllerStatus,
+                            areaName: await this.getAreaName(record.area)
                         };
                         // 添加到新的数组中
                         newTableData.push(newRecord);
@@ -398,7 +399,30 @@ export default {
                     this.totalPages = data.pages;
                 }
             });
+        },
+        async getAreaName(areaId) {
+            // 使用异步获取数据
+            const url = `/api/getAreaList?page=1&limit=200`;
+            const response = await this.$axios.get(url);
 
+            if (response.data.code === 20000) {
+                const data = response.data.data;
+                const records = data.records;
+
+                // 使用 find 方法查找匹配的区域
+                const matchedRecord = records.find(record => record.id == areaId);
+
+                if (matchedRecord) {
+                    // 如果找到匹配的区域，返回其名称
+                    return matchedRecord.name;
+                } else {
+                    // 如果未找到匹配的区域，返回 'none'
+                    return 'none';
+                }
+            } else {
+                // 如果请求失败，返回错误信息
+                throw new Error('Failed to fetch area data');
+            }
         },
         prevPage() {
             if (this.currentPage > 1) {

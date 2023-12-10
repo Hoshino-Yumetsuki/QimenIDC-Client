@@ -107,7 +107,7 @@
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
-                                                    {{ nodeData.area }}
+                                                    {{ nodeData.areaName }}
                                                 </div>
                                             </td>
                                             <td>
@@ -749,12 +749,13 @@ export default {
         fetchData() {
             // 获取节点数据
             let url = `/api/selectNodeByPage?page=1&size=200`;
-            this.$axios.get(url).then(res => {
+            this.$axios.get(url).then(async (res) => {
                 if (res.data.code === 20000) {
                     const data = res.data.data;
                     const records = data.records;
                     let newTableData = null;
-                    records.forEach(record => {
+
+                    for (const record of records) {
                         // 构建新的记录对象
                         if (record.id == this.nodeId) {
                             newTableData = {
@@ -772,10 +773,12 @@ export default {
                                 sshUsername: record.sshUsername,
                                 sshPassword: record.sshPassword,
                                 controllerStatus: record.controllerStatus,
+                                areaName: await this.getAreaName(record.area),
                             };
-                            return;
+                            break; // 使用 break 来提前结束循环
                         }
-                    });
+                    }
+
                     this.nodeData = newTableData;
                 }
             });
@@ -818,6 +821,30 @@ export default {
                     this.loadEcharts()
                 }
             });
+        },
+        async getAreaName(areaId) {
+            // 使用异步获取数据
+            const url = `/api/getAreaList?page=1&limit=200`;
+            const response = await this.$axios.get(url);
+
+            if (response.data.code === 20000) {
+                const data = response.data.data;
+                const records = data.records;
+
+                // 使用 find 方法查找匹配的区域
+                const matchedRecord = records.find(record => record.id == areaId);
+
+                if (matchedRecord) {
+                    // 如果找到匹配的区域，返回其名称
+                    return matchedRecord.name;
+                } else {
+                    // 如果未找到匹配的区域，返回 'none'
+                    return 'none';
+                }
+            } else {
+                // 如果请求失败，返回错误信息
+                throw new Error('Failed to fetch area data');
+            }
         },
         getNetInfo() {
             // 获取节点数据
