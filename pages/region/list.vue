@@ -655,13 +655,13 @@ export default {
             }
         },
         clickOk() {
-            if (this.formData.name != '' && this.formData.realm != '') {
+            if (this.formData.name != '') {
                 // 创建IPV4地址池确认
                 const url = '/api/addArea';
                 const data = {
                     name: this.formData.name,
                     parent: this.formData.parent || null,
-                    realm: this.formData.realm
+                    realm: this.formData.realm || 0
                 };
                 this.$axios.post(url, data).then(res => {
                     if (res.data.code === 20000) {
