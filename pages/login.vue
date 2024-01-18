@@ -129,8 +129,8 @@ export default ({
   data() {
     return {
       // 初始化用户名和密码
-      username: 'mryunqi',
-      password: '123456',
+      username: '',
+      password: '',
     }
   },
   head() {
