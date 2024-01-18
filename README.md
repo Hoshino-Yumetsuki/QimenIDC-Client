@@ -1,21 +1,21 @@
 # QimenIDC-Client
 
-## Build Setup
-
 ```bash
-# install dependencies
+# 安装依赖
 $ npm install
 
-# serve with hot reload at localhost:3000
+# 默认主机和端口为 localhost:3000 下面运行开发模式
 $ npm run dev
 
-# build for production and launch server
+# 构建和启用正式环境
 $ npm run build
 $ npm run start
 
-# generate static project
+# 生成静态项目
 $ npm run generate
 ```
+
+前端安装教程 [https://bbs.acmecloud.cn/thread-3-1-1.html](https://bbs.acmecloud.cn/thread-3-1-1.html) 
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
