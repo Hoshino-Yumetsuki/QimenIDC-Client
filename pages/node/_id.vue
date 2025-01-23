@@ -84,6 +84,9 @@
                                             <th>
                                                 <span class="userDatatable-title">IP地址数量(已用/总)</span>
                                             </th>
+                                            <th>
+                                                <span class="userDatatable-title">NAT状态</span>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,13 +99,13 @@
                                             <td>
                                                 <div class="userDatatable-content">
                                                     <img height="24" width="24" :src="'/assets/icons/svg/pve.svg'" /> {{
-                                                        nodeData.nodeName }}
+                                                    nodeData.nodeName }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="userDatatable-content">
                                                     <img height="24" width="24" :src="'/assets/icons/svg/pve.svg'" /> {{
-                                                        nodeInfoData.pveversion }}
+                                                    nodeInfoData.pveversion }}
                                                 </div>
                                             </td>
                                             <td>
@@ -118,6 +121,14 @@
                                             <td>
                                                 <div class="userDatatable-content">
                                                     开发中
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="userDatatable-content">
+                                                    <a href="#" v-if="nodeData.naton === 1" class="text-success bg-opacity-success color-success
+                                                        rounded-pill userDatatable-content-status active">开启</a>
+                                                    <a href="#" v-if="nodeData.naton === 0" @click="showModal" class="text-danger bg-opacity-warning  color-warning
+                                                        rounded-pill userDatatable-content-status active">关闭</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -141,11 +152,13 @@
                                 </li>
                                 <li>
                                     <a href="#t_channel-week" data-toggle="tab" id="t_channel-week-tab" role="tab"
-                                        area-controls="t_channel-table" aria-selected="false" @click="getNetInfo()">网卡</a>
+                                        area-controls="t_channel-table" aria-selected="false"
+                                        @click="getNetInfo()">网卡</a>
                                 </li>
                                 <li>
                                     <a href="#t_channel-month" data-toggle="tab" id="t_channel-month-tab" role="tab"
-                                        area-controls="t_channel-table" aria-selected="fasle" @click="getVmInfo()">实例</a>
+                                        area-controls="t_channel-table" aria-selected="fasle"
+                                        @click="getVmInfo()">实例</a>
                                 </li>
                                 <!-- <li>
                                     <a href="#t_channel-year" data-toggle="tab" id="t_channel-year-tab" role="tab"
@@ -174,9 +187,8 @@
                                         <div class="node-content-left">
                                             <div class="node-content-item"><span class="title">CPU(S)</span>
                                                 <span class="color-blue" v-if="nodeInfoData.cpuinfo">
-                                                    {{ nodeInfoData.cpuinfo.cores }}x {{ nodeInfoData.cpuinfo.model }} @
-                                                    {{ (nodeInfoData.cpuinfo.mhz / 1000).toFixed(1) }}0GHz
-                                                    ({{ nodeInfoData.cpuinfo.hvm }}插口)</span>
+                                                    {{ nodeInfoData.cpuinfo.cpus }}x {{ nodeInfoData.cpuinfo.model }}
+                                                    ({{ nodeInfoData.cpuinfo.sockets }}插口)</span>
                                             </div>
                                             <div class="node-content-item"><span class="title">内核版本</span>
                                                 <span class="color-blue">{{ nodeInfoData.kversion }}</span>
@@ -185,8 +197,9 @@
                                                 <span class="color-blue">{{ nodeInfoData.pveversion }}</span>
                                             </div>
                                             <div class="node-content-item"><span class="title">运行时间</span>
-                                                <span class="color-blue">{{ (nodeInfoData.uptime / 60 / 60 / 24).toFixed(0)
-                                                }}天</span>
+                                                <span class="color-blue">{{ (nodeInfoData.uptime / 60 / 60 /
+                                                    24).toFixed(0)
+                                                    }}天</span>
                                             </div>
                                         </div>
                                         <div class="node-content-right">
@@ -200,7 +213,7 @@
                                                             </div>
                                                             <div class="item2_swap_text" v-if="nodeInfoData.cpuinfo">{{
                                                                 (nodeInfoData.cpu *
-                                                                    100).toFixed(2) }}% of {{ nodeInfoData.cpuinfo.cores }}
+                                                                100).toFixed(2) }}% of {{ nodeInfoData.cpuinfo.cpus }}
                                                                 CPU(s) </div>
                                                         </div>
                                                         <div class="progress" style="height: 12px;">
@@ -219,7 +232,8 @@
                                                             </div>
                                                             <div class="item2_swap_text">
                                                                 <div v-if="nodeInfoData.loadavg">
-                                                                    {{ nodeInfoData.loadavg[0] }},{{ nodeInfoData.loadavg[1]
+                                                                    {{ nodeInfoData.loadavg[0] }},{{
+                                                                    nodeInfoData.loadavg[1]
                                                                     }},{{ nodeInfoData.loadavg[2] }}
                                                                 </div>
                                                             </div>
@@ -232,11 +246,11 @@
                                                             </div>
                                                             <div class="item2_swap_text" v-if="nodeInfoData.memory">
                                                                 {{ (nodeInfoData.memory.used /
-                                                                    nodeInfoData.memory.total * 100).toFixed(2) }}%
+                                                                nodeInfoData.memory.total * 100).toFixed(2) }}%
                                                                 ({{ (nodeInfoData.memory.used / 1024 / 1024 /
-                                                                    1024).toFixed(1) }}GB
+                                                                1024).toFixed(1) }}GB
                                                                 of {{ (nodeInfoData.memory.total / 1024 / 1024 /
-                                                                    1024).toFixed(1)
+                                                                1024).toFixed(1)
                                                                 }}GB)
                                                             </div>
                                                         </div>
@@ -262,11 +276,11 @@
                                                             </div>
                                                             <div v-if="nodeInfoData.swap" class="item2_swap_text">
                                                                 {{ (nodeInfoData.swap.used /
-                                                                    nodeInfoData.swap.total * 100).toFixed(2) }}%
+                                                                nodeInfoData.swap.total * 100).toFixed(2) }}%
                                                                 ({{ (nodeInfoData.swap.used / 1024 / 1024 /
-                                                                    1024).toFixed(1) }}GB
+                                                                1024).toFixed(1) }}GB
                                                                 of {{ (nodeInfoData.swap.total / 1024 / 1024 /
-                                                                    1024).toFixed(1)
+                                                                1024).toFixed(1)
                                                                 }}GB)
                                                             </div>
                                                         </div>
@@ -318,11 +332,11 @@
                                                             </div>
                                                             <div class="item2_swap_text" v-if="nodeInfoData.rootfs">
                                                                 {{ (nodeInfoData.rootfs.used /
-                                                                    nodeInfoData.rootfs.total * 100).toFixed(2) }}%
+                                                                nodeInfoData.rootfs.total * 100).toFixed(2) }}%
                                                                 ({{ (nodeInfoData.rootfs.used / 1024 / 1024 /
-                                                                    1024).toFixed(1) }}GB
+                                                                1024).toFixed(1) }}GB
                                                                 of {{ (nodeInfoData.rootfs.total / 1024 / 1024 /
-                                                                    1024).toFixed(1)
+                                                                1024).toFixed(1)
                                                                 }}GB)
                                                             </div>
                                                         </div>
@@ -365,24 +379,28 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="tab-content">
-                                                <div class="tab-pane fade active show" id="se_region-today" role="tabpanel"
-                                                    aria-labelledby="se_region-today-tab">
+                                                <div class="tab-pane fade active show" id="se_region-today"
+                                                    role="tabpanel" aria-labelledby="se_region-today-tab">
                                                     <div class="row">
                                                         <div
                                                             class="col-md-6 d-flex align-items-center justify-content-center">
-                                                            <div id="cpuEcharts" style="width: 100%;height: 250px;"></div>
+                                                            <div id="cpuEcharts" style="width: 100%;height: 250px;">
+                                                            </div>
                                                         </div>
                                                         <div
                                                             class="col-md-6 d-flex align-items-center justify-content-center">
-                                                            <div id="loadEcharts" style="width: 100%;height: 250px;"></div>
+                                                            <div id="loadEcharts" style="width: 100%;height: 250px;">
+                                                            </div>
                                                         </div>
                                                         <div
                                                             class="col-md-6 d-flex align-items-center justify-content-center">
-                                                            <div id="memEcharts" style="width: 100%;height: 250px;"></div>
+                                                            <div id="memEcharts" style="width: 100%;height: 250px;">
+                                                            </div>
                                                         </div>
                                                         <div
                                                             class="col-md-6 d-flex align-items-center justify-content-center">
-                                                            <div id="diskEcharts" style="width: 100%;height: 250px;"></div>
+                                                            <div id="diskEcharts" style="width: 100%;height: 250px;">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -436,7 +454,8 @@
                                                         <div class="custom-checkbox  check-all">
                                                             <input class="checkbox" type="checkbox" id="check-3">
                                                             <label for="check-3">
-                                                                <span class="checkbox-text userDatatable-title">ID</span>
+                                                                <span
+                                                                    class="checkbox-text userDatatable-title">ID</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -475,7 +494,8 @@
                                             <tr v-for="item in vmInfoData" :key="item.id">
                                                 <td>
                                                     <div class="d-flex">
-                                                        <div class="userDatatable__imgWrapper d-flex align-items-center">
+                                                        <div
+                                                            class="userDatatable__imgWrapper d-flex align-items-center">
                                                             <div class="checkbox-group-wrapper">
                                                                 <div class="checkbox-group d-flex">
                                                                     <div
@@ -521,8 +541,10 @@
                                                         <span v-if="item.status === 10" class="text-warning">正在挂起</span>
                                                         <span v-if="item.status === 11" class="text-warning">正在暂停</span>
                                                         <span v-if="item.status === 12" class="text-warning">正在重启</span>
-                                                        <span v-if="item.status === 13" class="text-warning">正在重装系统</span>
-                                                        <span v-if="item.status === 14" class="text-warning">正在修改密码</span>
+                                                        <span v-if="item.status === 13"
+                                                            class="text-warning">正在重装系统</span>
+                                                        <span v-if="item.status === 14"
+                                                            class="text-warning">正在修改密码</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -616,8 +638,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-primay" role="progressbar"
-                                                            style="width: 65.75%" aria-valuenow="65.75" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 65.75%" aria-valuenow="65.75"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>65.75%</td>
@@ -630,8 +652,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-secondary" role="progressbar"
-                                                            style="width: 85.14%" aria-valuenow="85.14" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 85.14%" aria-valuenow="85.14"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>45.14%</td>
@@ -644,8 +666,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-success" role="progressbar"
-                                                            style="width: 95.36%" aria-valuenow="95.36" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 95.36%" aria-valuenow="95.36"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>95.36%</td>
@@ -658,8 +680,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 45.25%" aria-valuenow="45.25" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 45.25%" aria-valuenow="45.25"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>45.25%</td>
@@ -672,8 +694,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-warning" role="progressbar"
-                                                            style="width: 39.94%" aria-valuenow="39.94" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 39.94%" aria-valuenow="39.94"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>39.94%</td>
@@ -686,8 +708,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-danger" role="progressbar"
-                                                            style="width: 60.58%" aria-valuenow="60.58" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 60.58%" aria-valuenow="60.58"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>60.58%</td>
@@ -702,6 +724,23 @@
 
             </div>
         </div>
+        <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickOk">
+            <h3>创建NAT</h3>
+            <p>请输入以下信息：</p><br>
+            <a-form :form="form">
+                <a-form-item label="NAT IP池" name="nataddr" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.nataddr" placeholder="例如：10.11.12.1/24" />
+                </a-form-item>
+                <a-form-item label="NAT 网口" name="natbridge" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.natbridge" placeholder="自定义虚拟网口名称，例如vmbr1" />
+                </a-form-item>
+                <a-form-item label="NAT 地址" name="addrdomain" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                    <a-input v-model="formData.addrdomain" placeholder="展示给客户的地址，可填域名/IP" />
+                </a-form-item>
+            </a-form>
+            <p>NAT地址和网口请勿和现有的地址网口重复</p>
+            <p>创建成功之后请打开pve页面，选择节点-网络，将网络应用配置即可</p>
+        </a-modal>
     </div>
 </template>
 <script>
@@ -743,9 +782,59 @@ export default {
             netInfoData: [],
             vmInfoData: [],
             loadAvgData: [],
+            visible: false,
+            formData: {
+                nataddr: '10.0.0.1/24',
+                natbridge: 'vmbr1',
+                addrdomain: '',
+            },
+            form: null,
         }
     },
     methods: {
+        showModal() {
+            this.visible = true;
+        },
+        clickOk() {
+            // 创建NAT
+            if (this.formData.nataddr !== '' && this.formData.natbridge !== '' && this.formData.addrdomain !== '') {
+                const url = '/api/addNodeMasterNat';
+                const data = {
+                    nataddr: this.formData.nataddr,
+                    natbridge: this.formData.natbridge,
+                    addrdomain: this.formData.addrdomain,
+                    id: this.nodeId
+                };
+                this.$axios.post(url, data).then(res => {
+                    if (res.data.code === 20000) {
+                        notification.success({
+                            message: '创建NAT成功!',
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                        this.fetchData()
+                        this.formData = [];
+                    } else {
+                        notification.error({
+                            message: res.data.message,
+                            duration: 2,
+                            placement: 'bottomRight'
+                        });
+                     }
+                })
+                this.visible = false;
+            } else {
+                notification.error({
+                    message: '请确保各项都不为空!',
+                    duration: 2,
+                    placement: 'bottomRight'
+                });
+            }
+        },
+        clickCancel() {
+            this.formData = [];
+            this.visible = false;
+        },
         fetchData() {
             // 获取节点数据
             let url = `/api/selectNodeByPage?page=1&size=200`;
@@ -773,6 +862,8 @@ export default {
                                 sshUsername: record.sshUsername,
                                 sshPassword: record.sshPassword,
                                 controllerStatus: record.controllerStatus,
+                                naton: record.naton,
+                                natbridge: record.natbridge,
                                 areaName: await this.getAreaName(record.area),
                             };
                             break; // 使用 break 来提前结束循环

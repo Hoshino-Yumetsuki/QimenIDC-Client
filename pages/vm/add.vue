@@ -29,19 +29,21 @@
                                             <a-select class="add-aselect" id="nodeid" v-model="nodeData.nodeid">
                                                 <a-select-option v-for="item in nodesData" :key="item.id"
                                                     :value="item.id">{{
-                                                        item.name }}({{ item.host }})</a-select-option>
+                                                    item.name }}({{ item.host }})</a-select-option>
                                             </a-select>
                                         </div>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="hostname">虚拟机名</label>
-                                        <input type="text" v-model="nodeData.hostname" class="form-control" id="hostname"
-                                            placeholder="虚拟机名，请勿输入中文">
+                                        <input type="text" v-model="nodeData.hostname" class="form-control"
+                                            id="hostname" placeholder="虚拟机名，请勿输入中文">
                                     </div>
                                     <div class="form-group mb-25" v-if="isUseTemplate">
                                         <label for="configureTemplateId">配置模板</label>
-                                        <a-select class="add-aselect" id="nodeid" v-model="nodeData.configureTemplateId">
-                                            <a-select-option v-for="item in tempData" :key="item.id" :value="item.id">（{{
+                                        <a-select class="add-aselect" id="nodeid"
+                                            v-model="nodeData.configureTemplateId">
+                                            <a-select-option v-for="item in tempData" :key="item.id"
+                                                :value="item.id">（{{
                                                 item.id }}）{{ item.name }}</a-select-option>
                                         </a-select>
                                     </div>
@@ -55,8 +57,8 @@
                                         </div>
                                         <div class="form-group mb-25">
                                             <label for="cores">CPU核心数</label>
-                                            <input type="number" v-model="nodeData.cores" class="form-control" id="cores"
-                                                required>
+                                            <input type="number" v-model="nodeData.cores" class="form-control"
+                                                id="cores" required>
                                             <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                             <small class="text-danger">CPU核心数</small>
                                         </div>
@@ -69,8 +71,8 @@
                                         </div>
                                         <div class="form-group mb-25">
                                             <label for="memory">内存</label>
-                                            <input type="number" v-model="nodeData.memory" class="form-control" id="memory"
-                                                value="512" required>
+                                            <input type="number" v-model="nodeData.memory" class="form-control"
+                                                id="memory" value="512" required>
                                             <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                             <small class="text-danger">内存,单位Mb</small>
                                         </div>
@@ -84,12 +86,12 @@
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="memory">系统类型</label>
-                                        <a-select class="add-aselect capitalize-text" id="osType" v-model="nodeData.osType"
-                                            @change="handleOsTypeChange">
+                                        <a-select class="add-aselect capitalize-text" id="osType"
+                                            v-model="nodeData.osType" @change="handleOsTypeChange">
                                             <a-select-option class="capitalize-text" v-for="item in osTypeData"
                                                 :value="item.osType" :key="item.osType"><img height="24" width="24"
                                                     :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
-                                                        item.osType }}</a-select-option>
+                                                item.osType }}</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
@@ -98,13 +100,13 @@
                                             <a-select-option v-for="item in systemData" :value="item.name"
                                                 :key="item.name"><img height="24" width="24"
                                                     :src="'/assets/icons/svg/' + nodeData.osType + '.svg'" /> {{
-                                                        item.name }}</a-select-option>
+                                                item.name }}</a-select-option>
                                         </a-select>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="username">远程用户名</label>
-                                        <input type="text" v-model="nodeData.username" class="form-control" id="username"
-                                            value="root" required>
+                                        <input type="text" v-model="nodeData.username" class="form-control"
+                                            id="username" value="root" required>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">一般为root，请根据实际情况填写</small>
                                     </div>
@@ -114,6 +116,18 @@
                                             :placeholder="'请输入虚拟机远程的密码'" class="add-aselect"></a-input-password>
                                         <li class="fa fa-exclamation-circle" style="color: rgb(255, 225, 0);"></li>
                                         <small class="text-danger">密码</small>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="naton">开启NAT</label>
+                                        <a-select class="add-aselect" id="naton" v-model="nodeData.naton">
+                                            <a-select-option :value="0">关闭</a-select-option>
+                                            <a-select-option :value="1">开启</a-select-option>
+                                        </a-select>
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label for="natnum">NAT数量</label>
+                                        <input type="number" v-model="nodeData.natnum" class="form-control" id="natnum"
+                                            value="0" required>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label for="password">跟随宿主机开机自启</label>
@@ -132,7 +146,8 @@
                                         </div>
                                         <div class="form-group mb-25">
                                             <label for="password">去虚拟化</label>
-                                            <a-select class="add-aselect" id="osType" v-model="nodeData.devirtualization">
+                                            <a-select class="add-aselect" id="osType"
+                                                v-model="nodeData.devirtualization">
                                                 <a-select-option :value="1">开启</a-select-option>
                                                 <a-select-option :value="0">关闭</a-select-option>
                                             </a-select>
@@ -248,6 +263,8 @@ export default {
                 bwlimit: null,// I/ O限制 mb/ s
                 arch: 'x86_64',// 系统架构(x86_64, arrch64)，默认x86_64
                 configureTemplateId: null,
+                naton: 0,// NAT 0 1 默认0关闭
+                natnum: 0,// NAT转发数量
             },
             nodesData: [],
             osTypeData: [],
@@ -393,6 +410,8 @@ export default {
                     cpuUnits: this.nodeData.cpuUnits,
                     bwlimit: this.nodeData.bwlimit,
                     arch: this.nodeData.arch,
+                    ifnat: this.nodeData.naton,
+                    natnum: this.nodeData.natnum,
                     configureTemplateId: this.nodeData.configureTemplateId
                 };
                 this.$axios.post(url, data).then(res => {

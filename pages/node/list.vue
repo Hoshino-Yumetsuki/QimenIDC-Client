@@ -390,6 +390,9 @@ export default {
                             sshUsername: record.sshUsername,
                             sshPassword: record.sshPassword,
                             controllerStatus: record.controllerStatus,
+                            nataddr: record.nataddr,
+                            natbridge: record.natbridge,
+                            natippool: record.natippool,
                             areaName: await this.getAreaName(record.area)
                         };
                         // 添加到新的数组中

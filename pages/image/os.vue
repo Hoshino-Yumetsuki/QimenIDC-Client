@@ -69,7 +69,8 @@
                                                         <div class="custom-checkbox  check-all">
                                                             <input class="checkbox" type="checkbox" id="check-3">
                                                             <label for="check-3">
-                                                                <span class="checkbox-text userDatatable-title">ID</span>
+                                                                <span
+                                                                    class="checkbox-text userDatatable-title">ID</span>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -108,7 +109,8 @@
                                             <tr v-for="item in tableData" :key="item.id" class="userDatatable-body">
                                                 <td>
                                                     <div class="d-flex">
-                                                        <div class="userDatatable__imgWrapper d-flex align-items-center">
+                                                        <div
+                                                            class="userDatatable__imgWrapper d-flex align-items-center">
                                                             <div class="checkbox-group-wrapper">
                                                                 <div class="checkbox-group d-flex">
                                                                     <div
@@ -136,8 +138,9 @@
                                                 <td>
                                                     <div class="capitalize-text">
                                                         <img height="24" width="24"
-                                                            :src="'/assets/icons/svg/' + item.type + '.svg'" /> {{ item.type
-                                                            }}
+                                                            :src="'/assets/icons/svg/' + item.type + '.svg'" /> {{
+                                                        item.type
+                                                        }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -149,7 +152,7 @@
                                                     <div class="capitalize-text">
                                                         <img height="24" width="24"
                                                             :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
-                                                                item.osType }}
+                                                        item.osType }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -161,9 +164,10 @@
                                                     <div v-for="(nodeStatus, index) in item.nodeStatus" :key="index">
                                                         <span v-if="nodeStatus.status === 2"
                                                             class="text-success"><feather-icon name="check-circle" />{{
-                                                                nodeStatus.nodeName }}（{{ nodeStatus.nodeId }}）</span>
+                                                            nodeStatus.nodeName }}（{{ nodeStatus.nodeId }}）</span>
                                                         <span v-if="nodeStatus.status === 1"
-                                                            class="text-success"><feather-icon name="arrow-down-circle" />
+                                                            class="text-success"><feather-icon
+                                                                name="arrow-down-circle" />
                                                             {{ nodeStatus.nodeName }}（{{ nodeStatus.nodeId }}）
                                                             {{ nodeStatus.schedule }}%</span>
                                                     </div>
@@ -189,7 +193,8 @@
                                                                 <feather-icon name="download" />
                                                             </a>
                                                         </li>
-                                                        <li><a href="" class="edit" @click="showChangeModal(item, $event)">
+                                                        <li><a href="" class="edit"
+                                                                @click="showChangeModal(item, $event)">
                                                                 <feather-icon name="edit" />
                                                             </a>
                                                         </li>
@@ -290,14 +295,16 @@
         <a-modal :visible="visible" :ok-text="'创建'" :cancel-text="'取消'" @cancel="clickCancel" @ok="clickOk">
             <p>添加镜像</p><br>
             <a-form :form="form">
-                <a-form-item label="系统名称" name="name" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-form-item label="系统名称" name="name" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.name" :placeholder="'系统名称（别称，可自定义）'" />
                 </a-form-item>
                 <a-form-item label="文件全称" name="fileName" :required="true" :label-col="{ span: 6 }"
                     :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.fileName" :placeholder="'文件全称，带后缀'" />
                 </a-form-item>
-                <a-form-item label="镜像类型" name="type" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-form-item label="镜像类型" name="type" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.type">
                         <a-select-option :value="'win'"><img height="24" width="24"
                                 :src="'/assets/icons/svg/windows.svg'" /> Windows</a-select-option>
@@ -305,7 +312,8 @@
                                 :src="'/assets/icons/svg/linux.svg'" /> Linux</a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item label="镜像架构" name="arch" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-form-item label="镜像架构" name="arch" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.arch">
                         <a-select-option :value="'x86_64'">x86_64</a-select-option>
                         <a-select-option :value="'arm64'">arm64</a-select-option>
@@ -365,20 +373,23 @@
         <a-modal :visible="changeVisible" :ok-text="'修改'" :cancel-text="'取消'" @cancel="clearCancel" @ok="clickChange">
             <p>修改镜像</p><br>
             <a-form :form="form">
-                <a-form-item label="系统名称" name="name" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-form-item label="系统名称" name="name" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.name" :placeholder="'系统名称（别称，可自定义）'" />
                 </a-form-item>
                 <a-form-item label="文件全称" name="fileName" :required="true" :label-col="{ span: 6 }"
                     :wrapper-col="{ span: 14 }">
                     <a-input v-model="formData.fileName" :placeholder="'文件全称，带后缀'" />
                 </a-form-item>
-                <a-form-item label="镜像类型" name="type" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-form-item label="镜像类型" name="type" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.type">
-                        <a-select-option :value="'win'">Windows</a-select-option>
-                        <a-select-option :value="'linux'">Linux</a-select-option>
+                        <a-select-option :value="'Windows'">Windows</a-select-option>
+                        <a-select-option :value="'Linux'">Linux</a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item label="镜像架构" name="arch" :required="true" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-form-item label="镜像架构" name="arch" :required="true" :label-col="{ span: 6 }"
+                    :wrapper-col="{ span: 14 }">
                     <a-select v-model="formData.arch">
                         <a-select-option :value="'x86_64'">x86_64</a-select-option>
                         <a-select-option :value="'arm64'">arm64</a-select-option>
