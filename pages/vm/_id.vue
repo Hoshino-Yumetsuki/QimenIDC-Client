@@ -6,7 +6,8 @@
 
                     <div class="breadcrumb-main">
                         <div>
-                            <span class="text-monospace font-weight-bolder fw-500 fs-20 mb-0" style="max-width: 300px;">{{
+                            <span class="text-monospace font-weight-bolder fw-500 fs-20 mb-0"
+                                style="max-width: 300px;">{{
                                 tableData.hostname }}</span>
                             <span class="breadcrumb-text" style="margin-left: 10px;">{{ tableData.area }}</span>
                             <span>&nbsp;&nbsp;|&nbsp;&nbsp;(</span>
@@ -51,22 +52,28 @@
                             </div>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
-                                    id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
                                     <i class="la la-download"></i> 更多操作
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <a href="" class="dropdown-item" @click="showReinstallModal($event)">重装系统</a>
-                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                    <a href="" class="dropdown-item" data-toggle="modal"
+                                        data-target="#modal-info-confirmed"
                                         @click="setVmStatus('shutdown', '强制关机')">强制关机</a>
-                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                    <a href="" class="dropdown-item" data-toggle="modal"
+                                        data-target="#modal-info-confirmed"
                                         @click="setVmStatus('suspend', '挂起')">挂起实例</a>
-                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                    <a href="" class="dropdown-item" data-toggle="modal"
+                                        data-target="#modal-info-confirmed"
                                         @click="setVmStatus('resume', '取消挂起')">取消挂起</a>
-                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
-                                        @click="setVmStatus('pause', '暂停')">暂停实例</a>
-                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                    <a href="" class="dropdown-item" data-toggle="modal"
+                                        data-target="#modal-info-confirmed" @click="setVmStatus('pause', '暂停')">暂停实例</a>
+                                    <a href="" class="dropdown-item" data-toggle="modal"
+                                        data-target="#modal-info-confirmed"
                                         @click="setVmStatus('unpause', '取消暂停')">取消暂停</a>
-                                    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modal-info-confirmed"
+                                    <a href="" class="dropdown-item" data-toggle="modal"
+                                        data-target="#modal-info-confirmed"
                                         @click="setVmStatus('delete', '删除')">删除实例</a>
                                     <a href="" class="dropdown-item" @click="showResetVncModal($event)">重置VNC密码</a>
                                 </div>
@@ -127,7 +134,7 @@
                                 <label>可用区</label>
                                 <span class="span-level-5">&nbsp;&nbsp;&nbsp;&nbsp;{{
                                     tableData.area
-                                }}</span>
+                                    }}</span>
                             </div>
                             <div>
                                 <label>实例规格</label>
@@ -147,6 +154,9 @@
                                 <span class="span-level-ip"><i class="iconfont icon-wangluo"
                                         style="color: #ff8800c7;"></i></span>
                                 <span>{{ tableData.IP }}</span>
+                                <a v-if="tableData.ifnat === 1" :href="`/vm/nat/${hostId}`" class="view">
+                                    &nbsp;<feather-icon name="eye" />管理NAT
+                                </a>
                             </div>
                             <div>
                                 <label>用户名密码</label>
@@ -309,10 +319,11 @@
             <p>重装系统：</p><br>
             <a-form>
                 <a-form-item label="系统类型" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                    <a-select class="add-aselect" id="osType" v-model="reinstallData.osType" @change="handleOsTypeChange">
-                        <a-select-option v-for="item in osTypeData" :value="item.osType" :key="item.osType"><img height="24"
-                                width="24" :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
-                                    item.osType }}</a-select-option>
+                    <a-select class="add-aselect" id="osType" v-model="reinstallData.osType"
+                        @change="handleOsTypeChange">
+                        <a-select-option v-for="item in osTypeData" :value="item.osType" :key="item.osType"><img
+                                height="24" width="24" :src="'/assets/icons/svg/' + item.osType + '.svg'" /> {{
+                            item.osType }}</a-select-option>
                     </a-select>
                 </a-form-item>
                 <a-form-item class="capitalize-text" label="操作系统" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
@@ -320,7 +331,7 @@
                         <a-select-option class="capitalize-text" v-for="item in systemData" :value="item.name"
                             :key="item.name"><img height="24" width="24"
                                 :src="'/assets/icons/svg/' + reinstallData.osType + '.svg'" /> {{
-                                    item.name }}</a-select-option>
+                            item.name }}</a-select-option>
                     </a-select>
                 </a-form-item>
                 <a-form-item label="新密码" name="newPassword" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
@@ -437,6 +448,7 @@ export default {
                         diskwrites: current.data.diskwrite,
                         netin: current.data.netin,
                         netout: current.data.netout,
+                        ifnat: vmhost.ifnat,
                     };
                     // 添加到新的数组中
                     // newTableData.push(newRecord);
