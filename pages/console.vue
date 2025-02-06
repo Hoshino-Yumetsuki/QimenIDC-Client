@@ -134,9 +134,10 @@
                                 <div class="progress-excerpt">
                                     <p class="progress-downword">
                                         实例在线率</p>
-                                    <span class="progress-total">{{ (tableData.onlineVmNum / tableData.vmNum).toFixed(2) *
+                                    <span class="progress-total">{{ (tableData.onlineVmNum / tableData.vmNum).toFixed(2)
+                                        *
                                         100
-                                    }}%</span>
+                                        }}%</span>
                                 </div>
                             </div>
                         </div><!-- ends: .card-progress -->
@@ -213,7 +214,7 @@
                                             <div id="currentEcharts" style="width: 100%;height: 250px;"></div>
                                             <div style="text-align: center; font-weight: 700; margin-top: 10px;">
                                                 QimenIDC Community Edition<br>
-                                                Version：1.0.7
+                                                Version：1.1.0
                                             </div>
                                         </div>
                                         <!-- <div class="tab-pane fade" id="w_ps_bRate" role="tabpanel"
@@ -303,8 +304,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-primay" role="progressbar"
-                                                            style="width: 65.75%" aria-valuenow="65.75" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 65.75%" aria-valuenow="65.75"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>65.75%</td>
@@ -317,8 +318,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-secondary" role="progressbar"
-                                                            style="width: 85.14%" aria-valuenow="85.14" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 85.14%" aria-valuenow="85.14"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>85.14%</td>
@@ -331,8 +332,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-success" role="progressbar"
-                                                            style="width: 95.36%" aria-valuenow="95.36" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 95.36%" aria-valuenow="95.36"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>95.36%</td>
@@ -345,8 +346,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 45.25%" aria-valuenow="45.25" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 45.25%" aria-valuenow="45.25"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>45.25%</td>
@@ -359,8 +360,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-warning" role="progressbar"
-                                                            style="width: 39.94%" aria-valuenow="39.94" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 39.94%" aria-valuenow="39.94"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>39.94%</td>
@@ -373,8 +374,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-danger" role="progressbar"
-                                                            style="width: 60.58%" aria-valuenow="60.58" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 60.58%" aria-valuenow="60.58"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>60.58%</td>
@@ -406,8 +407,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-primay" role="progressbar"
-                                                            style="width: 65.75%" aria-valuenow="65.75" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 65.75%" aria-valuenow="65.75"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>66.75%</td>
@@ -420,8 +421,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-secondary" role="progressbar"
-                                                            style="width: 85.14%" aria-valuenow="85.14" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 85.14%" aria-valuenow="85.14"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>40.14%</td>
@@ -434,8 +435,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-success" role="progressbar"
-                                                            style="width: 95.36%" aria-valuenow="95.36" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 95.36%" aria-valuenow="95.36"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>55.36%</td>
@@ -448,8 +449,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 45.25%" aria-valuenow="45.25" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 45.25%" aria-valuenow="45.25"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>40.25%</td>
@@ -462,8 +463,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-warning" role="progressbar"
-                                                            style="width: 39.94%" aria-valuenow="39.94" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 39.94%" aria-valuenow="39.94"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>30.94%</td>
@@ -476,8 +477,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-danger" role="progressbar"
-                                                            style="width: 60.58%" aria-valuenow="60.58" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 60.58%" aria-valuenow="60.58"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>60.58%</td>
@@ -509,8 +510,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-primay" role="progressbar"
-                                                            style="width: 65.75%" aria-valuenow="65.75" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 65.75%" aria-valuenow="65.75"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>65.75%</td>
@@ -523,8 +524,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-secondary" role="progressbar"
-                                                            style="width: 85.14%" aria-valuenow="85.14" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 85.14%" aria-valuenow="85.14"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>85.14%</td>
@@ -537,8 +538,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-success" role="progressbar"
-                                                            style="width: 95.36%" aria-valuenow="95.36" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 95.36%" aria-valuenow="95.36"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>95.36%</td>
@@ -551,8 +552,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 45.25%" aria-valuenow="45.25" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 45.25%" aria-valuenow="45.25"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>45.25%</td>
@@ -565,8 +566,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-warning" role="progressbar"
-                                                            style="width: 39.94%" aria-valuenow="39.94" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 39.94%" aria-valuenow="39.94"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>39.94%</td>
@@ -579,8 +580,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-danger" role="progressbar"
-                                                            style="width: 60.58%" aria-valuenow="60.58" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 60.58%" aria-valuenow="60.58"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>60.58%</td>
@@ -612,8 +613,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-primay" role="progressbar"
-                                                            style="width: 65.75%" aria-valuenow="65.75" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 65.75%" aria-valuenow="65.75"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>65.75%</td>
@@ -626,8 +627,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-secondary" role="progressbar"
-                                                            style="width: 85.14%" aria-valuenow="85.14" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 85.14%" aria-valuenow="85.14"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>45.14%</td>
@@ -640,8 +641,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-success" role="progressbar"
-                                                            style="width: 95.36%" aria-valuenow="95.36" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 95.36%" aria-valuenow="95.36"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>95.36%</td>
@@ -654,8 +655,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 45.25%" aria-valuenow="45.25" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 45.25%" aria-valuenow="45.25"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>45.25%</td>
@@ -668,8 +669,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-warning" role="progressbar"
-                                                            style="width: 39.94%" aria-valuenow="39.94" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 39.94%" aria-valuenow="39.94"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>39.94%</td>
@@ -682,8 +683,8 @@
                                                 <td>
                                                     <div class="progress">
                                                         <div class="progress-bar bg-danger" role="progressbar"
-                                                            style="width: 60.58%" aria-valuenow="60.58" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            style="width: 60.58%" aria-valuenow="60.58"
+                                                            aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </td>
                                                 <td>60.58%</td>
