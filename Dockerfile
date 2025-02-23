@@ -29,9 +29,7 @@ WORKDIR /app
 COPY --from=builder /app .
 
 RUN chown -R node:node . && \
-    chmod -R 755 . && \
-    addgroup -g 1001 node && \
-    adduser -u 1001 -G node -s /bin/sh -D node
+    chmod -R 755 .
 USER node
 
 ENV NODE_ENV=production
